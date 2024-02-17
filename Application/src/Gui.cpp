@@ -7,8 +7,7 @@
 #include "Logger.hpp"
 #endif
 
-// TODO change app namespace
-namespace ImGuiProject
+namespace CentroMidi
 {
 namespace Gui
 {
@@ -308,4 +307,4 @@ void drawGui()
 }
 
 } // Gui
-} // ImGuiApp
+} // CentroMidi

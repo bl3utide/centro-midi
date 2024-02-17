@@ -2,8 +2,7 @@
 #include "State.hpp"
 #include "Logger.hpp"
 
-// TODO change app namespace
-namespace ImGuiProject
+namespace CentroMidi
 {
 
 // public
@@ -49,4 +48,4 @@ void transitionState() noexcept
 #endif
 }
 
-} // ImGuiProject
+} // CentroMidi

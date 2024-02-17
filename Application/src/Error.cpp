@@ -2,8 +2,7 @@
 #include "Error.hpp"
 #include "Logger.hpp"
 
-// TODO change app namespace
-namespace ImGuiProject
+namespace CentroMidi
 {
 
 // public
@@ -17,4 +16,4 @@ void setAppError(const std::string& message) noexcept
     has_error = true;
 }
 
-} // ImGuiProject
+} // CentroMidi

@@ -2,8 +2,7 @@
 
 #include "State.hpp"
 
-// TODO change app namespace
-namespace ImGuiProject
+namespace CentroMidi
 {
 namespace Gui
 {
@@ -37,4 +36,4 @@ void drawDebugWindows(const int window_w, const int window_h, const State curren
 #endif
 
 } // Gui
-} // ImGuiApp
+} // CentroMidi

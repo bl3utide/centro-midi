@@ -5,8 +5,7 @@
 #include "GuiUtil.hpp"
 #include "Logger.hpp"
 
-// TODO change app namespace
-namespace ImGuiProject
+namespace CentroMidi
 {
 namespace Gui
 {
@@ -198,5 +197,5 @@ void drawDebugWindows(const int window_w, const int window_h, const State curren
 }
 
 } // Gui
-} // ImGuiApp
+} // CentroMidi
 #endif
