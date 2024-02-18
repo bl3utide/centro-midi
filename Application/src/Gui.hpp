@@ -26,7 +26,7 @@ const int WINDOW_WIDTH = 1024;
 const int WINDOW_HEIGHT = 768;
 
 void initialize(const char* app_title);
-void finalize();
+void finalize() noexcept;
 void drawGui();
 
 // sub modules

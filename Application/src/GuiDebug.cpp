@@ -54,7 +54,7 @@ void drawDebugMenuBar(const ImVec2 viewport_pos)
     ImGui::PopFont();
 }
 
-void pushDebugStyles()
+void pushDebugStyles() noexcept
 {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.08f, 0.08f, 0.08f, 1.0f));
@@ -76,7 +76,7 @@ void pushDebugStyles()
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.965f, 0.965f, 0.965f, 1.0f));
 }
 
-void popDebugStyles()
+void popDebugStyles() noexcept
 {
     ImGui::PopStyleColor(17);
     ImGui::PopStyleVar();
