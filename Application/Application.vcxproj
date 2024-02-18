@@ -70,8 +70,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2maind.lib;SDL2-staticd.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>RtMidi.lib;SDL2maind.lib;SDL2-staticd.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;$(SolutionDir)RtMidi\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -94,13 +94,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2main.lib;SDL2-static.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>RtMidi.lib;SDL2main.lib;SDL2-static.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;$(SolutionDir)RtMidi\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Annotation.cpp" />
     <ClCompile Include="src\Common.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -117,6 +118,7 @@
     <ClCompile Include="src\State.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Annotation.hpp" />
     <ClInclude Include="src\ArrayedFont.hpp" />
     <ClInclude Include="src\ArrayedTexture.hpp" />
     <ClInclude Include="src\Error.hpp" />
