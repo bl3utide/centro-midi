@@ -20,3 +20,5 @@
 #include <plog/Initializers/RollingFileInitializer.h>
 #include <plog/Appenders/IAppender.h>
 #endif
+
+#include <RtMidi.h>
