@@ -110,6 +110,7 @@
     <ClCompile Include="src\Gui.cpp" />
     <ClCompile Include="src\GuiDebug.cpp" />
     <ClCompile Include="src\GuiUtil.cpp" />
+    <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Connector.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="src\Error.hpp" />
     <ClInclude Include="src\Gui.hpp" />
     <ClInclude Include="src\GuiUtil.hpp" />
+    <ClInclude Include="src\Image.hpp" />
     <ClInclude Include="src\Logger.hpp" />
     <ClInclude Include="src\Main.hpp" />
     <ClInclude Include="src\Common.hpp" />
