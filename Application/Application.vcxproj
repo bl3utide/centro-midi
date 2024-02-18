@@ -111,6 +111,9 @@
     <ClCompile Include="src\GuiUtil.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Connector.cpp" />
+    <ClCompile Include="src\MessageHandler.cpp" />
+    <ClCompile Include="src\MessageTask.cpp" />
     <ClCompile Include="src\State.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +125,9 @@
     <ClInclude Include="src\Logger.hpp" />
     <ClInclude Include="src\Main.hpp" />
     <ClInclude Include="src\Common.hpp" />
+    <ClInclude Include="src\Connector.hpp" />
+    <ClInclude Include="src\MessageHandler.hpp" />
+    <ClInclude Include="src\MessageTask.hpp" />
     <ClInclude Include="src\State.hpp" />
     <ClInclude Include="src\StringUtil.hpp" />
   </ItemGroup>
