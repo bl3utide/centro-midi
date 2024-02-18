@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ArrayedFont.hpp" />
+    <ClInclude Include="src\ArrayedTexture.hpp" />
     <ClInclude Include="src\Error.hpp" />
     <ClInclude Include="src\Gui.hpp" />
     <ClInclude Include="src\GuiUtil.hpp" />
