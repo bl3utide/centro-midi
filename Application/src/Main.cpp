@@ -1,8 +1,10 @@
 ﻿#include "Common.hpp"
 #include "Error.hpp"
 #include "Main.hpp"
+#include "Image.hpp"
 #include "State.hpp"
 #include "gui/Gui.hpp"
+#include "midi/Connector.hpp"
 #include "util/StringUtil.hpp"
 #ifdef _DEBUG
 #include "Logger.hpp"
@@ -27,11 +29,25 @@ void initialize()
         throw std::runtime_error("SDL_Init error");
     }
 
-    Gui::initialize(APP_TITLE);
+    try
+    {
+        Gui::initialize(APP_TITLE);
+        Image::initialize();
+        Connector::initialize();
+    }
+    catch (RtMidiError& error)
+    {
+#ifdef _DEBUG
+        LOGD << error.getMessage();
+#endif
+        throw error;
+    }
 }
 
 void finalize() noexcept
 {
+    Connector::finalize();
+    Image::finalize();
     Gui::finalize();
 
     SDL_Quit();
@@ -56,13 +72,28 @@ void loop()
             switch (getState())
             {
                 case State::InitInternalData:
+                    Connector::resetAllConnections();
                     setNextState(State::Idle);
                     break;
                 case State::Idle:
+                    Connector::sendOneTaskMessage();
+                    break;
+                case State::SendBankProgChange:
+                    Connector::sendBankSelectMsb();
+                    Connector::sendBankSelectLsb();
+                    Connector::sendProgChange();
+                    setNextState(State::Idle);
                     break;
                 default:
                     break;
             }
+        }
+        catch (RtMidiError& error)
+        {
+#ifdef _DEBUG
+            LOGD << error.getMessage();
+#endif
+            setAppError(format("MIDI error: %s", error.getMessage().c_str()));
         }
         catch (std::exception& error)
         {
