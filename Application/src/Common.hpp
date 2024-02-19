@@ -19,9 +19,6 @@
 #include <imgui_impl_sdl.h>
 #include <imgui_impl_opengl2.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
 #ifdef _DEBUG
 #include <plog/Log.h>
 #include <plog/Initializers/RollingFileInitializer.h>
