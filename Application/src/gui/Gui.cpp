@@ -1,8 +1,8 @@
 ﻿#include "Common.hpp"
-#include "ArrayedFont.hpp"
 #include "Error.hpp"
-#include "Gui.hpp"
-#include "GuiUtil.hpp"
+#include "compressed/ArrayedFont.hpp"
+#include "gui/Gui.hpp"
+#include "gui/GuiUtil.hpp"
 #ifdef _DEBUG
 #include "Logger.hpp"
 #endif

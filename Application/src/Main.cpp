@@ -1,9 +1,9 @@
 ﻿#include "Common.hpp"
 #include "Error.hpp"
-#include "Gui.hpp"
 #include "Main.hpp"
 #include "State.hpp"
-#include "StringUtil.hpp"
+#include "gui/Gui.hpp"
+#include "util/StringUtil.hpp"
 #ifdef _DEBUG
 #include "Logger.hpp"
 #endif
