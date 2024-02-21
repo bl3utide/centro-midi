@@ -18,10 +18,10 @@ enum class Message : int
     _COUNT_,
 };
 
-std::string& getAnnotation();
-Type getAnnotationType();
-void setAnnotation(const Message message, const Type type);
-void clearAnnotation();
+std::string& getText() noexcept;
+Type getType() noexcept;
+void setText(const Message message, const Type type);
+void clearText() noexcept;
 
 } // Annotation
 } // CentroMidi

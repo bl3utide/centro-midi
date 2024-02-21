@@ -59,7 +59,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;PLOG_CHAR_IS_UTF8;__WINDOWS_MM__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;PLOG_CHAR_IS_UTF8;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -80,7 +80,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;__WINDOWS_MM__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <DebugInformationFormat>None</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -109,6 +109,7 @@
     <ClCompile Include="src\Error.cpp" />
     <ClCompile Include="src\gui\Gui.cpp" />
     <ClCompile Include="src\gui\GuiDebug.cpp" />
+    <ClCompile Include="src\gui\GuiOperation.cpp" />
     <ClCompile Include="src\gui\GuiUtil.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\Logger.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="src\compressed\ArrayedTexture.hpp" />
     <ClInclude Include="src\Error.hpp" />
     <ClInclude Include="src\gui\Gui.hpp" />
+    <ClInclude Include="src\gui\GuiColor.hpp" />
     <ClInclude Include="src\gui\GuiUtil.hpp" />
     <ClInclude Include="src\Image.hpp" />
     <ClInclude Include="src\Logger.hpp" />

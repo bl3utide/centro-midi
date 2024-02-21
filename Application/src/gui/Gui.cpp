@@ -1,7 +1,10 @@
 ﻿#include "Common.hpp"
+#include "Annotation.hpp"
 #include "Error.hpp"
+#include "Main.hpp"
 #include "compressed/ArrayedFont.hpp"
 #include "gui/Gui.hpp"
+#include "gui/GuiColor.hpp"
 #include "gui/GuiUtil.hpp"
 #ifdef _DEBUG
 #include "Logger.hpp"
@@ -15,7 +18,9 @@ namespace Gui
 // private
 SDL_Window* _window;
 SDL_GLContext _gl_context;
-int _winw, _winh;
+const int WINDOW_WIDTH = 610;
+const int WINDOW_HEIGHT = 460;
+const float UI_MAIN_CONTENT_WIDTH = WINDOW_WIDTH - 64.0f;
 
 void initFonts()
 {
@@ -96,7 +101,6 @@ void initFonts()
 void setUiStyle() noexcept
 {
     ImGuiStyle* style = &ImGui::GetStyle();
-    /* TODO set app-specific UI styles
     style->WindowPadding = ImVec2(6.0f, 6.0f);
     style->WindowRounding = 0.0f;
     style->WindowBorderSize = 0.0f;
@@ -153,7 +157,6 @@ void setUiStyle() noexcept
     style->Colors[ImGuiCol_TableBorderLight] = ImVec4(0.665f, 0.665f, 0.669f, 1.0f);
     style->Colors[ImGuiCol_TextSelectedBg] = ImGui::ColorConvertU32ToFloat4(UI_COLOR_SYMBOL);
     style->Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(1.0f, 0.98f, 0.95f, 0.73f);
-    */
 }
 
 void drawErrorModal()
@@ -200,6 +203,97 @@ void drawErrorModal()
             ImGui::EndPopup();
         }
     }
+}
+
+void drawAboutModal()
+{
+    ImGuiIO& io = ImGui::GetIO();
+    auto modal_window_size = ImVec2(400.0f, 180.0f);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    ImGui::SetNextWindowSize(modal_window_size);
+    if (ImGui::BeginPopupModal("about", nullptr,
+        ImGuiWindowFlags_AlwaysAutoResize
+        | ImGuiWindowFlags_NoMove
+        | ImGuiWindowFlags_NoTitleBar))
+    {
+        auto modal_window_pos = ImGui::GetCursorScreenPos();
+
+        ImGui::Indent(50.0f);
+        ImGui::PushFont((int)Font::Text);
+        ImGui::Dummy(ImVec2(0.0f, 50.0f));
+
+        if (ImGui::BeginTable("about_table", 2))
+        {
+            ImGui::TableSetupColumn("text", ImGuiTableColumnFlags_WidthStretch);
+
+            ImGui::TableNextColumn();
+            ImGui::Text(getAppTitle().c_str());
+            ImGui::Text("version %s", getAppVersion().c_str());
+            ImGui::Dummy(ImVec2(0.0f, 20.0f));
+            ImGui::Text(getAppCopyright().c_str());
+
+            ImGui::EndTable();
+        }
+
+        if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) &&
+            io.MousePos.x >= modal_window_pos.x &&
+            io.MousePos.x <= modal_window_pos.x + modal_window_size.x &&
+            io.MousePos.y >= modal_window_pos.y &&
+            io.MousePos.y <= modal_window_pos.y + modal_window_size.y)
+        {
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::PopFont();
+        ImGui::Unindent(40.0f);
+
+        ImGui::EndPopup();
+    }
+    ImGui::PopStyleVar();
+}
+
+void drawHeader(const int window_width)
+{
+    ImGui::PushFont((int)Font::Title);
+    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TITLE_TEXT);
+    ImGui::Text(getAppTitle().c_str());
+    ImGui::PopStyleColor();
+    ImGui::PopFont();
+
+    ImGui::SameLine(0.0f, 12.0f);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 7.0f);
+    ImGui::PushFont((int)Font::Version);
+    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_VERSION_TEXT);
+    ImGui::Text(getAppVersion().c_str());
+    ImGui::PopStyleColor();
+    ImGui::PopFont();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 7.0f);
+
+    ImGui::SameLine(window_width - 60.0f, 0.0f);
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 6.0f);
+    ImGui::PushFont((int)Font::TextBold);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(8.0f, 3.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
+    if (ImGui::Button("?"))
+    {
+        ImGui::OpenPopup("about");
+    }
+    ImGui::PopStyleVar(2);
+    ImGui::PopFont();
+    ImGui::MouseCursorToHand();
+    ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 1.0f);
+
+    drawAboutModal();
+}
+
+void drawContent()
+{
+    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_BASE);
+    drawOperationPanel();
+    ImGui::PopStyleColor();
 }
 
 void preDraw()
@@ -282,11 +376,12 @@ void drawGui()
 
     drawErrorModal();
 
-    SDL_GetWindowSize(_window, &_winw, &_winh);
+    int window_width, window_height;
+    SDL_GetWindowSize(_window, &window_width, &window_height);
 
     auto vp_pos = ImGui::GetWindowViewport()->WorkPos;
     ImGui::SetNextWindowPos(vp_pos);
-    ImGui::SetNextWindowSize(ImVec2((float)_winw, (float)_winh));
+    ImGui::SetNextWindowSize(ImVec2((float)window_width, (float)window_height));
     ImGui::Begin("background", nullptr,
         ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar |
@@ -295,12 +390,48 @@ void drawGui()
 #ifdef _DEBUG
         drawDebugMenuBar(vp_pos);
 #endif
+        drawHeader(window_width);
 
-        // TODO draw everything
+        ImGui::Dummy(ImVec2(10.0f, 0.0f));
+
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 32.0f);
+
+        float y = ImGui::GetCursorPosY();
+        ImGui::SetNextWindowPos(ImVec2(vp_pos.x + (window_width - UI_MAIN_CONTENT_WIDTH) * 0.5f, vp_pos.y + y));
+#ifdef _DEBUG
+        auto use_alt_child_bg = isChildBgAlt();
+        if (use_alt_child_bg) ImGui::PushStyleColor(ImGuiCol_ChildBg, DEBUG_UI_COLOR_CHILD_BG);
+#endif
+        ImGui::BeginChild("main", ImVec2(UI_MAIN_CONTENT_WIDTH, -32.0f), true, 0);
+        {
+            drawContent();
+        }
+        ImGui::EndChild();
+#ifdef _DEBUG
+        if (use_alt_child_bg) ImGui::PopStyleColor();
+#endif
+
+        y = ImGui::GetCursorPosY();
+        ImGui::SetNextWindowPos(ImVec2(vp_pos.x + (window_width - UI_MAIN_CONTENT_WIDTH) * 0.5f, vp_pos.y + y));
+#ifdef _DEBUG
+        if (use_alt_child_bg) ImGui::PushStyleColor(ImGuiCol_ChildBg, DEBUG_UI_COLOR_CHILD_BG);
+#endif
+        ImGui::BeginChild("annotation", ImVec2(UI_MAIN_CONTENT_WIDTH, 30.0f), true, ImGuiWindowFlags_NoScrollbar);
+        {
+            ImGui::PushFont((int)Font::TextBold);
+            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_ANNOTATION[static_cast<int>(Annotation::getType())]);
+            ImGui::Text(Annotation::getText().c_str());
+            ImGui::PopStyleColor();
+            ImGui::PopFont();
+        }
+        ImGui::EndChild();
+#ifdef _DEBUG
+        if (use_alt_child_bg) ImGui::PopStyleColor();
+#endif
     }
     ImGui::End();
 #ifdef _DEBUG
-    drawDebugWindows(_winw, _winh, current_state);
+    drawDebugWindows(window_width, window_height, current_state);
 #endif
 
     postDraw();

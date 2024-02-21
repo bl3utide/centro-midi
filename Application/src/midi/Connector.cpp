@@ -354,12 +354,12 @@ void setBothDevicesConnected(const bool connected)
     if (connected)
     {
         _is_both_devices_connected = true;
-        Annotation::clearAnnotation();
+        Annotation::clearText();
     }
     else
     {
         _is_both_devices_connected = false;
-        Annotation::setAnnotation(Annotation::Message::DisconnectedAlert, Annotation::Type::Alert);
+        Annotation::setText(Annotation::Message::DisconnectedAlert, Annotation::Type::Alert);
     }
 }
 
