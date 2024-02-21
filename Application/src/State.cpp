@@ -1,9 +1,10 @@
 ﻿#include "Common.hpp"
 #include "State.hpp"
+#ifdef _DEBUG
 #include "Logger.hpp"
+#endif
 
-// TODO change app namespace
-namespace ImGuiProject
+namespace CentroMidi
 {
 
 // public
@@ -12,6 +13,7 @@ const char* STATE_STR[static_cast<int>(State::_COUNT_)] =
 {
     "InitInternalData",
     "Idle",
+    "SendBankProgChange",
     "None"
 };
 #endif
@@ -49,4 +51,4 @@ void transitionState() noexcept
 #endif
 }
 
-} // ImGuiProject
+} // CentroMidi

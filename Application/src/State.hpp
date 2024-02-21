@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-// TODO change app namespace
-namespace ImGuiProject
+namespace CentroMidi
 {
 
 enum class State : int
 {
     InitInternalData,
     Idle,
+    SendBankProgChange,
     None,
     _COUNT_
 };
@@ -21,4 +21,4 @@ State getNextState() noexcept;
 void setNextState(State state) noexcept;
 void transitionState() noexcept;
 
-} // ImGuiProject
+} // CentroMidi

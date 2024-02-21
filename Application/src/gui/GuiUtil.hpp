@@ -44,11 +44,11 @@ enum class ImGuiCustomKey : int
     _COUNT_,
 };
 
-void MouseCursorToHand();
-void TextColoredU32(const ImU32& col, const char* fmt, ...);
+void MouseCursorToHand() noexcept;
+void TextColoredU32(const ImU32& col, const char* fmt, ...) noexcept;
 void BeginGroupPanel(const char* name, const ImVec2& size);
 void EndGroupPanel();
-void PushFont(int font_id);
-bool IsCustomKeyPressed(ImGuiCustomKey key, bool repeat = true);
+void PushFont(int font_id) noexcept;
+bool IsCustomKeyPressed(ImGuiCustomKey key, bool repeat = true) noexcept;
 
 } // ImGui

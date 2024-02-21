@@ -1,15 +1,16 @@
 ﻿#include "Common.hpp"
 #include "Error.hpp"
-#include "Gui.hpp"
 #include "Main.hpp"
+#include "Image.hpp"
 #include "State.hpp"
-#include "StringUtil.hpp"
+#include "gui/Gui.hpp"
+#include "midi/Connector.hpp"
+#include "util/StringUtil.hpp"
 #ifdef _DEBUG
 #include "Logger.hpp"
 #endif
 
-// TODO change app namespace
-namespace ImGuiProject
+namespace CentroMidi
 {
 
 // private
@@ -28,11 +29,25 @@ void initialize()
         throw std::runtime_error("SDL_Init error");
     }
 
-    Gui::initialize(APP_TITLE);
+    try
+    {
+        Gui::initialize(APP_TITLE);
+        Image::initialize();
+        Connector::initialize();
+    }
+    catch (RtMidiError& error)
+    {
+#ifdef _DEBUG
+        LOGD << error.getMessage();
+#endif
+        throw error;
+    }
 }
 
-void finalize()
+void finalize() noexcept
 {
+    Connector::finalize();
+    Image::finalize();
     Gui::finalize();
 
     SDL_Quit();
@@ -57,13 +72,28 @@ void loop()
             switch (getState())
             {
                 case State::InitInternalData:
+                    Connector::resetAllConnections();
                     setNextState(State::Idle);
                     break;
                 case State::Idle:
+                    Connector::sendOneTaskMessage();
+                    break;
+                case State::SendBankProgChange:
+                    Connector::sendBankSelectMsb();
+                    Connector::sendBankSelectLsb();
+                    Connector::sendProgChange();
+                    setNextState(State::Idle);
                     break;
                 default:
                     break;
             }
+        }
+        catch (RtMidiError& error)
+        {
+#ifdef _DEBUG
+            LOGD << error.getMessage();
+#endif
+            setAppError(format("MIDI error: %s", error.getMessage().c_str()));
         }
         catch (std::exception& error)
         {
@@ -96,33 +126,33 @@ void loop()
     }
 }
 
-std::string getAppVersion()
+std::string getAppVersion() noexcept
 {
     return APP_VERSION;
 }
 
-std::string getAppCopyright()
+std::string getAppCopyright() noexcept
 {
     return APP_COPYRIGHT;
 }
 
-std::string getAppTitle()
+std::string getAppTitle() noexcept
 {
     return APP_TITLE;
 }
 
-} // ImGuiApp
+} // CentroMidi
 
 int main(int, char**)
 {
 #ifdef _DEBUG
     static plog::DebugLogAppender<plog::LogFormatter> debugLogAppender;
-    plog::init<plog::LogFormatter>(plog::debug, ImGuiProject::DEBUG_FILE_NAME.c_str()).addAppender(&debugLogAppender);
+    plog::init<plog::LogFormatter>(plog::debug, CentroMidi::DEBUG_FILE_NAME.c_str()).addAppender(&debugLogAppender);
     LOGD << "<beginning of application>";
 #endif
     try
     {
-        ImGuiProject::initialize();
+        CentroMidi::initialize();
     }
     catch (std::exception& e)
     {
@@ -130,12 +160,12 @@ int main(int, char**)
         LOGD << e.what();
 #endif
         printf("%s", e.what());
-        ImGuiProject::finalize();
+        CentroMidi::finalize();
         exit(EXIT_FAILURE);
     }
 
-    ImGuiProject::loop();
-    ImGuiProject::finalize();
+    CentroMidi::loop();
+    CentroMidi::finalize();
 
 #ifdef _DEBUG
     LOGD << "<end of application>";

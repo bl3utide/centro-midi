@@ -1,10 +1,9 @@
 ﻿#pragma once
 #ifdef _DEBUG
 
-#include "StringUtil.hpp"
+#include "util/StringUtil.hpp"
 
-// TODO change app namespace
-namespace ImGuiProject
+namespace CentroMidi
 {
 namespace Logger
 {
@@ -48,7 +47,7 @@ extern std::list<Log> logs;
 extern const size_t MAX_DISPLAY_LOGS;
 
 } // Logger
-} // ImGuiApp
+} // CentroMidi
 
 namespace plog
 {
@@ -59,7 +58,7 @@ class DebugLogAppender : public IAppender
 public:
     virtual void write(const Record& record)
     {
-        namespace AppLogger = ImGuiProject::Logger;
+        namespace AppLogger = CentroMidi::Logger;
         std::string str = Formatter::format(record);
         AppLogger::Log log = AppLogger::Log(str);
         AppLogger::logs.push_front(log);

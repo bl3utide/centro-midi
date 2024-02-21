@@ -59,19 +59,19 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;__WINDOWS_MM__;_CRT_SECURE_NO_WARNINGS;PLOG_CHAR_IS_UTF8;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;PLOG_CHAR_IS_UTF8;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)SDL2\include;$(SolutionDir)ImGui\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)SDL2\include;$(SolutionDir)ImGui\include;$(SolutionDir)RtMidi\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Common.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2maind.lib;SDL2-staticd.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>RtMidi.lib;SDL2maind.lib;SDL2-staticd.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;$(SolutionDir)RtMidi\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -80,12 +80,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;__WINDOWS_MM__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <DebugInformationFormat>None</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)SDL2\include;$(SolutionDir)ImGui\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)SDL2\include;$(SolutionDir)ImGui\include;$(SolutionDir)RtMidi\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Common.hpp</PrecompiledHeaderFile>
     </ClCompile>
@@ -94,35 +94,48 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2main.lib;SDL2-static.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>RtMidi.lib;SDL2main.lib;SDL2-static.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;$(SolutionDir)RtMidi\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Annotation.cpp" />
     <ClCompile Include="src\Common.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Error.cpp" />
-    <ClCompile Include="src\Gui.cpp" />
-    <ClCompile Include="src\GuiDebug.cpp" />
-    <ClCompile Include="src\GuiUtil.cpp" />
+    <ClCompile Include="src\gui\Gui.cpp" />
+    <ClCompile Include="src\gui\GuiDebug.cpp" />
+    <ClCompile Include="src\gui\GuiOperation.cpp" />
+    <ClCompile Include="src\gui\GuiUtil.cpp" />
+    <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\midi\Connector.cpp" />
+    <ClCompile Include="src\midi\MessageHandler.cpp" />
+    <ClCompile Include="src\midi\MessageTask.cpp" />
     <ClCompile Include="src\State.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ArrayedFont.hpp" />
+    <ClInclude Include="src\Annotation.hpp" />
+    <ClInclude Include="src\compressed\ArrayedFont.hpp" />
+    <ClInclude Include="src\compressed\ArrayedTexture.hpp" />
     <ClInclude Include="src\Error.hpp" />
-    <ClInclude Include="src\Gui.hpp" />
-    <ClInclude Include="src\GuiUtil.hpp" />
+    <ClInclude Include="src\gui\Gui.hpp" />
+    <ClInclude Include="src\gui\GuiColor.hpp" />
+    <ClInclude Include="src\gui\GuiUtil.hpp" />
+    <ClInclude Include="src\Image.hpp" />
     <ClInclude Include="src\Logger.hpp" />
     <ClInclude Include="src\Main.hpp" />
     <ClInclude Include="src\Common.hpp" />
+    <ClInclude Include="src\midi\Connector.hpp" />
+    <ClInclude Include="src\midi\MessageHandler.hpp" />
+    <ClInclude Include="src\midi\MessageTask.hpp" />
     <ClInclude Include="src\State.hpp" />
-    <ClInclude Include="src\StringUtil.hpp" />
+    <ClInclude Include="src\util\StringUtil.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
