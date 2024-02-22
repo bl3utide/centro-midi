@@ -1,7 +1,7 @@
 ﻿# Centro MIDI
 MIDI single-path connection provider
 
-![](centro_midi_v100.png)
+![](centro_midi_v1.0.png)
 
 ## Features
 - Connect single MIDI input/output combination
@@ -17,5 +17,5 @@ MIDI single-path connection provider
 
 ## Changelog
 
-### v1.0.0
+### v1.0
 - Initial release
