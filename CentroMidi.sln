@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.34301.259
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "Application\Application.vcxproj", "{ADCD22B8-C3BA-44F4-880B-8F64CA2B8673}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "app\Application.vcxproj", "{ADCD22B8-C3BA-44F4-880B-8F64CA2B8673}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3E3556AD-7B4B-4B2B-B94E-62AF1016D08C} = {3E3556AD-7B4B-4B2B-B94E-62AF1016D08C}
 		{F5D2BDBF-D473-3032-8920-C965CC67DB24} = {F5D2BDBF-D473-3032-8920-C965CC67DB24}
@@ -11,15 +11,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "Application\
 		{E6A4B3F4-4B45-4925-86E8-26EA3750CAA0} = {E6A4B3F4-4B45-4925-86E8-26EA3750CAA0}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "ImGui\ImGui.vcxproj", "{E6A4B3F4-4B45-4925-86E8-26EA3750CAA0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "imgui\ImGui.vcxproj", "{E6A4B3F4-4B45-4925-86E8-26EA3750CAA0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F5D2BDBF-D473-3032-8920-C965CC67DB24} = {F5D2BDBF-D473-3032-8920-C965CC67DB24}
 		{9D433DE1-1664-3AA4-95BE-0327D029F9F7} = {9D433DE1-1664-3AA4-95BE-0327D029F9F7}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL2main", "SDL2\SDL2main.vcxproj", "{9D433DE1-1664-3AA4-95BE-0327D029F9F7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL2main", "sdl2\SDL2main.vcxproj", "{9D433DE1-1664-3AA4-95BE-0327D029F9F7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL2-static", "SDL2\SDL2-static.vcxproj", "{F5D2BDBF-D473-3032-8920-C965CC67DB24}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL2-static", "sdl2\SDL2-static.vcxproj", "{F5D2BDBF-D473-3032-8920-C965CC67DB24}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A27564E1-0604-4FB0-B1DF-923FDA2114B7}"
 	ProjectSection(SolutionItems) = preProject
@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDL2", "SDL2", "{E02622F8-4F66-4111-BCDF-C12B1ED1FCC6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RtMidi", "RtMidi\RtMidi.vcxproj", "{3E3556AD-7B4B-4B2B-B94E-62AF1016D08C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RtMidi", "rtmidi\RtMidi.vcxproj", "{3E3556AD-7B4B-4B2B-B94E-62AF1016D08C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -65,7 +65,7 @@
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)SDL2\include;$(SolutionDir)ImGui\include;$(SolutionDir)RtMidi\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)sdl2\include;$(SolutionDir)imgui\include;$(SolutionDir)rtmidi\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Common.hpp</PrecompiledHeaderFile>
     </ClCompile>
@@ -73,7 +73,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>RtMidi.lib;SDL2maind.lib;SDL2-staticd.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;$(SolutionDir)RtMidi\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)sdl2\bin\$(Configuration)\;$(SolutionDir)imgui\bin\$(Configuration)\;$(SolutionDir)rtmidi\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -87,7 +87,7 @@
       <DebugInformationFormat>None</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)SDL2\include;$(SolutionDir)ImGui\include;$(SolutionDir)RtMidi\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(ProjectDir)src;$(SolutionDir)sdl2\include;$(SolutionDir)imgui\include;$(SolutionDir)rtmidi\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Common.hpp</PrecompiledHeaderFile>
     </ClCompile>
@@ -99,7 +99,7 @@
       <AdditionalDependencies>RtMidi.lib;SDL2main.lib;SDL2-static.lib;ImGui.lib;opengl32.lib;version.lib;winmm.lib;imm32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalLibraryDirectories>$(SolutionDir)SDL2\bin\$(Configuration)\;$(SolutionDir)ImGui\bin\$(Configuration)\;$(SolutionDir)RtMidi\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)sdl2\bin\$(Configuration)\;$(SolutionDir)imgui\bin\$(Configuration)\;$(SolutionDir)rtmidi\bin\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
