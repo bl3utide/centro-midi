@@ -1,9 +1,9 @@
 [submodule "SDL2"]
-	path = SDL2
+	path = sdl2
 	url = https://github.com/bl3utide/iplib-sdl2
 [submodule "ImGui"]
-	path = ImGui
+	path = imgui
 	url = https://github.com/bl3utide/iplib-imgui
 [submodule "RtMidi"]
-	path = RtMidi
+	path = rtmidi
 	url = https://github.com/bl3utide/iplib-rtmidi
