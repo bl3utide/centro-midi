@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "State.hpp"
+#include "state.hpp"
 
 namespace CentroMidi
 {

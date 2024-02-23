@@ -15,96 +15,96 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\Gui.cpp">
+    <ClCompile Include="src\gui\gui.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\GuiUtil.cpp">
+    <ClCompile Include="src\gui\gui_util.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\GuiDebug.cpp">
+    <ClCompile Include="src\gui\gui_debug.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\Logger.cpp">
+    <ClCompile Include="src\logger.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\Common.cpp">
+    <ClCompile Include="src\common.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\State.cpp">
+    <ClCompile Include="src\state.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\Error.cpp">
+    <ClCompile Include="src\error.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\midi\Connector.cpp">
+    <ClCompile Include="src\midi\connector.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\midi\MessageHandler.cpp">
+    <ClCompile Include="src\midi\message_handler.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\midi\MessageTask.cpp">
+    <ClCompile Include="src\midi\message_task.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\Annotation.cpp">
+    <ClCompile Include="src\annotation.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\Image.cpp">
+    <ClCompile Include="src\image.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\GuiOperation.cpp">
+    <ClCompile Include="src\gui\gui_operation.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\compressed\ArrayedFont.hpp">
+    <ClInclude Include="src\compressed\arrayed_font.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\Gui.hpp">
+    <ClInclude Include="src\gui\gui.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\GuiUtil.hpp">
+    <ClInclude Include="src\gui\gui_util.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\Logger.hpp">
+    <ClInclude Include="src\logger.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\Main.hpp">
+    <ClInclude Include="src\main.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\StringUtil.hpp">
+    <ClInclude Include="src\util\string_util.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\Common.hpp">
+    <ClInclude Include="src\common.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\State.hpp">
+    <ClInclude Include="src\state.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\Error.hpp">
+    <ClInclude Include="src\error.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\compressed\ArrayedTexture.hpp">
+    <ClInclude Include="src\compressed\arrayed_texture.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\midi\Connector.hpp">
+    <ClInclude Include="src\midi\connector.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\midi\MessageHandler.hpp">
+    <ClInclude Include="src\midi\message_handler.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\midi\MessageTask.hpp">
+    <ClInclude Include="src\midi\message_task.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\Annotation.hpp">
+    <ClInclude Include="src\annotation.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\Image.hpp">
+    <ClInclude Include="src\image.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\GuiColor.hpp">
+    <ClInclude Include="src\gui\gui_color.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

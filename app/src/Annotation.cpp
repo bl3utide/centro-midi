@@ -1,5 +1,5 @@
-﻿#include "Common.hpp"
-#include "Annotation.hpp"
+﻿#include "common.hpp"
+#include "annotation.hpp"
 
 namespace CentroMidi
 {

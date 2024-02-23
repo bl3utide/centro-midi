@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "MessageHandler.hpp"
-#include "util/StringUtil.hpp"
+#include "message_handler.hpp"
+#include "util/string_util.hpp"
 
 namespace CentroMidi
 {

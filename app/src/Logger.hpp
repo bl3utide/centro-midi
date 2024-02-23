@@ -1,7 +1,7 @@
 ﻿#pragma once
 #ifdef _DEBUG
 
-#include "util/StringUtil.hpp"
+#include "util/string_util.hpp"
 
 namespace CentroMidi
 {

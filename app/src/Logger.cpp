@@ -1,6 +1,6 @@
-﻿#include "Common.hpp"
+﻿#include "common.hpp"
 #ifdef _DEBUG
-#include "Logger.hpp"
+#include "logger.hpp"
 
 namespace CentroMidi
 {

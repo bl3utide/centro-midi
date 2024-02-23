@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Annotation.hpp"
+#include "annotation.hpp"
 
 namespace CentroMidi
 {

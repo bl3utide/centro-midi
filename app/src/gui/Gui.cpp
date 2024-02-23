@@ -1,13 +1,13 @@
-﻿#include "Common.hpp"
-#include "Annotation.hpp"
-#include "Error.hpp"
-#include "Main.hpp"
-#include "compressed/ArrayedFont.hpp"
-#include "gui/Gui.hpp"
-#include "gui/GuiColor.hpp"
-#include "gui/GuiUtil.hpp"
+﻿#include "common.hpp"
+#include "annotation.hpp"
+#include "error.hpp"
+#include "main.hpp"
+#include "compressed/arrayed_font.hpp"
+#include "gui/gui.hpp"
+#include "gui/gui_color.hpp"
+#include "gui/gui_util.hpp"
 #ifdef _DEBUG
-#include "Logger.hpp"
+#include "logger.hpp"
 #endif
 
 namespace CentroMidi

@@ -1,13 +1,13 @@
-﻿#include "Common.hpp"
-#include "Error.hpp"
-#include "Main.hpp"
-#include "Image.hpp"
-#include "State.hpp"
-#include "gui/Gui.hpp"
-#include "midi/Connector.hpp"
-#include "util/StringUtil.hpp"
+﻿#include "common.hpp"
+#include "error.hpp"
+#include "main.hpp"
+#include "image.hpp"
+#include "state.hpp"
+#include "gui/gui.hpp"
+#include "midi/connector.hpp"
+#include "util/string_util.hpp"
 #ifdef _DEBUG
-#include "Logger.hpp"
+#include "logger.hpp"
 #endif
 
 namespace CentroMidi

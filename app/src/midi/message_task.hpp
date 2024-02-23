@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "MessageHandler.hpp"
+#include "message_handler.hpp"
 
 namespace CentroMidi
 {
