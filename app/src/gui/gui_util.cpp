@@ -1,6 +1,6 @@
-﻿#include "Common.hpp"
-#include "Gui.hpp"
-#include "GuiUtil.hpp"
+﻿#include "common.hpp"
+#include "gui.hpp"
+#include "gui_util.hpp"
 
 namespace ImGui
 {

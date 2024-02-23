@@ -1,7 +1,7 @@
-﻿#include "Common.hpp"
-#include "MessageTask.hpp"
+﻿#include "common.hpp"
+#include "message_task.hpp"
 #ifdef _DEBUG
-#include "Logger.hpp"
+#include "logger.hpp"
 #endif
 
 namespace CentroMidi

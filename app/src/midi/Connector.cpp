@@ -1,11 +1,11 @@
-﻿#include "Common.hpp"
-#include "Annotation.hpp"
-#include "Connector.hpp"
-#include "Error.hpp"
-#include "MessageTask.hpp"
-#include "State.hpp"
+﻿#include "common.hpp"
+#include "annotation.hpp"
+#include "connector.hpp"
+#include "error.hpp"
+#include "message_task.hpp"
+#include "state.hpp"
 #ifdef _DEBUG
-#include "Logger.hpp"
+#include "logger.hpp"
 #endif
 
 namespace CentroMidi

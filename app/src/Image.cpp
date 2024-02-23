@@ -1,8 +1,8 @@
-﻿#include "Common.hpp"
+﻿#include "common.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-#include "Image.hpp"
-#include "compressed/ArrayedTexture.hpp"
+#include "image.hpp"
+#include "compressed/arrayed_texture.hpp"
 
 namespace CentroMidi
 {

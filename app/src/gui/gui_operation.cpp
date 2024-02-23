@@ -1,9 +1,9 @@
-﻿#include "Common.hpp"
-#include "Image.hpp"
-#include "gui/Gui.hpp"
-#include "gui/GuiColor.hpp"
-#include "gui/GuiUtil.hpp"
-#include "midi/Connector.hpp"
+﻿#include "common.hpp"
+#include "image.hpp"
+#include "gui/gui.hpp"
+#include "gui/gui_color.hpp"
+#include "gui/gui_util.hpp"
+#include "midi/connector.hpp"
 
 namespace CentroMidi
 {

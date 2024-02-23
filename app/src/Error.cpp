@@ -1,7 +1,7 @@
-﻿#include "Common.hpp"
-#include "Error.hpp"
+﻿#include "common.hpp"
+#include "error.hpp"
 #ifdef _DEBUG
-#include "Logger.hpp"
+#include "logger.hpp"
 #endif
 
 namespace CentroMidi

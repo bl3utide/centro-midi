@@ -1,12 +1,12 @@
-﻿#include "Common.hpp"
+﻿#include "common.hpp"
 #ifdef _DEBUG
-#include "Error.hpp"
-#include "gui/Gui.hpp"
-#include "gui/GuiColor.hpp"
-#include "gui/GuiUtil.hpp"
-#include "midi/Connector.hpp"
-#include "midi/MessageTask.hpp"
-#include "Logger.hpp"
+#include "error.hpp"
+#include "gui/gui.hpp"
+#include "gui/gui_color.hpp"
+#include "gui/gui_util.hpp"
+#include "midi/connector.hpp"
+#include "midi/message_task.hpp"
+#include "logger.hpp"
 
 namespace CentroMidi
 {
