@@ -38,10 +38,10 @@ const int MIN_TRANSMIT_BANK = 0;
 const int MAX_TRANSMIT_BANK = 128 * 128 - 1;
 const int MIN_TRANSMIT_PROGRAM_CHANGE = 0;
 const int MAX_TRANSMIT_PROGRAM_CHANGE = 127;
+bool _is_both_devices_connected;
 #ifdef _DEBUG
 size_t _processed_history_max_size = 100;
 #endif
-bool _is_both_devices_connected;
 
 #ifdef _DEBUG
 void addProcessedHistory(const bool transmitted, const std::string& device_name, const MessageHandler::Bytes& data)
