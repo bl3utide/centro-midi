@@ -8,7 +8,7 @@ namespace Annotation
 
 // private
 std::string _annotation;
-Type _annotation_type;
+Type _type;
 const std::map<Message, std::string> MESSAGES {
     {Message::DisconnectedAlert, "Please set the MIDI connections"},
 };
@@ -20,13 +20,13 @@ std::string& getText() noexcept
 
 Type getType() noexcept
 {
-    return _annotation_type;
+    return _type;
 }
 
 void setText(const Message message, const Type type)
 {
     _annotation = MESSAGES.at(message);
-    _annotation_type = type;
+    _type = type;
 }
 
 void clearText() noexcept
