@@ -2,8 +2,8 @@
 #include "annotation.hpp"
 #include "connector.hpp"
 #include "error.hpp"
-#include "message_task.hpp"
 #include "state.hpp"
+#include "midi/message_task.hpp"
 #ifdef _DEBUG
 #include "logger.hpp"
 #endif
