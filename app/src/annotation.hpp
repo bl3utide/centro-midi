@@ -18,7 +18,7 @@ enum class Message : int
     _COUNT_,
 };
 
-std::string& getText() noexcept;
+const std::string& getText() noexcept;
 Type getType() noexcept;
 void setText(const Message message, const Type type);
 void clearText() noexcept;

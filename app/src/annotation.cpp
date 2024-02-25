@@ -13,7 +13,7 @@ const std::map<Message, std::string> MESSAGES {
     {Message::DisconnectedAlert, "Please set the MIDI connections"},
 };
 
-std::string& getText() noexcept
+const std::string& getText() noexcept
 {
     return _annotation;
 }
