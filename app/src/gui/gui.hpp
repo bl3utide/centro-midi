@@ -7,21 +7,6 @@ namespace CentroMidi
 namespace Gui
 {
 
-enum class Font : int
-{
-    Title,
-    Version,
-    OptionItem,
-    OptionItemBold,
-    Section,
-    Text,
-    TextBold,
-    Debug,
-    DebugProcHead,
-    DebugProcHex,
-    _COUNT_,
-};
-
 void initialize(const char* app_title);
 void finalize() noexcept;
 void drawGui();
