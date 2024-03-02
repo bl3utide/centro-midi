@@ -14,8 +14,4 @@ namespace CentroMidi
 #define DEF_APP_DEV_YR      2024
 #define DEF_APP_TITLE       "Centro MIDI"
 
-std::string getAppVersion() noexcept;
-std::string getAppCopyright() noexcept;
-std::string getAppTitle() noexcept;
-
 } // CentroMidi
