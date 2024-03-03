@@ -6,6 +6,7 @@
 #include "gui/gui_font.hpp"
 #include "gui/gui_util.hpp"
 #include "midi/connector.hpp"
+#include "midi/connector_debug.hpp"
 #include "midi/message_task.hpp"
 #include "logger.hpp"
 
@@ -122,22 +123,24 @@ void drawDebugTabItemGeneral()
 
 void drawDebugTabItemTransReceiveLog()
 {
+    namespace cd = Connector::Debug;
+
     if (ImGui::BeginTabItem("Transmitted/Received Log"))
     {
         ImGui::BeginChild("processed_list", ImVec2(600, 500), false);
         {
             int selected_index = 0;
-            std::list<Connector::ProcessedMidiMessage> ph_copy = Connector::processed_history;
+            std::list<cd::ProcessedMidiMessage> ph_copy = cd::processed_history;
             for (auto iter = ph_copy.begin(); iter != ph_copy.end(); ++iter)
             {
-                bool is_selected = selected_index == Connector::history_selected_index;
+                bool is_selected = selected_index == cd::history_selected_index;
                 ImGui::PushStyleColor(ImGuiCol_Text, iter->transmitted ? DEBUG_UI_COLOR_TEXT_TRANSMIT : DEBUG_UI_COLOR_TEXT_RECEIVE);
                 if (ImGui::Selectable(iter->list_title.c_str(), is_selected))
                 {
-                    Connector::history_selected_index = selected_index;
+                    cd::history_selected_index = selected_index;
 
-                    Connector::selected_processed_message =
-                        Connector::ProcessedMidiMessage(
+                    cd::selected_processed_message =
+                        cd::ProcessedMidiMessage(
                             iter->timestamp,
                             iter->transmitted,
                             iter->device_name,
@@ -158,7 +161,7 @@ void drawDebugTabItemTransReceiveLog()
 
 void drawProcessedWindow()
 {
-    Connector::ProcessedMidiMessage* message = &Connector::selected_processed_message;
+    Connector::Debug::ProcessedMidiMessage* message = &Connector::Debug::selected_processed_message;
 
     ImGui::Begin("processed_detail", &_show_processed_message_window,
         ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize |

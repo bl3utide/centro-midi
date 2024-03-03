@@ -5,7 +5,6 @@
 #include "state.hpp"
 #include "gui/gui.hpp"
 #include "midi/connector.hpp"
-#include "util/string_util.hpp"
 #ifdef _DEBUG
 #include "logger.hpp"
 #endif
