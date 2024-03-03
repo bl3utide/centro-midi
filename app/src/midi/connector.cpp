@@ -25,9 +25,9 @@ int display_bank = 1;                   // transmit_bank + 1
 int display_program_change = 1;         // transmit_program_change + 1
 
 // private
-int transmit_midi_channel;      // 0 to 15;         midi ch actually sent
-int transmit_bank;              // 0 to 16 ^ 2 - 1; bank actually sent
-int transmit_program_change;    // 0 to 127;        pc actually sent
+int _transmit_midi_channel;     // 0 to 15;         midi ch actually sent
+int _transmit_bank;             // 0 to 16 ^ 2 - 1; bank actually sent
+int _transmit_program_change;   // 0 to 127;        pc actually sent
 const int MIN_TRANSMIT_MIDI_CHANNEL = 0;
 const int MAX_TRANSMIT_MIDI_CHANNEL = 15;
 const int MIN_TRANSMIT_BANK = 0;
@@ -156,7 +156,7 @@ void checkOpenOutputPort()
 void sendBankSelectMsb()
 {
     MessageHandler::Bytes bank_select_msb =
-        MessageHandler::getBankSelectMsbMessage(transmit_midi_channel, transmit_bank);
+        MessageHandler::getBankSelectMsbMessage(_transmit_midi_channel, _transmit_bank);
 
     try
     {
@@ -179,7 +179,7 @@ void sendBankSelectMsb()
 void sendBankSelectLsb()
 {
     MessageHandler::Bytes bank_select_lsb =
-        MessageHandler::getBankSelectLsbMessage(transmit_midi_channel, transmit_bank);
+        MessageHandler::getBankSelectLsbMessage(_transmit_midi_channel, _transmit_bank);
 
     try
     {
@@ -202,7 +202,7 @@ void sendBankSelectLsb()
 void sendProgChange()
 {
     MessageHandler::Bytes prog_change =
-        MessageHandler::getProgChangeMessage(transmit_midi_channel, transmit_program_change);
+        MessageHandler::getProgChangeMessage(_transmit_midi_channel, _transmit_program_change);
 
     try
     {
@@ -225,7 +225,7 @@ void sendProgChange()
 
 void sendAllSoundOff()
 {
-    MessageHandler::Bytes all_sound_off = MessageHandler::getAllSoundOffMessage(transmit_midi_channel);
+    MessageHandler::Bytes all_sound_off = MessageHandler::getAllSoundOffMessage(_transmit_midi_channel);
 
     try
     {
@@ -258,20 +258,20 @@ void sendOneTaskMessage()
 
 void updateTransmitMidiChannel() noexcept
 {
-    transmit_midi_channel = display_midi_channel - 1;
+    _transmit_midi_channel = display_midi_channel - 1;
 }
 
 void updateTransmitBank() noexcept
 {
-    transmit_bank = display_bank - 1;
+    _transmit_bank = display_bank - 1;
 }
 
 void updateTransmitProgramChange() noexcept
 {
-    transmit_program_change = display_program_change - 1;
+    _transmit_program_change = display_program_change - 1;
 }
 
-int getTransmitMidiChannel() noexcept { return transmit_midi_channel; }
+int getTransmitMidiChannel() noexcept { return _transmit_midi_channel; }
 
 int getMinTransmitMidiChannel() noexcept { return MIN_TRANSMIT_MIDI_CHANNEL; }
 int getMaxTransmitMidiChannel() noexcept { return MAX_TRANSMIT_MIDI_CHANNEL; }
