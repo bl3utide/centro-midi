@@ -1,7 +1,7 @@
 ﻿/*
     Centro MIDI
     Copyright (C) 2024 bl3utide <bl3utide@gmail.com>
-    1.0.2
+    1.0.3
 */
 #pragma once
 
