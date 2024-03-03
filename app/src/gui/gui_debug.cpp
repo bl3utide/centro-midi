@@ -14,6 +14,8 @@ namespace CentroMidi
 {
 namespace Gui
 {
+namespace Debug
+{
 
 // private
 bool _show_debug_menu_bar = true;
@@ -369,6 +371,7 @@ bool isChildBgAlt() noexcept
     return _use_alternative_child_bg;
 }
 
+} // Debug
 } // Gui
 } // CentroMidi
 #endif
