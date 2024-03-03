@@ -1,7 +1,6 @@
 ﻿#pragma once
 
-#include "message_handler.hpp"
-#include "util/string_util.hpp"
+#include "midi/message_handler.hpp"
 
 namespace CentroMidi
 {
@@ -94,51 +93,6 @@ extern int display_midi_channel;
 extern int display_bank;
 extern int display_program_change;
 
-#ifdef _DEBUG
-struct ProcessedMidiMessage
-{
-    std::string timestamp;
-    bool transmitted;               // true: transmitted, false: received
-    std::string device_name;
-    std::string description;
-    MessageHandler::Bytes data;
-    std::string list_title;
-
-    ProcessedMidiMessage()
-    {
-        timestamp = "";
-        transmitted = true;
-        device_name = "";
-        description = "";
-        data = MessageHandler::Bytes();
-        list_title = "";
-    }
-
-    ProcessedMidiMessage(
-        const std::string& ts,
-        const bool t,
-        const std::string& d_name,
-        const std::string& desc,
-        const MessageHandler::Bytes d)
-    {
-        timestamp = ts;
-        transmitted = t;
-        device_name = d_name;
-        description = desc;
-        data.clear();
-        data = d;
-
-        list_title = format("%s %s %s",
-            transmitted ? "T" : "R",
-            timestamp.c_str(),
-            description.c_str());
-    }
-};
-extern std::list<ProcessedMidiMessage> processed_history;
-extern int history_selected_index;
-extern ProcessedMidiMessage selected_processed_message;
-#endif
-
 void initialize();
 void finalize() noexcept;
 void resetAllConnections();
@@ -152,6 +106,7 @@ void sendOneTaskMessage();
 void updateTransmitMidiChannel() noexcept;
 void updateTransmitBank() noexcept;
 void updateTransmitProgramChange() noexcept;
+int getTransmitMidiChannel() noexcept;
 int getMinTransmitMidiChannel() noexcept;
 int getMaxTransmitMidiChannel() noexcept;
 int getMinTransmitBank() noexcept;

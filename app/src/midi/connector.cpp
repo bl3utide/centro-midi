@@ -1,11 +1,13 @@
 ﻿#include "common.hpp"
 #include "annotation.hpp"
-#include "connector.hpp"
 #include "error.hpp"
-#include "message_task.hpp"
 #include "state.hpp"
+#include "midi/callback.hpp"
+#include "midi/connector.hpp"
+#include "midi/message_task.hpp"
 #ifdef _DEBUG
 #include "logger.hpp"
+#include "midi/connector_debug.hpp"
 #endif
 
 namespace CentroMidi
@@ -21,51 +23,18 @@ bool force_adjust_midi_channel = true;  // send note off/on messages
 int display_midi_channel = 1;           // transmit_midi_channel + 1
 int display_bank = 1;                   // transmit_bank + 1
 int display_program_change = 1;         // transmit_program_change + 1
-#ifdef _DEBUG
-std::list<ProcessedMidiMessage> processed_history;
-int history_selected_index = -1;
-ProcessedMidiMessage selected_processed_message;
-#endif
 
 // private
-int transmit_midi_channel;      // 0 to 15;         midi ch actually sent
-int transmit_bank;              // 0 to 16 ^ 2 - 1; bank actually sent
-int transmit_program_change;    // 0 to 127;        pc actually sent
-SDL_TimerID _waiting_timer;
+int _transmit_midi_channel;     // 0 to 15;         midi ch actually sent
+int _transmit_bank;             // 0 to 16 ^ 2 - 1; bank actually sent
+int _transmit_program_change;   // 0 to 127;        pc actually sent
 const int MIN_TRANSMIT_MIDI_CHANNEL = 0;
 const int MAX_TRANSMIT_MIDI_CHANNEL = 15;
 const int MIN_TRANSMIT_BANK = 0;
 const int MAX_TRANSMIT_BANK = 128 * 128 - 1;
 const int MIN_TRANSMIT_PROGRAM_CHANGE = 0;
 const int MAX_TRANSMIT_PROGRAM_CHANGE = 127;
-#ifdef _DEBUG
-size_t _processed_history_max_size = 100;
-#endif
 bool _is_both_devices_connected;
-
-#ifdef _DEBUG
-void addProcessedHistory(const bool transmitted, const std::string& device_name, const MessageHandler::Bytes& data)
-{
-    auto now = std::chrono::system_clock::now();
-    auto now_as_time_t = std::chrono::system_clock::to_time_t(now);
-    auto now_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
-    std::stringstream now_ss;
-    now_ss << std::put_time(std::localtime(&now_as_time_t), "%F %T")
-        << '.' << std::setfill('0') << std::setw(3) << now_ms.count();
-    std::string timestamp = now_ss.str();
-
-    auto description = MessageHandler::getMessageDesc(data);
-
-    processed_history.push_front(ProcessedMidiMessage(timestamp, transmitted, device_name, description, data));
-
-    if (processed_history.size() > _processed_history_max_size)
-    {
-        processed_history.resize(_processed_history_max_size);
-    }
-
-    if (history_selected_index != -1) ++history_selected_index;
-}
-#endif
 
 void fetchDeviceList()
 {
@@ -108,41 +77,6 @@ void fetchDeviceList()
     }
 }
 
-/*******************************************************************************
-    Received message from input device callback
-*******************************************************************************/
-void receiveInputDeviceMessageCallback(double delta_time, MessageHandler::Bytes* message, void* user_data)
-{
-    if (MessageHandler::isNoteOff(*message) || MessageHandler::isNoteOn(*message))
-    {
-        if (Connector::force_adjust_midi_channel)
-        {
-            const int ch = transmit_midi_channel;
-            MessageHandler::Bytes channel_adj_message;
-            if (MessageHandler::isNoteOff(*message))
-            {
-                channel_adj_message = {
-                    static_cast<unsigned char>(0x80 + ch),
-                    message->at(1),
-                    message->at(2)
-                };
-            }
-            else
-            {
-                channel_adj_message = {
-                    static_cast<unsigned char>(0x90 + ch),
-                    message->at(1),
-                    message->at(2)
-                };
-            }
-            conn.output->sendMessage(&channel_adj_message);
-        }
-        else
-        {
-            conn.output->sendMessage(message);
-        }
-    }
-}
 
 void initialize()
 {
@@ -222,7 +156,7 @@ void checkOpenOutputPort()
 void sendBankSelectMsb()
 {
     MessageHandler::Bytes bank_select_msb =
-        MessageHandler::getBankSelectMsbMessage(transmit_midi_channel, transmit_bank);
+        MessageHandler::getBankSelectMsbMessage(_transmit_midi_channel, _transmit_bank);
 
     try
     {
@@ -238,14 +172,14 @@ void sendBankSelectMsb()
         return;
     }
 #ifdef _DEBUG
-    addProcessedHistory(true, conn.output_port_name, bank_select_msb);
+    Debug::addProcessedHistory(true, conn.output_port_name, bank_select_msb);
 #endif
 }
 
 void sendBankSelectLsb()
 {
     MessageHandler::Bytes bank_select_lsb =
-        MessageHandler::getBankSelectLsbMessage(transmit_midi_channel, transmit_bank);
+        MessageHandler::getBankSelectLsbMessage(_transmit_midi_channel, _transmit_bank);
 
     try
     {
@@ -261,14 +195,14 @@ void sendBankSelectLsb()
         return;
     }
 #ifdef _DEBUG
-    addProcessedHistory(true, conn.output_port_name, bank_select_lsb);
+    Debug::addProcessedHistory(true, conn.output_port_name, bank_select_lsb);
 #endif
 }
 
 void sendProgChange()
 {
     MessageHandler::Bytes prog_change =
-        MessageHandler::getProgChangeMessage(transmit_midi_channel, transmit_program_change);
+        MessageHandler::getProgChangeMessage(_transmit_midi_channel, _transmit_program_change);
 
     try
     {
@@ -285,13 +219,13 @@ void sendProgChange()
         return;
     }
 #ifdef _DEBUG
-    addProcessedHistory(true, conn.output_port_name, prog_change);
+    Debug::addProcessedHistory(true, conn.output_port_name, prog_change);
 #endif
 }
 
 void sendAllSoundOff()
 {
-    MessageHandler::Bytes all_sound_off = MessageHandler::getAllSoundOffMessage(transmit_midi_channel);
+    MessageHandler::Bytes all_sound_off = MessageHandler::getAllSoundOffMessage(_transmit_midi_channel);
 
     try
     {
@@ -306,7 +240,7 @@ void sendAllSoundOff()
         return;
     }
 #ifdef _DEBUG
-    addProcessedHistory(true, conn.output_port_name, all_sound_off);
+    Debug::addProcessedHistory(true, conn.output_port_name, all_sound_off);
 #endif
 }
 
@@ -317,25 +251,27 @@ void sendOneTaskMessage()
         MessageHandler::Bytes message = MessageTask::lastTask();
         conn.output->sendMessage(&message);
 #ifdef _DEBUG
-        addProcessedHistory(true, conn.output_port_name, message);
+        Debug::addProcessedHistory(true, conn.output_port_name, message);
 #endif
     }
 }
 
 void updateTransmitMidiChannel() noexcept
 {
-    transmit_midi_channel = display_midi_channel - 1;
+    _transmit_midi_channel = display_midi_channel - 1;
 }
 
 void updateTransmitBank() noexcept
 {
-    transmit_bank = display_bank - 1;
+    _transmit_bank = display_bank - 1;
 }
 
 void updateTransmitProgramChange() noexcept
 {
-    transmit_program_change = display_program_change - 1;
+    _transmit_program_change = display_program_change - 1;
 }
+
+int getTransmitMidiChannel() noexcept { return _transmit_midi_channel; }
 
 int getMinTransmitMidiChannel() noexcept { return MIN_TRANSMIT_MIDI_CHANNEL; }
 int getMaxTransmitMidiChannel() noexcept { return MAX_TRANSMIT_MIDI_CHANNEL; }

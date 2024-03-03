@@ -2,6 +2,7 @@
 #include "image.hpp"
 #include "gui/gui.hpp"
 #include "gui/gui_color.hpp"
+#include "gui/gui_font.hpp"
 #include "gui/gui_util.hpp"
 #include "midi/connector.hpp"
 

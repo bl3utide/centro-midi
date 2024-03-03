@@ -4,6 +4,7 @@
 #include <list>
 #include <vector>
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <sstream>
 #include <regex>
@@ -26,3 +27,5 @@
 #endif
 
 #include <RtMidi.h>
+
+#include "util/string_util.hpp"

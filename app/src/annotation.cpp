@@ -7,31 +7,37 @@ namespace Annotation
 {
 
 // private
-std::string _annotation;
-Type _annotation_type;
+std::string _text;
+Type _type;
 const std::map<Message, std::string> MESSAGES {
     {Message::DisconnectedAlert, "Please set the MIDI connections"},
 };
 
-std::string& getText() noexcept
+const std::string& getText() noexcept
 {
-    return _annotation;
+    return _text;
 }
 
 Type getType() noexcept
 {
-    return _annotation_type;
+    return _type;
 }
 
-void setText(const Message message, const Type type)
+void setText(const Message message, const Type type) noexcept
 {
-    _annotation = MESSAGES.at(message);
-    _annotation_type = type;
+    _text = MESSAGES.at(message);
+    _type = type;
+}
+
+void setText(const std::string& message, const Type type) noexcept
+{
+    _text = message;
+    _type = type;
 }
 
 void clearText() noexcept
 {
-    _annotation.clear();
+    _text.clear();
 }
 
 } // Annotation

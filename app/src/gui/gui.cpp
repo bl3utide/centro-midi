@@ -1,10 +1,10 @@
 ﻿#include "common.hpp"
 #include "annotation.hpp"
 #include "error.hpp"
-#include "main.hpp"
 #include "compressed/arrayed_font.hpp"
 #include "gui/gui.hpp"
 #include "gui/gui_color.hpp"
+#include "gui/gui_font.hpp"
 #include "gui/gui_util.hpp"
 #ifdef _DEBUG
 #include "logger.hpp"
@@ -16,87 +16,14 @@ namespace Gui
 {
 
 // private
+std::string _app_title;
+std::string _app_version;
+std::string _app_copyright;
 SDL_Window* _window;
 SDL_GLContext _gl_context;
 const int WINDOW_WIDTH = 610;
 const int WINDOW_HEIGHT = 460;
 const float UI_MAIN_CONTENT_WIDTH = WINDOW_WIDTH - 64.0f;
-
-void initFonts()
-{
-    ImFont* font;
-
-    // TITLE
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::TITLE_DATA,
-        ArrayedFont::TITLE_SIZE,
-        24.0f);
-    IM_ASSERT(font);
-
-    // VERSION
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::SECTION_DATA,
-        ArrayedFont::SECTION_SIZE,
-        16.0f);
-    IM_ASSERT(font);
-
-    // OPTION_ITEM_TEXT
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::SECTION_DATA,
-        ArrayedFont::SECTION_SIZE,
-        18.0f);
-    IM_ASSERT(font);
-
-    // OPTION_ITEM_TEXT_BOLD
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::SECTION_BOLD_DATA,
-        ArrayedFont::SECTION_BOLD_SIZE,
-        18.0f);
-    IM_ASSERT(font);
-
-    // SECTION_TEXT
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::SECTION_DATA,
-        ArrayedFont::SECTION_SIZE,
-        22.0f);
-    IM_ASSERT(font);
-
-    // TEXT
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::TEXT_DATA,
-        ArrayedFont::TEXT_SIZE,
-        16.0f);
-    IM_ASSERT(font);
-
-    // TEXT_BOLD
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::TEXT_BOLD_DATA,
-        ArrayedFont::TEXT_BOLD_SIZE,
-        16.0f);
-    IM_ASSERT(font);
-
-#ifdef _DEBUG
-    // DEBUG
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::DEBUG_DATA,
-        ArrayedFont::DEBUG_SIZE,
-        14.0f);
-    IM_ASSERT(font);
-
-    // DEBUG_PROC_HEAD
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::DEBUG_DATA,
-        ArrayedFont::DEBUG_SIZE,
-        20.0f);
-
-    // DEBUG_PROC_HEX
-    font = ImGui::GetIO().Fonts->AddFontFromMemoryCompressedTTF(
-        ArrayedFont::DEBUG_DATA,
-        ArrayedFont::DEBUG_SIZE,
-        18.0f);
-    IM_ASSERT(font);
-#endif
-}
 
 void setUiStyle() noexcept
 {
@@ -230,10 +157,10 @@ void drawAboutModal()
             ImGui::TableSetupColumn("text", ImGuiTableColumnFlags_WidthStretch);
 
             ImGui::TableNextColumn();
-            ImGui::Text(getAppTitle().c_str());
-            ImGui::Text("version %s", getAppVersion().c_str());
+            ImGui::Text(_app_title.c_str());
+            ImGui::Text("version %s", _app_version.c_str());
             ImGui::Dummy(ImVec2(0.0f, 20.0f));
-            ImGui::Text(getAppCopyright().c_str());
+            ImGui::Text(_app_copyright.c_str());
 
             ImGui::EndTable();
         }
@@ -259,7 +186,7 @@ void drawHeader(const int window_width)
 {
     ImGui::PushFont((int)Font::Title);
     ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TITLE_TEXT);
-    ImGui::Text(getAppTitle().c_str());
+    ImGui::Text(_app_title.c_str());
     ImGui::PopStyleColor();
     ImGui::PopFont();
 
@@ -267,7 +194,7 @@ void drawHeader(const int window_width)
     ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 7.0f);
     ImGui::PushFont((int)Font::Version);
     ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_VERSION_TEXT);
-    ImGui::Text(getAppVersion().c_str());
+    ImGui::Text(_app_version.c_str());
     ImGui::PopStyleColor();
     ImGui::PopFont();
     ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 7.0f);
@@ -321,8 +248,12 @@ void postDraw()
     SDL_GL_SwapWindow(_window);
 }
 
-void initialize(const char* app_title)
+void initialize(const std::string& title, const std::string& version, const std::string& copyright)
 {
+    _app_title = title;
+    _app_version = version;
+    _app_copyright = copyright;
+
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
@@ -331,7 +262,7 @@ void initialize(const char* app_title)
     SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
     SDL_DisplayMode current;
     SDL_GetCurrentDisplayMode(0, &current);
-    _window = SDL_CreateWindow(app_title,
+    _window = SDL_CreateWindow(_app_title.c_str(),
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         WINDOW_WIDTH, WINDOW_HEIGHT,
         SDL_WINDOW_OPENGL);
@@ -355,7 +286,10 @@ void initialize(const char* app_title)
     ImGui_ImplSDL2_InitForOpenGL(_window, _gl_context);
     ImGui_ImplOpenGL2_Init();
 
-    initFonts();
+    addAllFonts();
+#ifdef _DEBUG
+    addAllFontsDebug();
+#endif
     setUiStyle();
 }
 
@@ -388,7 +322,7 @@ void drawGui()
         ImGuiWindowFlags_NoBringToFrontOnFocus);
     {
 #ifdef _DEBUG
-        drawDebugMenuBar(vp_pos);
+        Debug::drawDebugMenuBar(vp_pos);
 #endif
         drawHeader(window_width);
 
@@ -399,7 +333,7 @@ void drawGui()
         float y = ImGui::GetCursorPosY();
         ImGui::SetNextWindowPos(ImVec2(vp_pos.x + (window_width - UI_MAIN_CONTENT_WIDTH) * 0.5f, vp_pos.y + y));
 #ifdef _DEBUG
-        auto use_alt_child_bg = isChildBgAlt();
+        auto use_alt_child_bg = Debug::isChildBgAlt();
         if (use_alt_child_bg) ImGui::PushStyleColor(ImGuiCol_ChildBg, DEBUG_UI_COLOR_CHILD_BG);
 #endif
         ImGui::BeginChild("main", ImVec2(UI_MAIN_CONTENT_WIDTH, -32.0f), true, 0);
@@ -431,7 +365,7 @@ void drawGui()
     }
     ImGui::End();
 #ifdef _DEBUG
-    drawDebugWindows(window_width, window_height, current_state);
+    Debug::drawDebugWindows(window_width, window_height, current_state);
 #endif
 
     postDraw();

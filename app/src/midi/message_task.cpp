@@ -1,5 +1,5 @@
 ﻿#include "common.hpp"
-#include "message_task.hpp"
+#include "midi/message_task.hpp"
 #ifdef _DEBUG
 #include "logger.hpp"
 #endif
