@@ -5,8 +5,6 @@ namespace CentroMidi
 namespace MessageHandler
 {
 
-using Bytes = std::vector<unsigned char>;
-
 Bytes getBankSelectMsbMessage(const int ch, const int value);
 Bytes getBankSelectLsbMessage(const int ch, const int value);
 Bytes getProgChangeMessage(const int ch, const int value);

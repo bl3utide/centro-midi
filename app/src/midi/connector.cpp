@@ -4,6 +4,7 @@
 #include "state.hpp"
 #include "midi/callback.hpp"
 #include "midi/connector.hpp"
+#include "midi/message_handler.hpp"
 #include "midi/message_task.hpp"
 #ifdef _DEBUG
 #include "logger.hpp"
@@ -155,7 +156,7 @@ void checkOpenOutputPort()
 
 void sendBankSelectMsb()
 {
-    MessageHandler::Bytes bank_select_msb =
+    Bytes bank_select_msb =
         MessageHandler::getBankSelectMsbMessage(_transmit_midi_channel, _transmit_bank);
 
     try
@@ -178,7 +179,7 @@ void sendBankSelectMsb()
 
 void sendBankSelectLsb()
 {
-    MessageHandler::Bytes bank_select_lsb =
+    Bytes bank_select_lsb =
         MessageHandler::getBankSelectLsbMessage(_transmit_midi_channel, _transmit_bank);
 
     try
@@ -201,7 +202,7 @@ void sendBankSelectLsb()
 
 void sendProgChange()
 {
-    MessageHandler::Bytes prog_change =
+    Bytes prog_change =
         MessageHandler::getProgChangeMessage(_transmit_midi_channel, _transmit_program_change);
 
     try
@@ -225,7 +226,7 @@ void sendProgChange()
 
 void sendAllSoundOff()
 {
-    MessageHandler::Bytes all_sound_off = MessageHandler::getAllSoundOffMessage(_transmit_midi_channel);
+    Bytes all_sound_off = MessageHandler::getAllSoundOffMessage(_transmit_midi_channel);
 
     try
     {
@@ -248,7 +249,7 @@ void sendOneTaskMessage()
 {
     if (MessageTask::taskSize() > 0)
     {
-        MessageHandler::Bytes message = MessageTask::lastTask();
+        Bytes message = MessageTask::lastTask();
         conn.output->sendMessage(&message);
 #ifdef _DEBUG
         Debug::addProcessedHistory(true, conn.output_port_name, message);

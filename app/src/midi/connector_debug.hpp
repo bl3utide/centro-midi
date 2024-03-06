@@ -1,6 +1,5 @@
 ﻿#ifdef _DEBUG
 #pragma once
-#include "midi/message_handler.hpp"
 
 namespace CentroMidi
 {
@@ -15,7 +14,7 @@ struct ProcessedMidiMessage
     bool transmitted;               // true: transmitted, false: received
     std::string device_name;
     std::string description;
-    MessageHandler::Bytes data;
+    Bytes data;
     std::string list_title;
 
     ProcessedMidiMessage()
@@ -24,7 +23,7 @@ struct ProcessedMidiMessage
         transmitted = true;
         device_name = "";
         description = "";
-        data = MessageHandler::Bytes();
+        data = Bytes();
         list_title = "";
     }
 
@@ -33,7 +32,7 @@ struct ProcessedMidiMessage
         const bool t,
         const std::string& d_name,
         const std::string& desc,
-        const MessageHandler::Bytes d)
+        const Bytes d)
     {
         timestamp = ts;
         transmitted = t;
@@ -52,7 +51,7 @@ extern std::list<ProcessedMidiMessage> processed_history;
 extern int history_selected_index;
 extern ProcessedMidiMessage selected_processed_message;
 
-void addProcessedHistory(const bool transmitted, const std::string& device_name, const MessageHandler::Bytes& data);
+void addProcessedHistory(const bool transmitted, const std::string& device_name, const Bytes& data);
 
 } // Debug
 } // Connector

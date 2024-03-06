@@ -3,6 +3,7 @@
 #include "midi/callback_debug.hpp"
 #include "midi/connector_common.hpp"
 #include "midi/connector_debug.hpp"
+#include "midi/message_handler.hpp"
 
 namespace CentroMidi
 {
@@ -19,7 +20,7 @@ ProcessedMidiMessage selected_processed_message;
 // private
 size_t _processed_history_max_size = 100;
 
-void addProcessedHistory(const bool transmitted, const std::string& device_name, const MessageHandler::Bytes& data)
+void addProcessedHistory(const bool transmitted, const std::string& device_name, const Bytes& data)
 {
     auto now = std::chrono::system_clock::now();
     auto now_as_time_t = std::chrono::system_clock::to_time_t(now);

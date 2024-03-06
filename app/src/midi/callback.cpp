@@ -1,6 +1,7 @@
 ﻿#include "common.hpp"
 #include "midi/callback.hpp"
 #include "midi/connector.hpp"
+#include "midi/message_handler.hpp"
 
 namespace CentroMidi
 {
@@ -10,7 +11,7 @@ namespace Connector
 /*******************************************************************************
     Received message from input device callback
 *******************************************************************************/
-void receiveInputDeviceMessageCallback(double delta_time, MessageHandler::Bytes* message, void* user_data)
+void receiveInputDeviceMessageCallback(double delta_time, Bytes* message, void* user_data)
 {
     if (MessageHandler::isNoteOff(*message) || MessageHandler::isNoteOn(*message))
     {
@@ -18,7 +19,7 @@ void receiveInputDeviceMessageCallback(double delta_time, MessageHandler::Bytes*
         {
             //const int ch = transmit_midi_channel;
             const int ch = getTransmitMidiChannel();
-            MessageHandler::Bytes channel_adj_message;
+            Bytes channel_adj_message;
             if (MessageHandler::isNoteOff(*message))
             {
                 channel_adj_message = {
