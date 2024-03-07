@@ -23,7 +23,7 @@ void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void
             if (MessageHandler::isNoteOff(*message))
             {
                 channel_adj_message = {
-                    static_cast<unsigned char>(0x80 + ch),
+                    static_cast<Byte>(0x80 + ch),
                     message->at(1),
                     message->at(2)
                 };
@@ -31,7 +31,7 @@ void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void
             else
             {
                 channel_adj_message = {
-                    static_cast<unsigned char>(0x90 + ch),
+                    static_cast<Byte>(0x90 + ch),
                     message->at(1),
                     message->at(2)
                 };

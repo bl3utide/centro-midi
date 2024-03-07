@@ -11,47 +11,47 @@ namespace MessageHandler
 
 ByteVec getBankSelectMsbMessage(const int ch, const int value)
 {
-    char order_byte = 0xB0 + static_cast<unsigned char>(ch);
+    Byte order_byte = 0xB0 + static_cast<Byte>(ch);
 
     ByteVec bs;
     bs.clear();
     bs.push_back(order_byte);
     bs.push_back(0x00);
-    bs.push_back(static_cast<unsigned char>(value / 128));
+    bs.push_back(static_cast<Byte>(value / 128));
     return bs;
 }
 
 ByteVec getBankSelectLsbMessage(const int ch, const int value)
 {
-    char order_byte = 0xB0 + static_cast<unsigned char>(ch);
+    Byte order_byte = 0xB0 + static_cast<Byte>(ch);
 
     ByteVec bs;
     bs.clear();
     bs.push_back(order_byte);
     bs.push_back(0x20);
-    bs.push_back(static_cast<unsigned char>(value % 128));
+    bs.push_back(static_cast<Byte>(value % 128));
     return bs;
 }
 
 ByteVec getProgChangeMessage(const int ch, const int value)
 {
-    char order_byte = 0xC0 + static_cast<unsigned char>(ch);
+    Byte order_byte = 0xC0 + static_cast<Byte>(ch);
 
     ByteVec pc;
     pc.clear();
     pc.push_back(order_byte);
-    pc.push_back(static_cast<unsigned char>(value));
+    pc.push_back(static_cast<Byte>(value));
     return pc;
 }
 
 ByteVec getAllSoundOffMessage(const int ch)
 {
-    char order_byte = 0xB0 + static_cast<unsigned char>(ch);
+    Byte order_byte = 0xB0 + static_cast<Byte>(ch);
 
     ByteVec aso;
     aso.clear();
     aso.push_back(order_byte);
-    aso.push_back(static_cast<unsigned char>(0x78));
+    aso.push_back(static_cast<Byte>(0x78));
     return aso;
 }
 
