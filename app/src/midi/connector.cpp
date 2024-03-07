@@ -156,7 +156,7 @@ void checkOpenOutputPort()
 
 void sendBankSelectMsb()
 {
-    Bytes bank_select_msb =
+    ByteVec bank_select_msb =
         MessageHandler::getBankSelectMsbMessage(_transmit_midi_channel, _transmit_bank);
 
     try
@@ -179,7 +179,7 @@ void sendBankSelectMsb()
 
 void sendBankSelectLsb()
 {
-    Bytes bank_select_lsb =
+    ByteVec bank_select_lsb =
         MessageHandler::getBankSelectLsbMessage(_transmit_midi_channel, _transmit_bank);
 
     try
@@ -202,7 +202,7 @@ void sendBankSelectLsb()
 
 void sendProgChange()
 {
-    Bytes prog_change =
+    ByteVec prog_change =
         MessageHandler::getProgChangeMessage(_transmit_midi_channel, _transmit_program_change);
 
     try
@@ -226,7 +226,7 @@ void sendProgChange()
 
 void sendAllSoundOff()
 {
-    Bytes all_sound_off = MessageHandler::getAllSoundOffMessage(_transmit_midi_channel);
+    ByteVec all_sound_off = MessageHandler::getAllSoundOffMessage(_transmit_midi_channel);
 
     try
     {
@@ -249,7 +249,7 @@ void sendOneTaskMessage()
 {
     if (MessageTask::taskSize() > 0)
     {
-        Bytes message = MessageTask::lastTask();
+        ByteVec message = MessageTask::lastTask();
         conn.output->sendMessage(&message);
 #ifdef _DEBUG
         Debug::addProcessedHistory(true, conn.output_port_name, message);

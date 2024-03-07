@@ -9,11 +9,11 @@ namespace CentroMidi
 namespace MessageHandler
 {
 
-Bytes getBankSelectMsbMessage(const int ch, const int value)
+ByteVec getBankSelectMsbMessage(const int ch, const int value)
 {
     char order_byte = 0xB0 + static_cast<unsigned char>(ch);
 
-    Bytes bs;
+    ByteVec bs;
     bs.clear();
     bs.push_back(order_byte);
     bs.push_back(0x00);
@@ -21,11 +21,11 @@ Bytes getBankSelectMsbMessage(const int ch, const int value)
     return bs;
 }
 
-Bytes getBankSelectLsbMessage(const int ch, const int value)
+ByteVec getBankSelectLsbMessage(const int ch, const int value)
 {
     char order_byte = 0xB0 + static_cast<unsigned char>(ch);
 
-    Bytes bs;
+    ByteVec bs;
     bs.clear();
     bs.push_back(order_byte);
     bs.push_back(0x20);
@@ -33,40 +33,40 @@ Bytes getBankSelectLsbMessage(const int ch, const int value)
     return bs;
 }
 
-Bytes getProgChangeMessage(const int ch, const int value)
+ByteVec getProgChangeMessage(const int ch, const int value)
 {
     char order_byte = 0xC0 + static_cast<unsigned char>(ch);
 
-    Bytes pc;
+    ByteVec pc;
     pc.clear();
     pc.push_back(order_byte);
     pc.push_back(static_cast<unsigned char>(value));
     return pc;
 }
 
-Bytes getAllSoundOffMessage(const int ch)
+ByteVec getAllSoundOffMessage(const int ch)
 {
     char order_byte = 0xB0 + static_cast<unsigned char>(ch);
 
-    Bytes aso;
+    ByteVec aso;
     aso.clear();
     aso.push_back(order_byte);
     aso.push_back(static_cast<unsigned char>(0x78));
     return aso;
 }
 
-bool isNoteOff(const Bytes& mb) noexcept
+bool isNoteOff(const ByteVec& mb) noexcept
 {
     return 0x80 <= mb[0] && mb[0] <= 0x8F;
 }
 
-bool isNoteOn(const Bytes& mb) noexcept
+bool isNoteOn(const ByteVec& mb) noexcept
 {
     return 0x90 <= mb[0] && mb[0] <= 0x9F;
 }
 
 #ifdef _DEBUG
-std::string getMessageDesc(const Bytes& data)
+std::string getMessageDesc(const ByteVec& data)
 {
     std::stringstream ss;
 

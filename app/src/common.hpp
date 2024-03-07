@@ -33,5 +33,6 @@
 // TODO define in external module
 namespace CentroMidi
 {
-using Bytes = std::vector<unsigned char>;
+using Byte = unsigned char;
+using ByteVec = std::vector<Byte>;
 } // CentroMidi

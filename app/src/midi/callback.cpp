@@ -11,7 +11,7 @@ namespace Connector
 /*******************************************************************************
     Received message from input device callback
 *******************************************************************************/
-void receiveInputDeviceMessageCallback(double delta_time, Bytes* message, void* user_data)
+void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void* user_data)
 {
     if (MessageHandler::isNoteOff(*message) || MessageHandler::isNoteOn(*message))
     {
@@ -19,7 +19,7 @@ void receiveInputDeviceMessageCallback(double delta_time, Bytes* message, void* 
         {
             //const int ch = transmit_midi_channel;
             const int ch = getTransmitMidiChannel();
-            Bytes channel_adj_message;
+            ByteVec channel_adj_message;
             if (MessageHandler::isNoteOff(*message))
             {
                 channel_adj_message = {

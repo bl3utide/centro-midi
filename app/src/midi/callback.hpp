@@ -5,7 +5,7 @@ namespace CentroMidi
 namespace Connector
 {
 
-void receiveInputDeviceMessageCallback(double delta_time, Bytes* message, void* user_data);
+void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void* user_data);
 
 } // Connector
 } // CentroMidi
