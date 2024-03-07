@@ -44,10 +44,13 @@ const ImU32 UI_COLOR_TEXT_DEV_USED      = IM_COL32(237, 184, 207, 255);
 const ImU32 UI_COLOR_TEXT_DEV_FAILED    = IM_COL32(232, 110, 110, 255);
 
 #ifdef _DEBUG
+namespace Debug
+{
 const ImU32 DEBUG_UI_COLOR_TEXT_OK          = IM_COL32(0, 255, 0, 255);
 const ImU32 DEBUG_UI_COLOR_TEXT_NG          = IM_COL32(255, 0, 0, 255);
 const ImU32 DEBUG_UI_COLOR_TEXT_TRANSMIT    = IM_COL32(120, 185, 241, 255);
 const ImU32 DEBUG_UI_COLOR_TEXT_RECEIVE     = IM_COL32(241, 120, 178, 255);
+} // Debug
 #endif
 
 } // Gui
