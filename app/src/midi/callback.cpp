@@ -17,7 +17,6 @@ void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void
     {
         if (Connector::force_adjust_midi_channel)
         {
-            //const int ch = transmit_midi_channel;
             const int ch = getTransmitMidiChannel();
             ByteVec channel_adj_message;
             if (MessageHandler::isNoteOff(*message))
