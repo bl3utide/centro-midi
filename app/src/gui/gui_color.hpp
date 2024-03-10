@@ -37,9 +37,6 @@ const ImU32 UI_COLOR_ANNOTATION[static_cast<int>(Annotation::Type::_COUNT_)] =
     IM_COL32(128, 249, 105, 255),
     IM_COL32(249, 169, 105, 255)
 };
-#ifdef _DEBUG
-const ImU32 DEBUG_UI_COLOR_CHILD_BG     = IM_COL32(89, 89, 89, 255);
-#endif
 
 // Operation
 const ImU32 UI_COLOR_TEXT_DEV_CONNECTED = IM_COL32(59, 161, 219, 255);
@@ -47,10 +44,13 @@ const ImU32 UI_COLOR_TEXT_DEV_USED      = IM_COL32(237, 184, 207, 255);
 const ImU32 UI_COLOR_TEXT_DEV_FAILED    = IM_COL32(232, 110, 110, 255);
 
 #ifdef _DEBUG
+namespace Debug
+{
 const ImU32 DEBUG_UI_COLOR_TEXT_OK          = IM_COL32(0, 255, 0, 255);
 const ImU32 DEBUG_UI_COLOR_TEXT_NG          = IM_COL32(255, 0, 0, 255);
 const ImU32 DEBUG_UI_COLOR_TEXT_TRANSMIT    = IM_COL32(120, 185, 241, 255);
 const ImU32 DEBUG_UI_COLOR_TEXT_RECEIVE     = IM_COL32(241, 120, 178, 255);
+} // Debug
 #endif
 
 } // Gui
