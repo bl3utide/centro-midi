@@ -17,5 +17,8 @@ MIDI single-path connection provider
 
 ## Changelog
 
+### v1.1
+- Add version info
+
 ### v1.0
 - Initial release
