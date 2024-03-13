@@ -25,6 +25,14 @@ enum class DeviceKey : int
 };
 
 // TODO move to config/cv.hpp
+/*
+    Configuration Value Class
+
+    compatible types(expression in .ini)
+    - bool          ("1" or "0")
+    - int           ("1", "-10")
+    - std::string   (same)
+*/
 template <class T>
 class Cv
 {
@@ -58,6 +66,18 @@ public:
         return *this;
     }
 
+    void set(T v)
+    {
+        if (isWithinRange(v))
+        {
+            _config_value = v;
+        }
+        else
+        {
+            throw std::exception("The internal value of Cv is out of range");
+        }
+    }
+
     int cv() const noexcept
     {
         return _config_value;
@@ -86,32 +106,13 @@ private:
 // TODO move to config/model.hpp
 struct InternalData
 {
-    // TODO delete old-style declarations
-    //std::string in_dev_name;    // InputDevice
-    //std::string out_dev_name;   // OutputDevice
-    //int to_ch;                  // ToChannel
-    //bool is_force_adj;          // ForceAdjustMidiCh
+    Cv<std::string> in_dev_name{ "", "", "" };      // InputDevice
+    Cv<std::string> out_dev_name{ "", "", "" };     // OuputDevice
+    Cv<int> to_ch{ 1, 16, 1 };                      // ToChannel
+    Cv<bool> is_force_adj{ true, true, true };      // ForceAdjustMidiCh
 
-    Cv<std::string> in_dev_name{ "", "", "" };  // InputDevice
-    Cv<std::string> out_dev_name{ "", "", "" }; // OuputDevice
-    Cv<int> to_ch{ 1, 16, 1 };                  // ToChannel
-    Cv<bool> is_force_adj{ true, true, true };  // ForceAdjustMidiCh
-
-    // default
     InternalData()
     {}
-
-    // load from ini
-    InternalData(const std::string& input_device,
-                 const std::string& output_device,
-                 const int to_channel,
-                 const bool is_force_adjust_midi_channel)
-    {
-        in_dev_name = input_device;
-        out_dev_name = output_device;
-        to_ch = to_channel;
-        is_force_adj = is_force_adjust_midi_channel;
-    }
 };
 
 // private
@@ -130,26 +131,65 @@ mINI::INIStructure _is;
 InternalData _internal;
 bool _use_pretty_print = true;
 
+template<class T>
+void setValue(const std::string& section, const char* key, Cv<T>* cv)
+{
+    if (_is.get(section).has(key))
+    {
+        std::string target = _is.get(section).get(key);
+
+        if constexpr (std::is_same_v<T, std::string>)
+        {
+            cv->set(target);
+        }
+        else if constexpr (std::is_same_v<T, int>)
+        {
+            cv->set(std::stoi(target));
+        }
+        else if constexpr (std::is_same_v<T, bool>)
+        {
+            if (target == "1")
+            {
+                cv->set(true);
+            }
+            else
+            {
+                cv->set(false);
+            }
+        }
+        else
+        {
+            // unexpected type of value
+            throw std::exception(format("Failed to load config from ini because [%s]%s type is unexpected"));
+        }
+    }
+    else
+    {
+        cv->setDefault();
+    }
+}
+
 void initialize(const std::string& ini_file_name)
 {
     mINI::INIFile file = mINI::INIFile(ini_file_name);
+
+    _internal = InternalData();
 
     if (file.read(_is))
     {
         // ini-file already exists
 
-        // TODO load values from the ini file and set values to _internal
-    }
-    else
-    {
-        // ini-file doesn't exist
-        _internal = InternalData();
+        // [Device]
+        setValue<std::string>(_section_names[static_cast<int>(Section::Device)], _device_key_names[static_cast<int>(DeviceKey::InputDevice)], &_internal.in_dev_name);
+        setValue<std::string>(_section_names[static_cast<int>(Section::Device)], _device_key_names[static_cast<int>(DeviceKey::OutputDevice)], &_internal.out_dev_name);
+        setValue<int>(_section_names[static_cast<int>(Section::Device)], _device_key_names[static_cast<int>(DeviceKey::ToChannel)], &_internal.to_ch);
+        setValue<bool>(_section_names[static_cast<int>(Section::Device)], _device_key_names[static_cast<int>(DeviceKey::ForceAdjustMidiCh)], &_internal.is_force_adj);
     }
 }
 
 void finalize() noexcept
 {
-
+    // TODO write config data to the ini file
 }
 
 } // Config
