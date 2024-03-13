@@ -3,6 +3,7 @@
 #include "main.hpp"
 #include "image.hpp"
 #include "state.hpp"
+#include "config/config.hpp"
 #include "gui/gui.hpp"
 #include "midi/connector.hpp"
 #ifdef _DEBUG
@@ -17,6 +18,7 @@ const std::string APP_NAME = DEF_APP_NAME;
 const std::string APP_VERSION = DEF_APP_VERSION;
 const std::string APP_COPYRIGHT = format("Copyright (C) %d %s", DEF_APP_DEV_YR, DEF_APP_DEV_BY);
 const std::string APP_TITLE = DEF_APP_TITLE;
+const std::string CONFIG_FILE_NAME = format("%s.ini", APP_NAME.c_str());
 #ifdef _DEBUG
 const std::string DEBUG_FILE_NAME = format("%s.debug.log", APP_NAME.c_str());
 #endif
@@ -30,6 +32,7 @@ void initialize()
 
     try
     {
+        Config::initialize(CONFIG_FILE_NAME);
         Gui::initialize(APP_TITLE, APP_VERSION, APP_COPYRIGHT);
         Image::initialize();
         Connector::initialize();
@@ -48,6 +51,7 @@ void finalize() noexcept
     Connector::finalize();
     Image::finalize();
     Gui::finalize();
+    Config::finalize();
 
     SDL_Quit();
 }
