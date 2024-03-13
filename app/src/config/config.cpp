@@ -66,7 +66,7 @@ public:
         return *this;
     }
 
-    void set(T v)
+    void set(const T& v)
     {
         if (isWithinRange(v))
         {
@@ -106,10 +106,10 @@ private:
 // TODO move to config/model.hpp
 struct InternalData
 {
-    Cv<std::string> in_dev_name{ "", "", "" };      // InputDevice
-    Cv<std::string> out_dev_name{ "", "", "" };     // OuputDevice
-    Cv<int> to_ch{ 1, 16, 1 };                      // ToChannel
-    Cv<bool> is_force_adj{ true, true, true };      // ForceAdjustMidiCh
+    Cv<std::string> in_dev_name { "", "", "" };         // InputDevice
+    Cv<std::string> out_dev_name{ "", "", "" };         // OuputDevice
+    Cv<int>         to_ch       { 1, 16, 1 };           // ToChannel
+    Cv<bool>        is_force_adj{ true, true, true };   // ForceAdjustMidiCh
 
     InternalData()
     {}
@@ -136,7 +136,7 @@ void setValue(const std::string& section, const char* key, Cv<T>* cv)
 {
     if (_is.get(section).has(key))
     {
-        std::string target = _is.get(section).get(key);
+        const std::string& target = _is.get(section).get(key);
 
         if constexpr (std::is_same_v<T, std::string>)
         {
