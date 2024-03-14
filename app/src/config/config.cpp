@@ -78,7 +78,7 @@ public:
         }
     }
 
-    int cv() const noexcept
+    T cv() const noexcept
     {
         return _config_value;
     }
