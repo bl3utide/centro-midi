@@ -128,6 +128,7 @@ const char* _device_key_names[static_cast<int>(DeviceKey::_COUNT_)]
     "ForceAdjustMidiCh",
 };
 mINI::INIStructure _is;
+std::string _file_name;
 InternalData _internal;
 bool _use_pretty_print = true;
 
@@ -172,12 +173,16 @@ void setValue(const char* section, const char* key, Cv<T>* cv)
 
 void initialize(const std::string& ini_file_name)
 {
-    mINI::INIFile file = mINI::INIFile(ini_file_name);
+    _file_name = ini_file_name;
+    mINI::INIFile file = mINI::INIFile(_file_name);
 
     _internal = InternalData();
 
     if (file.read(_is))
     {
+#ifdef _DEBUG
+        LOGD << "Load config from existing ini file";
+#endif
         // ini-file already exists
 
         // [Device]
@@ -186,10 +191,17 @@ void initialize(const std::string& ini_file_name)
         setValue<int>(_section_names[static_cast<int>(Section::Device)], _device_key_names[static_cast<int>(DeviceKey::ToChannel)], &_internal.to_ch);
         setValue<bool>(_section_names[static_cast<int>(Section::Device)], _device_key_names[static_cast<int>(DeviceKey::ForceAdjustMidiCh)], &_internal.is_force_adj);
     }
+#ifdef _DEBUG
+    else
+    {
+        LOGD << "Ini file does not exists";
+    }
+#endif
 }
 
 void finalize() noexcept
 {
+    mINI::INIFile file = mINI::INIFile(_file_name);
     // TODO write config data to the ini file
 }
 
