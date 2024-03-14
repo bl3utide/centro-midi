@@ -131,8 +131,9 @@ mINI::INIStructure _is;
 InternalData _internal;
 bool _use_pretty_print = true;
 
+// TODO change func name to more meaningful name
 template<class T>
-void setValue(const std::string& section, const char* key, Cv<T>* cv)
+void setValue(const char* section, const char* key, Cv<T>* cv)
 {
     if (_is.get(section).has(key))
     {
