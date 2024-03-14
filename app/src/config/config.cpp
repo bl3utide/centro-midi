@@ -164,10 +164,16 @@ void setValue(const char* section, const char* key, Cv<T>* cv)
             // unexpected type of value
             throw std::exception(format("Failed to load config from ini because [%s]%s type is unexpected"));
         }
+#ifdef _DEBUG
+        LOGD << "[" << section << "]" << key << " is set to value: " << cv->cv();
+#endif
     }
     else
     {
         cv->setDefault();
+#ifdef _DEBUG
+        LOGD << "[" << section << "]" << key << " is set to default value: " << cv->cv();
+#endif
     }
 }
 
@@ -202,6 +208,8 @@ void initialize(const std::string& ini_file_name)
 void finalize() noexcept
 {
     mINI::INIFile file = mINI::INIFile(_file_name);
+
+    // [Device]
     // TODO write config data to the ini file
 }
 
