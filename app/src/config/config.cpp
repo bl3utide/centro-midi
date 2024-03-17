@@ -92,7 +92,7 @@ private:
     T _min, _max, _def;
     bool isWithinRange(const T& v) const noexcept
     {
-        if constexpr (std::is_integral<T>::value)
+        if constexpr (std::is_integral<T>::value && !std::is_same_v<T, bool>)
         {
             return _min <= v && v <= _max;
         }
@@ -146,7 +146,14 @@ void setValue(const char* section, const char* key, Cv<T>* cv)
         }
         else if constexpr (std::is_same_v<T, int>)
         {
-            cv->set(std::stoi(target));
+            if (std::atoi(target.c_str()))
+            {
+                cv->set(std::stoi(target));
+            }
+            else
+            {
+                cv->setDefault();
+            }
         }
         else if constexpr (std::is_same_v<T, bool>)
         {
@@ -210,7 +217,16 @@ void finalize() noexcept
     mINI::INIFile file = mINI::INIFile(_file_name);
 
     // [Device]
-    // TODO write config data to the ini file
+    _is[_section_names[static_cast<int>(Section::Device)]][_device_key_names[static_cast<int>(DeviceKey::InputDevice)]] = _internal.in_dev_name.cv();
+    _is[_section_names[static_cast<int>(Section::Device)]][_device_key_names[static_cast<int>(DeviceKey::OutputDevice)]] = _internal.out_dev_name.cv();
+    _is[_section_names[static_cast<int>(Section::Device)]][_device_key_names[static_cast<int>(DeviceKey::ToChannel)]] = format("%d", _internal.to_ch.cv());
+    _is[_section_names[static_cast<int>(Section::Device)]][_device_key_names[static_cast<int>(DeviceKey::ForceAdjustMidiCh)]] = _internal.is_force_adj.cv() ? "1" : "0";
+    if (!file.write(_is, _use_pretty_print))
+    {
+#ifdef _DEBUG
+        LOGD << "Failed to write config file";
+#endif
+    }
 }
 
 } // Config
