@@ -5,8 +5,8 @@ namespace CentroMidi
 namespace Config
 {
 
-void initialize(const std::string& ini_file_name);
-void finalize() noexcept;
+void load(const std::string& ini_file_name);
+void save() noexcept;
 
 } // Config
 } // CentroMidi

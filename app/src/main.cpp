@@ -32,10 +32,10 @@ void initialize()
 
     try
     {
-        Config::initialize(CONFIG_FILE_NAME);
         Gui::initialize(APP_TITLE, APP_VERSION, APP_COPYRIGHT);
         Image::initialize();
         Connector::initialize();
+        Config::load(CONFIG_FILE_NAME);
     }
     catch (RtMidiError& error)
     {
@@ -48,10 +48,10 @@ void initialize()
 
 void finalize() noexcept
 {
+    Config::save();
     Connector::finalize();
     Image::finalize();
     Gui::finalize();
-    Config::finalize();
 
     SDL_Quit();
 }

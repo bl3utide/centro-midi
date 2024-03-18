@@ -163,7 +163,7 @@ void setToStructure(Cv<T>& cv)
 }
 // config/import.cpp
 
-void initialize(const std::string& ini_file_name)
+void load(const std::string& ini_file_name)
 {
     _file_name = ini_file_name;
     mINI::INIFile file = mINI::INIFile(_file_name);
@@ -189,7 +189,7 @@ void initialize(const std::string& ini_file_name)
     _is.clear();
 }
 
-void finalize() noexcept
+void save() noexcept
 {
     mINI::INIFile file = mINI::INIFile(_file_name);
 
