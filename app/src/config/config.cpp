@@ -9,6 +9,7 @@ namespace CentroMidi
 namespace Config
 {
 
+// TODO move to config/section.hpp
 enum class Section : int
 {
     Device,
