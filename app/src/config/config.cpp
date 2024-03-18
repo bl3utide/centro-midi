@@ -126,7 +126,7 @@ void setValue<std::string>(Cv<std::string>& cv, const std::string& val_str)
 template <>
 void setValue<int>(Cv<int>& cv, const std::string& val_str)
 {
-    if (std::atoi(val_str.c_str()))
+    if (std::regex_match(val_str, std::regex("[(-|+)|][0-9]*")))
         cv.set(std::stoi(val_str));
     else
         cv.setDefault();
