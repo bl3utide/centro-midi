@@ -102,11 +102,6 @@ private:
     };
 };
 
-// TODO 3/18 今日やる！Cvの中に「どのセクションに属するか」を表現するためのセクション名の文字列を持たせる
-//      そうすると、下のようなSectionDeviceのように、「セクションごとのキーの集合」を束縛するための構造体が不要になる
-//      Sectionの名前は定数化し、この名前空間スコープ内で宣言しておく
-//      こうすることで、setValueやwrite系の関数の引数が1つで済むことになる
-
 Cv<std::string> in_dev_name { Section::Device,  "input_device",         "",     "",     "" };
 Cv<std::string> out_dev_name{ Section::Device,  "output_device",        "",     "",     "" };
 Cv<int>         to_ch       { Section::Device,  "to_channel",           1,      16,     1 };
