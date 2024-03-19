@@ -27,10 +27,10 @@ void load(const std::string& ini_file_name) noexcept
         LOGD << "Load config from existing ini file";
 #endif
         // ini-file already exists
-        setToStructure<std::string>(read_is, in_dev_name);
-        setToStructure<std::string>(read_is, out_dev_name);
-        setToStructure<int>(read_is, to_ch);
-        setToStructure<bool>(read_is, is_force_adj);
+        readValueFromStructure<std::string>(read_is, in_dev_name);
+        readValueFromStructure<std::string>(read_is, out_dev_name);
+        readValueFromStructure<int>(read_is, to_ch);
+        readValueFromStructure<bool>(read_is, is_force_adj);
     }
 #ifdef _DEBUG
     else
