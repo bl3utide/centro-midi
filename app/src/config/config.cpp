@@ -21,7 +21,7 @@ mINI::INIStructure _is;
 std::string _file_name;
 bool _use_pretty_print = true;
 
-void load(const std::string& ini_file_name)
+void load(const std::string& ini_file_name) noexcept
 {
     _file_name = ini_file_name;
     mINI::INIFile file = mINI::INIFile(_file_name);
