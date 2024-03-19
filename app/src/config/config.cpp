@@ -40,6 +40,7 @@ void load(const std::string& ini_file_name) noexcept
 #endif
 }
 
+// TODO move to config/export.hpp/cpp
 template<typename T>
 void writeValueToStructure(mINI::INIStructure& is, Cv<T>& cv) noexcept
 {}
@@ -61,6 +62,7 @@ void writeValueToStructure<bool>(mINI::INIStructure& is, Cv<bool>& cv) noexcept
 {
     is[cv.section_name][cv.key_name] = cv.cv() ? "1" : "0";
 }
+// config/export.hpp/cpp
 
 void save(const std::string& ini_file_name) noexcept
 {
