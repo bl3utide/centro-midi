@@ -58,7 +58,7 @@ public:
         }
         else
         {
-            throw std::exception("The internal value of Cv is out of range");
+            throw std::exception(format("the internal config value is out of range (%s::%s)", section_name.c_str(), key_name.c_str()).c_str());
         }
         return *this;
     }
@@ -71,7 +71,7 @@ public:
         }
         else
         {
-            throw std::exception("The internal value of Cv is out of range");
+            throw std::exception(format("the internal config value is out of range (%s::%s)", section_name.c_str(), key_name.c_str()).c_str());
         }
     }
 
