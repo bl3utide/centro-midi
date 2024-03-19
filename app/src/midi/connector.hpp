@@ -26,17 +26,17 @@ struct MidiConnection
 
     void finalize()
     {
-        input->cancelCallback();
-        input->closePort();
         if (input != nullptr)
         {
+            input->cancelCallback();
+            input->closePort();
             delete input;
             input = nullptr;
         }
 
-        output->closePort();
         if (output != nullptr)
         {
+            output->closePort();
             delete output;
             output = nullptr;
         }
