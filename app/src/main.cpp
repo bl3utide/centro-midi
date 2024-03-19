@@ -48,7 +48,7 @@ void initialize()
 
 void finalize() noexcept
 {
-    Config::save();
+    Config::save(CONFIG_FILE_NAME);
     Connector::finalize();
     Image::finalize();
     Gui::finalize();

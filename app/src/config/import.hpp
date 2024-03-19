@@ -20,11 +20,11 @@ template <>
 void setValue<bool>(Cv<bool>& cv, const std::string& val_str);
 
 template<typename T>
-void setToStructure(Cv<T>& cv)
+void setToStructure(mINI::INIStructure& is, Cv<T>& cv)
 {
-    if (_is.get(cv.section_name).has(cv.key_name))
+    if (is.get(cv.section_name).has(cv.key_name))
     {
-        const std::string& src_val = _is.get(cv.section_name).get(cv.key_name);
+        const std::string& src_val = is.get(cv.section_name).get(cv.key_name);
 
         setValue<T>(cv, src_val);
 #ifdef _DEBUG
