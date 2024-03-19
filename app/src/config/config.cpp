@@ -40,16 +40,37 @@ void load(const std::string& ini_file_name) noexcept
 #endif
 }
 
+template<typename T>
+void writeValueToStructure(mINI::INIStructure& is, Cv<T>& cv) noexcept
+{}
+
+template<>
+void writeValueToStructure<std::string>(mINI::INIStructure& is, Cv<std::string>& cv) noexcept
+{
+    is[cv.section_name][cv.key_name] = cv.cv();
+}
+
+template<>
+void writeValueToStructure<int>(mINI::INIStructure& is, Cv<int>& cv) noexcept
+{
+    is[cv.section_name][cv.key_name] = format("%d", cv.cv());
+}
+
+template<>
+void writeValueToStructure<bool>(mINI::INIStructure& is, Cv<bool>& cv) noexcept
+{
+    is[cv.section_name][cv.key_name] = cv.cv() ? "1" : "0";
+}
+
 void save(const std::string& ini_file_name) noexcept
 {
     mINI::INIStructure is;
     mINI::INIFile file = mINI::INIFile(ini_file_name);
 
-    // TODO impl write function
-    is[in_dev_name.section_name][in_dev_name.key_name] = in_dev_name.cv();
-    is[out_dev_name.section_name][out_dev_name.key_name] = out_dev_name.cv();
-    is[to_ch.section_name][to_ch.key_name] = format("%d", to_ch.cv());
-    is[is_force_adj.section_name][is_force_adj.key_name] = is_force_adj.cv() ? "1" : "0";
+    writeValueToStructure(is, in_dev_name);
+    writeValueToStructure(is, out_dev_name);
+    writeValueToStructure(is, to_ch);
+    writeValueToStructure(is, is_force_adj);
 
     if (!file.write(is, true))
     {
