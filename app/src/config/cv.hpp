@@ -20,7 +20,8 @@ class Cv
 {
 public:
     Cv(const Section section, const Key key, const T& v_min, const T& v_max, const T& v_def)
-        : section_name(SECTIONS[static_cast<int>(section)]), key_name(KEYS[static_cast<int>(key)]), _min(v_min), _max(v_max), _def(v_def)
+        : section_name(SECTION_NAMES[static_cast<int>(section)]), key_name(KEY_NAMES[static_cast<int>(key)]),
+        _min(v_min), _max(v_max), _def(v_def)
     {
         if constexpr (std::is_integral<T>::value)
         {

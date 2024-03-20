@@ -6,12 +6,12 @@ namespace CentroMidi
 namespace Config
 {
 
-const char* SECTIONS[static_cast<int>(Section::_COUNT_)]
+const char* SECTION_NAMES[static_cast<int>(Section::_COUNT_)]
 {
     "device"
 };
 
-const char* KEYS[static_cast<int>(Key::_COUNT_)]
+const char* KEY_NAMES[static_cast<int>(Key::_COUNT_)]
 {
     // [device]
     "input_device",
