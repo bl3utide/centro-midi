@@ -27,10 +27,10 @@ void load(const std::string& ini_file_name) noexcept
         LOGD << "Load config from existing ini file";
 #endif
         // ini-file already exists
-        Import::readValueFromStructure(read_is, in_dev_name);
-        Import::readValueFromStructure(read_is, out_dev_name);
-        Import::readValueFromStructure(read_is, to_ch);
-        Import::readValueFromStructure(read_is, is_force_adj);
+        Import::structureValueToCv(read_is, in_dev_name);
+        Import::structureValueToCv(read_is, out_dev_name);
+        Import::structureValueToCv(read_is, to_ch);
+        Import::structureValueToCv(read_is, is_force_adj);
     }
 #ifdef _DEBUG
     else
@@ -42,23 +42,23 @@ void load(const std::string& ini_file_name) noexcept
 
 // TODO move to config/export.hpp/cpp
 template<typename T>
-void writeValueToStructure(mINI::INIStructure& is, Cv<T>& cv) noexcept
+void CvToStructure(mINI::INIStructure& is, Cv<T>& cv) noexcept
 {}
 
 template<>
-void writeValueToStructure<std::string>(mINI::INIStructure& is, Cv<std::string>& cv) noexcept
+void CvToStructure<std::string>(mINI::INIStructure& is, Cv<std::string>& cv) noexcept
 {
     is[cv.section_name][cv.key_name] = cv.cv();
 }
 
 template<>
-void writeValueToStructure<int>(mINI::INIStructure& is, Cv<int>& cv) noexcept
+void CvToStructure<int>(mINI::INIStructure& is, Cv<int>& cv) noexcept
 {
     is[cv.section_name][cv.key_name] = format("%d", cv.cv());
 }
 
 template<>
-void writeValueToStructure<bool>(mINI::INIStructure& is, Cv<bool>& cv) noexcept
+void CvToStructure<bool>(mINI::INIStructure& is, Cv<bool>& cv) noexcept
 {
     is[cv.section_name][cv.key_name] = cv.cv() ? "1" : "0";
 }
@@ -69,10 +69,10 @@ void save(const std::string& ini_file_name) noexcept
     mINI::INIStructure is;
     mINI::INIFile file = mINI::INIFile(ini_file_name);
 
-    writeValueToStructure(is, in_dev_name);
-    writeValueToStructure(is, out_dev_name);
-    writeValueToStructure(is, to_ch);
-    writeValueToStructure(is, is_force_adj);
+    CvToStructure(is, in_dev_name);
+    CvToStructure(is, out_dev_name);
+    CvToStructure(is, to_ch);
+    CvToStructure(is, is_force_adj);
 
     if (!file.write(is, true))
     {

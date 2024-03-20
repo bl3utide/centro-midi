@@ -23,7 +23,7 @@ template <>
 void setToCv<bool>(Cv<bool>& cv, const std::string& val_str);
 
 template<typename T>
-void readValueFromStructure(mINI::INIStructure& is, Cv<T>& cv)
+void structureValueToCv(mINI::INIStructure& is, Cv<T>& cv)
 {
     if (is.get(cv.section_name).has(cv.key_name))
     {
