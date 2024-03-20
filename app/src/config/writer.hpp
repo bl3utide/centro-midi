@@ -9,17 +9,18 @@ namespace Writer
 {
 
 template<typename T>
-void CvToStructure(mINI::INIStructure& is, Cv<T>& cv) noexcept
-{}
+void cvToStructure(Cv<T>& cv, mINI::INIStructure& is) noexcept
+{
+}
 
 template<>
-void CvToStructure<std::string>(mINI::INIStructure& is, Cv<std::string>& cv) noexcept;
+void cvToStructure<std::string>(Cv<std::string>& cv, mINI::INIStructure& is) noexcept;
 
 template<>
-void CvToStructure<int>(mINI::INIStructure& is, Cv<int>& cv) noexcept;
+void cvToStructure<int>(Cv<int>& cv, mINI::INIStructure& is) noexcept;
 
 template<>
-void CvToStructure<bool>(mINI::INIStructure& is, Cv<bool>& cv) noexcept;
+void cvToStructure<bool>(Cv<bool>& cv, mINI::INIStructure& is) noexcept;
 
 } // Writer
 } // Config

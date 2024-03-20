@@ -46,10 +46,10 @@ void save(const std::string& ini_file_name) noexcept
     mINI::INIStructure is;
     mINI::INIFile file = mINI::INIFile(ini_file_name);
 
-    Writer::CvToStructure(is, in_dev_name);
-    Writer::CvToStructure(is, out_dev_name);
-    Writer::CvToStructure(is, to_ch);
-    Writer::CvToStructure(is, is_force_adj);
+    Writer::cvToStructure(in_dev_name, is);
+    Writer::cvToStructure(out_dev_name, is);
+    Writer::cvToStructure(to_ch, is);
+    Writer::cvToStructure(is_force_adj, is);
 
     if (!file.write(is, true))
     {
