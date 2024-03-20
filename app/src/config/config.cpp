@@ -2,6 +2,7 @@
 #include "config/config.hpp"
 #include "config/cv.hpp"
 #include "config/reader.hpp"
+#include "config/writer.hpp"
 #ifdef _DEBUG
 #include "logger.hpp"
 #endif
@@ -40,39 +41,15 @@ void load(const std::string& ini_file_name) noexcept
 #endif
 }
 
-// TODO move to config/export.hpp/cpp
-template<typename T>
-void CvToStructure(mINI::INIStructure& is, Cv<T>& cv) noexcept
-{}
-
-template<>
-void CvToStructure<std::string>(mINI::INIStructure& is, Cv<std::string>& cv) noexcept
-{
-    is[cv.section_name][cv.key_name] = cv.cv();
-}
-
-template<>
-void CvToStructure<int>(mINI::INIStructure& is, Cv<int>& cv) noexcept
-{
-    is[cv.section_name][cv.key_name] = format("%d", cv.cv());
-}
-
-template<>
-void CvToStructure<bool>(mINI::INIStructure& is, Cv<bool>& cv) noexcept
-{
-    is[cv.section_name][cv.key_name] = cv.cv() ? "1" : "0";
-}
-// config/export.hpp/cpp
-
 void save(const std::string& ini_file_name) noexcept
 {
     mINI::INIStructure is;
     mINI::INIFile file = mINI::INIFile(ini_file_name);
 
-    CvToStructure(is, in_dev_name);
-    CvToStructure(is, out_dev_name);
-    CvToStructure(is, to_ch);
-    CvToStructure(is, is_force_adj);
+    Writer::CvToStructure(is, in_dev_name);
+    Writer::CvToStructure(is, out_dev_name);
+    Writer::CvToStructure(is, to_ch);
+    Writer::CvToStructure(is, is_force_adj);
 
     if (!file.write(is, true))
     {
