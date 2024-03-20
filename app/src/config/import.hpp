@@ -5,19 +5,22 @@ namespace CentroMidi
 {
 namespace Config
 {
+namespace Import
+{
 
 template<typename T>
-void setValue(Cv<T>& cv, const std::string& val_str)
-{}
+void setToCv(Cv<T>& cv, const std::string& val_str)
+{
+}
 
 template <>
-void setValue<std::string>(Cv<std::string>& cv, const std::string& val_str);
+void setToCv<std::string>(Cv<std::string>& cv, const std::string& val_str);
 
 template <>
-void setValue<int>(Cv<int>& cv, const std::string& val_str);
+void setToCv<int>(Cv<int>& cv, const std::string& val_str);
 
 template <>
-void setValue<bool>(Cv<bool>& cv, const std::string& val_str);
+void setToCv<bool>(Cv<bool>& cv, const std::string& val_str);
 
 template<typename T>
 void readValueFromStructure(mINI::INIStructure& is, Cv<T>& cv)
@@ -26,7 +29,7 @@ void readValueFromStructure(mINI::INIStructure& is, Cv<T>& cv)
     {
         const std::string& src_val = is.get(cv.section_name).get(cv.key_name);
 
-        setValue<T>(cv, src_val);
+        setToCv<T>(cv, src_val);
 #ifdef _DEBUG
         LOGD << "[" << cv.section_name << "]" << cv.key_name << " is set to value: " << cv.cv();
 #endif
@@ -40,5 +43,6 @@ void readValueFromStructure(mINI::INIStructure& is, Cv<T>& cv)
     }
 }
 
+} // Import
 } // Config
 } // CentroMidi
