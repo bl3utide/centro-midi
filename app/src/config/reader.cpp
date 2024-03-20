@@ -1,11 +1,11 @@
 ﻿#include "common.hpp"
-#include "config/import.hpp"
+#include "config/reader.hpp"
 
 namespace CentroMidi
 {
 namespace Config
 {
-namespace Import
+namespace Reader
 {
 
 template <>
@@ -32,6 +32,6 @@ void setToCv<bool>(Cv<bool>& cv, const std::string& val_str)
         cv.set(false);
 }
 
-} // Import
+} // Reader
 } // Config
 } // CentroMidi

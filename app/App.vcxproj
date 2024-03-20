@@ -109,7 +109,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\config\config.cpp" />
-    <ClCompile Include="src\config\import.cpp" />
+    <ClCompile Include="src\config\reader.cpp" />
     <ClCompile Include="src\config\section.cpp" />
     <ClCompile Include="src\error.cpp" />
     <ClCompile Include="src\gui\gui.cpp" />
@@ -136,7 +136,7 @@
     <ClInclude Include="src\compressed\arrayed_texture.hpp" />
     <ClInclude Include="src\config\config.hpp" />
     <ClInclude Include="src\config\cv.hpp" />
-    <ClInclude Include="src\config\import.hpp" />
+    <ClInclude Include="src\config\reader.hpp" />
     <ClInclude Include="src\config\section.hpp" />
     <ClInclude Include="src\error.hpp" />
     <ClInclude Include="src\gui\gui.hpp" />

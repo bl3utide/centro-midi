@@ -5,7 +5,7 @@ namespace CentroMidi
 {
 namespace Config
 {
-namespace Import
+namespace Reader
 {
 
 template<typename T>
@@ -43,6 +43,6 @@ void structureValueToCv(mINI::INIStructure& is, Cv<T>& cv)
     }
 }
 
-} // Import
+} // Reader
 } // Config
 } // CentroMidi

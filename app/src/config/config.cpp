@@ -1,7 +1,7 @@
 ﻿#include "common.hpp"
 #include "config/config.hpp"
 #include "config/cv.hpp"
-#include "config/import.hpp"
+#include "config/reader.hpp"
 #ifdef _DEBUG
 #include "logger.hpp"
 #endif
