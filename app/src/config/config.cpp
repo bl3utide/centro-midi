@@ -43,15 +43,15 @@ void load(const std::string& ini_file_name) noexcept
 
 void save(const std::string& ini_file_name) noexcept
 {
-    mINI::INIStructure is;
+    mINI::INIStructure write_is;
     mINI::INIFile file = mINI::INIFile(ini_file_name);
 
-    Writer::cvToStructure(in_dev_name, is);
-    Writer::cvToStructure(out_dev_name, is);
-    Writer::cvToStructure(to_ch, is);
-    Writer::cvToStructure(is_force_adj, is);
+    Writer::cvToStructure(in_dev_name, write_is);
+    Writer::cvToStructure(out_dev_name, write_is);
+    Writer::cvToStructure(to_ch, write_is);
+    Writer::cvToStructure(is_force_adj, write_is);
 
-    if (!file.write(is, true))
+    if (!file.write(write_is, true))
     {
 #ifdef _DEBUG
         LOGD << "Failed to write config file";
