@@ -12,10 +12,10 @@ namespace CentroMidi
 namespace Config
 {
 
-Cv<std::string> in_dev_name { Section::Device,  "input_device",         "",     "",     "" };
-Cv<std::string> out_dev_name{ Section::Device,  "output_device",        "",     "",     "" };
-Cv<int>         to_ch       { Section::Device,  "to_channel",           1,      16,     1 };
-Cv<bool>        is_force_adj{ Section::Device,  "force_adjust_midi_ch", true,   true,   true };
+Cv<std::string> in_dev_name { Section::Device,  Key::InputDevice,       "",     "",     "" };
+Cv<std::string> out_dev_name{ Section::Device,  Key::OutputDevice,      "",     "",     "" };
+Cv<int>         to_ch       { Section::Device,  Key::ToChannel,         1,      16,     1 };
+Cv<bool>        is_force_adj{ Section::Device,  Key::ForceAdjustMidiCh, true,   true,   true };
 
 void load(const std::string& ini_file_name) noexcept
 {
