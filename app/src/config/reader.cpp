@@ -38,7 +38,7 @@ void setToCv<bool>(Cv<bool>& cv, const std::string& val_str) noexcept
 }
 
 template<typename T>
-void structureValueToCv(mINI::INIStructure& is, Cv<T>& cv) noexcept
+void iniValueToCv(mINI::INIStructure& is, Cv<T>& cv) noexcept
 {
     if (is.get(cv.section_name).has(cv.key_name))
     {
@@ -57,9 +57,9 @@ void structureValueToCv(mINI::INIStructure& is, Cv<T>& cv) noexcept
 #endif
     }
 }
-template void structureValueToCv(mINI::INIStructure&, Cv<std::string>&) noexcept;
-template void structureValueToCv(mINI::INIStructure&, Cv<int>&) noexcept;
-template void structureValueToCv(mINI::INIStructure&, Cv<bool>&) noexcept;
+template void iniValueToCv(mINI::INIStructure&, Cv<std::string>&) noexcept;
+template void iniValueToCv(mINI::INIStructure&, Cv<int>&) noexcept;
+template void iniValueToCv(mINI::INIStructure&, Cv<bool>&) noexcept;
 
 } // Reader
 } // Config

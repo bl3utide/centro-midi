@@ -28,10 +28,10 @@ void load(const std::string& ini_file_name) noexcept
         LOGD << "Load config from existing ini file";
 #endif
         // ini-file already exists
-        Reader::structureValueToCv(read_is, in_dev_name);
-        Reader::structureValueToCv(read_is, out_dev_name);
-        Reader::structureValueToCv(read_is, to_ch);
-        Reader::structureValueToCv(read_is, is_force_adj);
+        Reader::iniValueToCv(read_is, in_dev_name);
+        Reader::iniValueToCv(read_is, out_dev_name);
+        Reader::iniValueToCv(read_is, to_ch);
+        Reader::iniValueToCv(read_is, is_force_adj);
     }
 #ifdef _DEBUG
     else
@@ -46,10 +46,10 @@ void save(const std::string& ini_file_name) noexcept
     mINI::INIStructure write_is;
     mINI::INIFile file = mINI::INIFile(ini_file_name);
 
-    Writer::cvToStructure(in_dev_name, write_is);
-    Writer::cvToStructure(out_dev_name, write_is);
-    Writer::cvToStructure(to_ch, write_is);
-    Writer::cvToStructure(is_force_adj, write_is);
+    Writer::cvToIni(in_dev_name, write_is);
+    Writer::cvToIni(out_dev_name, write_is);
+    Writer::cvToIni(to_ch, write_is);
+    Writer::cvToIni(is_force_adj, write_is);
 
     if (!file.write(write_is, true))
     {

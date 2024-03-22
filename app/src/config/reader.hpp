@@ -9,7 +9,7 @@ namespace Reader
 {
 
 template<typename T>
-void structureValueToCv(mINI::INIStructure& is, Cv<T>& cv) noexcept;
+void iniValueToCv(mINI::INIStructure& is, Cv<T>& cv) noexcept;
 
 } // Reader
 } // Config

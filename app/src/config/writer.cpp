@@ -32,16 +32,16 @@ void setToStructure<bool>(Cv<bool>& cv, mINI::INIStructure& is) noexcept
 }
 
 template<typename T>
-void cvToStructure(Cv<T>& cv, mINI::INIStructure& is) noexcept
+void cvToIni(Cv<T>& cv, mINI::INIStructure& is) noexcept
 {
     setToStructure<T>(cv, is);
 #ifdef _DEBUG
     LOGD << "Writed config value [" << cv.section_name << "]" << cv.key_name << ": " << cv.cv();
 #endif
 }
-template void cvToStructure(Cv<std::string>&, mINI::INIStructure&) noexcept;
-template void cvToStructure(Cv<int>&, mINI::INIStructure&) noexcept;
-template void cvToStructure(Cv<bool>&, mINI::INIStructure&) noexcept;
+template void cvToIni(Cv<std::string>&, mINI::INIStructure&) noexcept;
+template void cvToIni(Cv<int>&, mINI::INIStructure&) noexcept;
+template void cvToIni(Cv<bool>&, mINI::INIStructure&) noexcept;
 
 } // Writer
 } // Config
