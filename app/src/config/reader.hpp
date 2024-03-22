@@ -31,14 +31,14 @@ void structureValueToCv(mINI::INIStructure& is, Cv<T>& cv) noexcept
 
         setToCv<T>(cv, src_val);
 #ifdef _DEBUG
-        LOGD << "[" << cv.section_name << "]" << cv.key_name << " is set to value: " << cv.cv();
+        LOGD << "config value [" << cv.section_name << "]" << cv.key_name << ": " << cv.cv();
 #endif
     }
     else
     {
         cv.setDefault();
 #ifdef _DEBUG
-        LOGD << "[" << cv.section_name << "]" << cv.key_name << " is set to default value: " << cv.cv();
+        LOGD << "config value [" << cv.section_name << "]" << cv.key_name << " is set to default value: " << cv.cv();
 #endif
     }
 }
