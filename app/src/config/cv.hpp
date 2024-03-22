@@ -15,7 +15,7 @@ namespace Config
     - int           ("1", "-10")
     - std::string   (same)
 */
-template <typename T>
+template<typename T>
 class Cv
 {
 public:
