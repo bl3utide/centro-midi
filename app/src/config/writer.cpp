@@ -36,7 +36,7 @@ void cvToStructure(Cv<T>& cv, mINI::INIStructure& is) noexcept
 {
     setToStructure<T>(cv, is);
 #ifdef _DEBUG
-    LOGD << "writed config value [" << cv.section_name << "]" << cv.key_name << ": " << cv.cv();
+    LOGD << "Writed config value [" << cv.section_name << "]" << cv.key_name << ": " << cv.cv();
 #endif
 }
 template void cvToStructure(Cv<std::string>&, mINI::INIStructure&) noexcept;
