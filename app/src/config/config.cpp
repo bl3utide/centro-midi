@@ -13,7 +13,6 @@ namespace Config
 {
 
 // private
-
 std::unordered_map<Key, Cv> _data;
 
 void load(const std::string& ini_file_name) noexcept
@@ -58,6 +57,48 @@ void save(const std::string& ini_file_name) noexcept
         LOGD << "Failed to write config file";
 #endif
     }
+}
+
+template<typename T>
+T getConfigValue(const Key key)
+{
+    throw new std::runtime_error("Unexpected type of Cv");
+}
+template std::string getConfigValue(const Key);
+template int getConfigValue(const Key);
+template bool getConfigValue(const Key);
+
+template<>
+std::string getConfigValue(const Key key)
+{
+    Cv& cv = _data.at(key);
+
+    if (cv.type() != Cv::Type::String)
+        throw new std::runtime_error(format("Config key '%s' is not string", cv.key_name));
+
+    return cv.cv();
+}
+
+template<>
+int getConfigValue(const Key key)
+{
+    Cv& cv = _data.at(key);
+
+    if (cv.type() != Cv::Type::Int)
+        throw new std::runtime_error(format("Config key '%s' is not int", cv.key_name));
+
+    return std::stoi(cv.cv());
+}
+
+template<>
+bool getConfigValue(const Key key)
+{
+    Cv& cv = _data.at(key);
+
+    if (cv.type() != Cv::Type::String)
+        throw new std::runtime_error(format("Config key '%s' is not bool", cv.key_name));
+
+    return cv.cv() == "1";
 }
 
 void initialize()
