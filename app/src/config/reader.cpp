@@ -8,43 +8,30 @@ namespace Config
 namespace Reader
 {
 
-template<typename T>
-void setToCv(Cv<T>& cv, const std::string& val_str) noexcept
-{
-}
-
-template <>
-void setToCv<std::string>(Cv<std::string>& cv, const std::string& val_str) noexcept
-{
-    cv.set(val_str);
-}
-
-template <>
-void setToCv<int>(Cv<int>& cv, const std::string& val_str) noexcept
-{
-    if (std::regex_match(val_str, std::regex("[(-|+)|][0-9]*")))
-        cv.set(std::stoi(val_str));
-    else
-        cv.setDefault();
-}
-
-template <>
-void setToCv<bool>(Cv<bool>& cv, const std::string& val_str) noexcept
-{
-    if (val_str == "1")
-        cv.set(true);
-    else
-        cv.set(false);
-}
-
-template<typename T>
-void iniValueToCv(mINI::INIStructure& is, Cv<T>& cv) noexcept
+void iniValueToCv(mINI::INIStructure& is, Cv& cv) noexcept
 {
     if (is.get(cv.section_name).has(cv.key_name))
     {
         const std::string& src_val = is.get(cv.section_name).get(cv.key_name);
 
-        setToCv<T>(cv, src_val);
+        if (cv.type() == Cv::Type::Int)
+        {
+            if (std::regex_match(src_val, std::regex("[(-|+)|][0-9]*")))
+                cv.set(std::to_string(std::stoi(src_val)));
+            else
+                cv.setDefault();
+        }
+        else if (cv.type() == Cv::Type::Bool)
+        {
+            if (src_val == "1")
+                cv.set("1");
+            else
+                cv.set("0");
+        }
+        else
+        {   // Cv::Type::String
+            cv.set(src_val);
+        }
 #ifdef _DEBUG
         LOGD << "Loaded config value [" << cv.section_name << "]" << cv.key_name << ": " << cv.cv();
 #endif
@@ -57,9 +44,6 @@ void iniValueToCv(mINI::INIStructure& is, Cv<T>& cv) noexcept
 #endif
     }
 }
-template void iniValueToCv(mINI::INIStructure&, Cv<std::string>&) noexcept;
-template void iniValueToCv(mINI::INIStructure&, Cv<int>&) noexcept;
-template void iniValueToCv(mINI::INIStructure&, Cv<bool>&) noexcept;
 
 } // Reader
 } // Config

@@ -35,7 +35,7 @@ void initialize()
         Gui::initialize(APP_TITLE, APP_VERSION, APP_COPYRIGHT);
         Image::initialize();
         Connector::initialize();
-        Config::load(CONFIG_FILE_NAME);
+        Config::initialize();
     }
     catch (RtMidiError& error)
     {
@@ -75,6 +75,7 @@ void loop()
             switch (getState())
             {
                 case State::InitInternalData:
+                    Config::load(CONFIG_FILE_NAME);
                     Connector::resetAllConnections();
                     setNextState(State::Idle);
                     break;

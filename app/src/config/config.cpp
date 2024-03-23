@@ -12,10 +12,9 @@ namespace CentroMidi
 namespace Config
 {
 
-Cv<std::string> in_dev_name { Section::Device,  Key::InputDevice,       "",     "",     "" };
-Cv<std::string> out_dev_name{ Section::Device,  Key::OutputDevice,      "",     "",     "" };
-Cv<int>         to_ch       { Section::Device,  Key::ToChannel,         1,      16,     1 };
-Cv<bool>        is_force_adj{ Section::Device,  Key::ForceAdjustMidiCh, true,   true,   true };
+// private
+
+std::unordered_map<Key, Cv> _data;
 
 void load(const std::string& ini_file_name) noexcept
 {
@@ -28,10 +27,11 @@ void load(const std::string& ini_file_name) noexcept
         LOGD << "Load config from existing ini file";
 #endif
         // ini-file already exists
-        Reader::iniValueToCv(read_is, in_dev_name);
-        Reader::iniValueToCv(read_is, out_dev_name);
-        Reader::iniValueToCv(read_is, to_ch);
-        Reader::iniValueToCv(read_is, is_force_adj);
+        for (int key_i = 0; key_i < static_cast<int>(Key::_COUNT_); ++key_i)
+        {
+            Key key = static_cast<Key>(key_i);
+            Reader::iniValueToCv(read_is, _data.at(key));
+        }
     }
 #ifdef _DEBUG
     else
@@ -46,10 +46,11 @@ void save(const std::string& ini_file_name) noexcept
     mINI::INIStructure write_is;
     mINI::INIFile file = mINI::INIFile(ini_file_name);
 
-    Writer::cvToIni(in_dev_name, write_is);
-    Writer::cvToIni(out_dev_name, write_is);
-    Writer::cvToIni(to_ch, write_is);
-    Writer::cvToIni(is_force_adj, write_is);
+    for (int key_i = 0; key_i < static_cast<int>(Key::_COUNT_); ++key_i)
+    {
+        Key key = static_cast<Key>(key_i);
+        Writer::cvToIni(_data.at(key), write_is);
+    }
 
     if (!file.write(write_is, true))
     {
@@ -57,6 +58,15 @@ void save(const std::string& ini_file_name) noexcept
         LOGD << "Failed to write config file";
 #endif
     }
+}
+
+void initialize()
+{
+    // [Device]
+    _data.insert({ Key::InputDevice,        Cv(Section::Device, Key::InputDevice, std::string()) });
+    _data.insert({ Key::OutputDevice,       Cv(Section::Device, Key::OutputDevice, std::string()) });
+    _data.insert({ Key::ToChannel,          Cv(Section::Device, Key::ToChannel, 1, 16, 1) });
+    _data.insert({ Key::ForceAdjustMidiCh,  Cv(Section::Device, Key::ForceAdjustMidiCh, true) });
 }
 
 } // Config
