@@ -115,7 +115,7 @@ void checkOpenInputPort()
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
-        setAppError(format("MIDI error: %s", error.getMessage().c_str()));
+        setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
         setBothDevicesConnected(false);
         conn.last_in_failed_port_index = conn.input_port_index;
         conn.last_in_connected_port_index = -1;
@@ -143,7 +143,7 @@ void checkOpenOutputPort()
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
-        setAppError(format("MIDI error: %s", error.getMessage().c_str()));
+        setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
         setBothDevicesConnected(false);
         conn.last_out_failed_port_index = conn.output_port_index;
         conn.last_out_connected_port_index = -1;

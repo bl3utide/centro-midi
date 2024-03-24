@@ -16,11 +16,11 @@ namespace CentroMidi
 // private
 const std::string APP_NAME = DEF_APP_NAME;
 const std::string APP_VERSION = DEF_APP_VERSION;
-const std::string APP_COPYRIGHT = format("Copyright (C) %d %s", DEF_APP_DEV_YR, DEF_APP_DEV_BY);
+const std::string APP_COPYRIGHT = StringUtil::format("Copyright (C) %d %s", DEF_APP_DEV_YR, DEF_APP_DEV_BY);
 const std::string APP_TITLE = DEF_APP_TITLE;
-const std::string CONFIG_FILE_NAME = format("%s.ini", APP_NAME.c_str());
+const std::string CONFIG_FILE_NAME = StringUtil::format("%s.ini", APP_NAME.c_str());
 #ifdef _DEBUG
-const std::string DEBUG_FILE_NAME = format("%s.debug.log", APP_NAME.c_str());
+const std::string DEBUG_FILE_NAME = StringUtil::format("%s.debug.log", APP_NAME.c_str());
 #endif
 
 void initialize()
@@ -97,14 +97,14 @@ void loop()
 #ifdef _DEBUG
             LOGD << error.getMessage();
 #endif
-            setAppError(format("MIDI error: %s", error.getMessage().c_str()));
+            setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
         }
         catch (std::exception& error)
         {
 #ifdef _DEBUG
             LOGD << error.what();
 #endif
-            setAppError(format("General error: %s", error.what()));
+            setAppError(StringUtil::format("General error: %s", error.what()));
         }
 
         if (getNextState() == State::None)
@@ -118,7 +118,7 @@ void loop()
 #ifdef _DEBUG
                 LOGD << error.what();
 #endif
-                setAppError(format("Gui error: %s", error.what()));
+                setAppError(StringUtil::format("Gui error: %s", error.what()));
             }
         }
         else

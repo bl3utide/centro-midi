@@ -74,7 +74,7 @@ std::string getConfigValue(const Key key)
     Cv& cv = _data.at(key);
 
     if (cv.type() != Cv::Type::String)
-        throw new std::runtime_error(format("Config key '%s' is not string", cv.key_name));
+        throw new std::runtime_error(StringUtil::format("Config key '%s' is not string", cv.key_name));
 
     return cv.cv();
 }
@@ -85,7 +85,7 @@ int getConfigValue(const Key key)
     Cv& cv = _data.at(key);
 
     if (cv.type() != Cv::Type::Int)
-        throw new std::runtime_error(format("Config key '%s' is not int", cv.key_name));
+        throw new std::runtime_error(StringUtil::format("Config key '%s' is not int", cv.key_name));
 
     return std::stoi(cv.cv());
 }
@@ -96,7 +96,7 @@ bool getConfigValue(const Key key)
     Cv& cv = _data.at(key);
 
     if (cv.type() != Cv::Type::String)
-        throw new std::runtime_error(format("Config key '%s' is not bool", cv.key_name));
+        throw new std::runtime_error(StringUtil::format("Config key '%s' is not bool", cv.key_name));
 
     return cv.cv() == "1";
 }

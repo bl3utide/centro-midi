@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+namespace StringUtil
+{
+
 // Hint: '%%' escapes '%'
 template <typename... Args>
 std::string format(const std::string& fmt, Args ... args)
@@ -14,3 +17,5 @@ inline bool isInteger(const std::string& str)
 {
     return std::regex_match(str, std::regex("[(-|+)|][0-9]*"));
 }
+
+} // StringUtil

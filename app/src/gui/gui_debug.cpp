@@ -265,7 +265,7 @@ void drawDebugTabItemLogger()
             for (auto iter = debug_log.begin(); iter != debug_log.end(); ++iter)
             {
                 bool is_selected = _selected_debug_log_index == iter->log_id;
-                if (ImGui::Selectable(format("%05d %s", iter->log_id, iter->text.c_str()).c_str(), is_selected))
+                if (ImGui::Selectable(StringUtil::format("%05d %s", iter->log_id, iter->text.c_str()).c_str(), is_selected))
                 {
                     _selected_debug_log = *iter;
                     _selected_debug_log_index = iter->log_id;
