@@ -59,14 +59,16 @@ void save(const std::string& ini_file_name) noexcept
     }
 }
 
+const std::string GET_CONFIG_VALUE_TYPE_ERR_TEXT = "Config key '%s' is not %s";
+
 template<typename T>
 T getConfigValue(const Key key)
 {
     throw new std::runtime_error("Unexpected type of Cv");
 }
-template std::string getConfigValue(const Key);
-template int getConfigValue(const Key);
-template bool getConfigValue(const Key);
+//template std::string getConfigValue(const Key);
+//template int getConfigValue(const Key);
+//template bool getConfigValue(const Key);
 
 template<>
 std::string getConfigValue(const Key key)
@@ -74,7 +76,7 @@ std::string getConfigValue(const Key key)
     Cv& cv = _data.at(key);
 
     if (cv.type() != Cv::Type::String)
-        throw new std::runtime_error(StringUtil::format("Config key '%s' is not string", cv.key_name));
+        throw new std::runtime_error(StringUtil::format(GET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "string"));
 
     return cv.cv();
 }
@@ -85,7 +87,7 @@ int getConfigValue(const Key key)
     Cv& cv = _data.at(key);
 
     if (cv.type() != Cv::Type::Int)
-        throw new std::runtime_error(StringUtil::format("Config key '%s' is not int", cv.key_name));
+        throw new std::runtime_error(StringUtil::format(GET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "int"));
 
     return std::stoi(cv.cv());
 }
@@ -96,9 +98,54 @@ bool getConfigValue(const Key key)
     Cv& cv = _data.at(key);
 
     if (cv.type() != Cv::Type::String)
-        throw new std::runtime_error(StringUtil::format("Config key '%s' is not bool", cv.key_name));
+        throw new std::runtime_error(StringUtil::format(GET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "bool"));
 
     return cv.cv() == "1";
+}
+
+const std::string SET_CONFIG_VALUE_TYPE_ERR_TEXT = "The type of config key '%s' is not %s";
+
+template<typename T>
+void setConfigValue(const Key key, const T value)
+{
+    throw new std::runtime_error("Unexpected type of value");
+}
+//template void setConfigValue(const Key, const std::string);
+//template void setConfigValue(const Key, const int);
+//template void setConfigValue(const Key, const bool);
+
+template<>
+void setConfigValue(const Key key, const std::string value)
+{
+    Cv& cv = _data.at(key);
+
+    if (cv.type() != Cv::Type::String)
+        throw new std::runtime_error(StringUtil::format(SET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "string"));
+
+    cv.set(value);
+}
+
+template<>
+void setConfigValue(const Key key, const int value)
+{
+    Cv& cv = _data.at(key);
+
+    if (cv.type() != Cv::Type::Int)
+        throw new std::runtime_error(StringUtil::format(SET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "int"));
+
+    cv.set(std::to_string(value));
+}
+
+template<>
+void setConfigValue(const Key key, const bool value)
+{
+    Cv& cv = _data.at(key);
+
+    if (cv.type() != Cv::Type::Bool)
+        throw new std::runtime_error(StringUtil::format(SET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "bool"));
+
+    std::string set_v = value ? "1" : "0";
+    cv.set(set_v);
 }
 
 void initialize()

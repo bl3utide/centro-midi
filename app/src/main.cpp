@@ -154,6 +154,8 @@ int main(int, char**)
     }
 
     CentroMidi::loop();
+
+    // TODO try-catch
     CentroMidi::finalize();
 
 #ifdef _DEBUG
