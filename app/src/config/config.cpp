@@ -15,6 +15,30 @@ namespace Config
 // private
 std::unordered_map<Key, Cv> _data;
 
+const std::string& getConfigSectionName(const Key key)
+{
+    return _data.at(key).section_name;
+}
+
+const std::string& getConfigKeyName(const Key key)
+{
+    return _data.at(key).key_name;
+}
+
+const char* getConfigTypeName(const Key key)
+{
+    Cv& cv = _data.at(key);
+    return cv.type() == Cv::Type::String ? "string"
+        : cv.type() == Cv::Type::Int ? "integer"
+        : cv.type() == Cv::Type::Bool ? "bool"
+        : "?";
+}
+
+const std::string& getConfigValueStr(const Key key)
+{
+    return _data.at(key).cv();
+}
+
 void load(const std::string& ini_file_name) noexcept
 {
     mINI::INIStructure read_is;

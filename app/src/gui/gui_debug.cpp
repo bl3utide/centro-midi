@@ -1,6 +1,9 @@
 ﻿#include "common.hpp"
 #ifdef _DEBUG
 #include "error.hpp"
+#include "config/config.hpp"
+#include "config/cv.hpp"
+#include "config/section.hpp"
 #include "gui/gui.hpp"
 #include "gui/gui_color.hpp"
 #include "gui/gui_font.hpp"
@@ -114,6 +117,49 @@ void drawDebugTabItemGeneral()
         ImGui::Separator(); //--------------------------------------------------
 
         ImGui::Text("%-24s: %d(max %d)", "task size", MessageTask::taskSize(), MessageTask::largestTaskSizeEver());
+
+        ImGui::EndTabItem();
+    }
+}
+
+void drawDebugTabItemConfig()
+{
+    if (ImGui::BeginTabItem("Config"))
+    {
+        ImGui::BeginChild("config_value_list", ImVec2(600, 300));
+        {
+            auto drawParamsRow = [](const Config::Key key)
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("%s", Config::getConfigSectionName(key).c_str());
+                ImGui::TableNextColumn();
+                ImGui::Text("%s", Config::getConfigKeyName(key).c_str());
+                ImGui::TableNextColumn();
+                ImGui::Text("%s", Config::getConfigTypeName(key));
+                ImGui::TableNextColumn();
+                ImGui::Text("%s", Config::getConfigValueStr(key).c_str());
+            };
+
+            if (ImGui::BeginTable("config_values", 4, ImGuiTableFlags_Borders
+                | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit))
+            {
+                ImGui::TableSetupColumn("Section", ImGuiTableColumnFlags_WidthFixed, 80.0f);
+                ImGui::TableSetupColumn("Key", ImGuiTableColumnFlags_WidthStretch);
+                ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, 60.0f);
+                ImGui::TableSetupColumn("Value", ImGuiTableColumnFlags_WidthStretch);
+
+                ImGui::TableHeadersRow();
+
+                for (int key_i = 0; key_i < static_cast<int>(Config::Key::_COUNT_); ++key_i)
+                {
+                    drawParamsRow(static_cast<Config::Key>(key_i));
+                }
+
+                ImGui::EndTable();
+            }
+        }
+        ImGui::EndChild();
 
         ImGui::EndTabItem();
     }
@@ -330,6 +376,7 @@ void drawDebugWindow(bool* open, const int window_w, const int window_h,
         if (ImGui::BeginTabBar("DebugTab", ImGuiTabBarFlags_None))
         {
             drawDebugTabItemGeneral();
+            drawDebugTabItemConfig();
             drawDebugTabItemTransReceiveLog();
             drawDebugTabItemLogger();
             ImGui::EndTabBar();
