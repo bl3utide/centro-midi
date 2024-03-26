@@ -130,15 +130,16 @@ void drawDebugTabItemConfig()
         {
             auto drawParamsRow = [](const Config::Key key)
             {
+                const Config::Cv cv = Config::getCv(key);
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
-                ImGui::Text("%s", Config::getConfigSectionStr(key).c_str());
+                ImGui::Text("%s", cv.section_name().c_str());
                 ImGui::TableNextColumn();
-                ImGui::Text("%s", Config::getConfigKeyStr(key).c_str());
+                ImGui::Text("%s", cv.key_name().c_str());
                 ImGui::TableNextColumn();
-                ImGui::Text("%s", Config::getConfigTypeStr(key).c_str());
+                ImGui::Text("%s", cv.type_str().c_str());
                 ImGui::TableNextColumn();
-                ImGui::Text("%s", Config::getConfigValueStr(key).c_str());
+                ImGui::Text("%s", cv.cv().c_str());
             };
 
             if (ImGui::BeginTable("config_values", 4, ImGuiTableFlags_Borders

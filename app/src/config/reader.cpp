@@ -10,9 +10,9 @@ namespace Reader
 
 void iniValueToCv(mINI::INIStructure& is, Cv& cv) noexcept
 {
-    if (is.get(cv.section_name).has(cv.key_name))
+    if (is.get(cv.section_name()).has(cv.key_name()))
     {
-        const std::string& src_val = is.get(cv.section_name).get(cv.key_name);
+        const std::string& src_val = is.get(cv.section_name()).get(cv.key_name());
 
         if (cv.type() == Cv::Type::Int)
         {
@@ -33,14 +33,14 @@ void iniValueToCv(mINI::INIStructure& is, Cv& cv) noexcept
             cv.set(src_val);
         }
 #ifdef _DEBUG
-        LOGD << "Loaded config value [" << cv.section_name << "]" << cv.key_name << ": " << cv.cv();
+        LOGD << "Loaded config value [" << cv.section_name() << "]" << cv.key_name() << ": " << cv.cv();
 #endif
     }
     else
     {
         cv.setDefault();
 #ifdef _DEBUG
-        LOGD << "Loaded DEFAULT config value [" << cv.section_name << "]" << cv.key_name << ": " << cv.cv();
+        LOGD << "Loaded DEFAULT config value [" << cv.section_name() << "]" << cv.key_name() << ": " << cv.cv();
 #endif
     }
 }

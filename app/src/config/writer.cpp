@@ -10,9 +10,9 @@ namespace Writer
 
 void cvToIni(Cv& cv, mINI::INIStructure& is) noexcept
 {
-    is[cv.section_name][cv.key_name] = cv.cv();
+    is[cv.section_name()][cv.key_name()] = cv.cv();
 #ifdef _DEBUG
-    LOGD << "Writed config value [" << cv.section_name << "]" << cv.key_name << ": " << cv.cv();
+    LOGD << "Writed config value [" << cv.section_name() << "]" << cv.key_name() << ": " << cv.cv();
 #endif
 }
 
