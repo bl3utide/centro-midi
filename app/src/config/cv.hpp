@@ -111,9 +111,9 @@ private:
     std::string _section;
     std::string _key;
     Type _type;
-    static const std::unordered_map<Type, std::string> _type_str;
     std::string _v;
     int _min, _max, _def;   // use if _type == Type::Int
+    static const std::unordered_map<Type, std::string> _type_str;
 
     void setSectionKey(const Section section, const Key key)
     {
