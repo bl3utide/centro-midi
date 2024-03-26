@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "config/cv.hpp"
-#include "config/section.hpp"
 
 namespace CentroMidi
 {

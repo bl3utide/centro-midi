@@ -1,5 +1,5 @@
 ﻿#include "common.hpp"
-#include "cv.hpp"
+#include "config/cv.hpp"
 
 namespace CentroMidi
 {
