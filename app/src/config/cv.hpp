@@ -88,6 +88,11 @@ public:
         return _type;
     }
 
+    const std::string& type_str() const noexcept
+    {
+        return _type_str.at(_type);
+    }
+
     int max() const noexcept { return _max; }
     int min() const noexcept { return _min; }
 
@@ -104,6 +109,7 @@ public:
 
 private:
     Type _type;
+    static const std::unordered_map<Type, std::string> _type_str;
     std::string _v;
     int _min, _max, _def;   // use if _type == Type::Int
 

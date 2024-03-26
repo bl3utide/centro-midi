@@ -132,11 +132,11 @@ void drawDebugTabItemConfig()
             {
                 ImGui::TableNextRow();
                 ImGui::TableNextColumn();
-                ImGui::Text("%s", Config::getConfigSectionName(key).c_str());
+                ImGui::Text("%s", Config::getConfigSectionStr(key).c_str());
                 ImGui::TableNextColumn();
-                ImGui::Text("%s", Config::getConfigKeyName(key).c_str());
+                ImGui::Text("%s", Config::getConfigKeyStr(key).c_str());
                 ImGui::TableNextColumn();
-                ImGui::Text("%s", Config::getConfigTypeName(key));
+                ImGui::Text("%s", Config::getConfigTypeStr(key).c_str());
                 ImGui::TableNextColumn();
                 ImGui::Text("%s", Config::getConfigValueStr(key).c_str());
             };

@@ -13,30 +13,26 @@ namespace Config
 {
 
 // private
-std::unordered_map<Key, Cv> _data;
+std::unordered_map<Key, Cv> _cv_by_key;
 
-const std::string& getConfigSectionName(const Key key)
+const std::string& getConfigSectionStr(const Key key)
 {
-    return _data.at(key).section_name;
+    return _cv_by_key.at(key).section_name;
 }
 
-const std::string& getConfigKeyName(const Key key)
+const std::string& getConfigKeyStr(const Key key)
 {
-    return _data.at(key).key_name;
+    return _cv_by_key.at(key).key_name;
 }
 
-const char* getConfigTypeName(const Key key)
+const std::string& getConfigTypeStr(const Key key)
 {
-    Cv& cv = _data.at(key);
-    return cv.type() == Cv::Type::String ? "string"
-        : cv.type() == Cv::Type::Int ? "integer"
-        : cv.type() == Cv::Type::Bool ? "bool"
-        : "?";
+    return _cv_by_key.at(key).type_str();
 }
 
 const std::string& getConfigValueStr(const Key key)
 {
-    return _data.at(key).cv();
+    return _cv_by_key.at(key).cv();
 }
 
 void load(const std::string& ini_file_name) noexcept
@@ -53,7 +49,7 @@ void load(const std::string& ini_file_name) noexcept
         for (int key_i = 0; key_i < static_cast<int>(Key::_COUNT_); ++key_i)
         {
             Key key = static_cast<Key>(key_i);
-            Reader::iniValueToCv(read_is, _data.at(key));
+            Reader::iniValueToCv(read_is, _cv_by_key.at(key));
         }
     }
 #ifdef _DEBUG
@@ -72,7 +68,7 @@ void save(const std::string& ini_file_name) noexcept
     for (int key_i = 0; key_i < static_cast<int>(Key::_COUNT_); ++key_i)
     {
         Key key = static_cast<Key>(key_i);
-        Writer::cvToIni(_data.at(key), write_is);
+        Writer::cvToIni(_cv_by_key.at(key), write_is);
     }
 
     if (!file.write(write_is, true))
@@ -97,7 +93,7 @@ T getConfigValue(const Key key)
 template<>
 std::string getConfigValue(const Key key)
 {
-    Cv& cv = _data.at(key);
+    Cv& cv = _cv_by_key.at(key);
 
     if (cv.type() != Cv::Type::String)
         throw new std::runtime_error(StringUtil::format(GET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "string"));
@@ -108,7 +104,7 @@ std::string getConfigValue(const Key key)
 template<>
 int getConfigValue(const Key key)
 {
-    Cv& cv = _data.at(key);
+    Cv& cv = _cv_by_key.at(key);
 
     if (cv.type() != Cv::Type::Int)
         throw new std::runtime_error(StringUtil::format(GET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "int"));
@@ -119,7 +115,7 @@ int getConfigValue(const Key key)
 template<>
 bool getConfigValue(const Key key)
 {
-    Cv& cv = _data.at(key);
+    Cv& cv = _cv_by_key.at(key);
 
     if (cv.type() != Cv::Type::String)
         throw new std::runtime_error(StringUtil::format(GET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "bool"));
@@ -141,7 +137,7 @@ void setConfigValue(const Key key, const T value)
 template<>
 void setConfigValue(const Key key, const std::string value)
 {
-    Cv& cv = _data.at(key);
+    Cv& cv = _cv_by_key.at(key);
 
     if (cv.type() != Cv::Type::String)
         throw new std::runtime_error(StringUtil::format(SET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "string"));
@@ -152,7 +148,7 @@ void setConfigValue(const Key key, const std::string value)
 template<>
 void setConfigValue(const Key key, const int value)
 {
-    Cv& cv = _data.at(key);
+    Cv& cv = _cv_by_key.at(key);
 
     if (cv.type() != Cv::Type::Int)
         throw new std::runtime_error(StringUtil::format(SET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "int"));
@@ -163,7 +159,7 @@ void setConfigValue(const Key key, const int value)
 template<>
 void setConfigValue(const Key key, const bool value)
 {
-    Cv& cv = _data.at(key);
+    Cv& cv = _cv_by_key.at(key);
 
     if (cv.type() != Cv::Type::Bool)
         throw new std::runtime_error(StringUtil::format(SET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name, "bool"));
@@ -175,10 +171,10 @@ void setConfigValue(const Key key, const bool value)
 void initialize()
 {
     // [Device]
-    _data.insert({ Key::InputDevice,        Cv(Section::Device, Key::InputDevice, std::string()) });
-    _data.insert({ Key::OutputDevice,       Cv(Section::Device, Key::OutputDevice, std::string()) });
-    _data.insert({ Key::ToChannel,          Cv(Section::Device, Key::ToChannel, 1, 16, 1) });
-    _data.insert({ Key::ForceAdjustMidiCh,  Cv(Section::Device, Key::ForceAdjustMidiCh, true) });
+    _cv_by_key.insert({ Key::InputDevice,        Cv(Section::Device, Key::InputDevice, std::string()) });
+    _cv_by_key.insert({ Key::OutputDevice,       Cv(Section::Device, Key::OutputDevice, std::string()) });
+    _cv_by_key.insert({ Key::ToChannel,          Cv(Section::Device, Key::ToChannel, 1, 16, 1) });
+    _cv_by_key.insert({ Key::ForceAdjustMidiCh,  Cv(Section::Device, Key::ForceAdjustMidiCh, true) });
 }
 
 } // Config

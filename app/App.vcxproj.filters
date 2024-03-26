@@ -84,6 +84,9 @@
     <ClCompile Include="src\config\writer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="src\config\cv.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\compressed\arrayed_font.hpp">

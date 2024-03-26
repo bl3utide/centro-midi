@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "config/cv.hpp"
 #include "config/section.hpp"
 
 namespace CentroMidi
@@ -16,9 +17,9 @@ template<> void setConfigValue(const Key key, std::string value);
 template<> void setConfigValue(const Key key, int value);
 template<> void setConfigValue(const Key key, bool value);
 
-const std::string& getConfigSectionName(const Key key);
-const std::string& getConfigKeyName(const Key key);
-const char* getConfigTypeName(const Key key);
+const std::string& getConfigSectionStr(const Key key);
+const std::string& getConfigKeyStr(const Key key);
+const std::string& getConfigTypeStr(const Key key);
 const std::string& getConfigValueStr(const Key key);
 
 void load(const std::string& ini_file_name) noexcept;
