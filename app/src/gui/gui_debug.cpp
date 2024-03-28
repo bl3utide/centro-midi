@@ -142,6 +142,8 @@ void drawDebugTabItemConfig()
                 ImGui::Text("%s", cv.cv().c_str());
             };
 
+            ImGui::Text("Loaded config values");
+
             if (ImGui::BeginTable("config_values", 4, ImGuiTableFlags_Borders
                 | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit))
             {
