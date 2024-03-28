@@ -78,21 +78,9 @@ public:
         }
     }
 
-    const std::string& cv() const noexcept
-    {
-        return _v;
-    }
-
-    const Type& type() const noexcept
-    {
-        return _type;
-    }
-
-    const std::string& type_str() const noexcept
-    {
-        return _type_str.at(_type);
-    }
-
+    const std::string& cv() const noexcept { return _v; }
+    const Type& type() const noexcept { return _type; }
+    const std::string& type_str() const noexcept { return _type_str.at(_type); }
     int max() const noexcept { return _max; }
     int min() const noexcept { return _min; }
 
