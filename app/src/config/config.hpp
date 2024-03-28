@@ -9,9 +9,9 @@ namespace Config
 const Cv& getCv(const Key key) noexcept;
 
 template<typename T> T getConfigValue(const Key key);
-template<> std::string getConfigValue(const Key key);
-template<> int getConfigValue(const Key key);
-template<> bool getConfigValue(const Key key);
+template<> const std::string& getConfigValue(const Key key);
+template<> const int getConfigValue(const Key key);
+template<> const bool getConfigValue(const Key key);
 
 template<typename T> void setConfigValue(const Key key, T value);
 template<> void setConfigValue(const Key key, std::string value);

@@ -73,7 +73,7 @@ T getConfigValue(const Key key)
 }
 
 template<>
-std::string getConfigValue(const Key key)
+const std::string& getConfigValue(const Key key)
 {
     Cv& cv = _cv_by_key.at(key);
 
@@ -84,7 +84,7 @@ std::string getConfigValue(const Key key)
 }
 
 template<>
-int getConfigValue(const Key key)
+const int getConfigValue(const Key key)
 {
     Cv& cv = _cv_by_key.at(key);
 
@@ -95,7 +95,7 @@ int getConfigValue(const Key key)
 }
 
 template<>
-bool getConfigValue(const Key key)
+const bool getConfigValue(const Key key)
 {
     Cv& cv = _cv_by_key.at(key);
 
