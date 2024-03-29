@@ -8,6 +8,7 @@ enum class State : int
     InitInternalData,
     Idle,
     SendBankProgChange,
+    PrepareToExit,
     None,
     _COUNT_
 };

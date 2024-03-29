@@ -67,7 +67,7 @@ void loop()
         {
             ImGui_ImplSDL2_ProcessEvent(&event);
             if (event.type == SDL_QUIT)
-                running = false;
+                setNextState(State::PrepareToExit);
         }
 
         try
@@ -75,10 +75,11 @@ void loop()
             switch (getState())
             {
                 case State::InitInternalData:
-                    Config::load(CONFIG_FILE_NAME);
+                    Config::load(CONFIG_FILE_NAME); // TODO move to next state(apply config)
                     Connector::resetAllConnections();
                     setNextState(State::Idle);
                     break;
+                // TODO State::ApplyConfig
                 case State::Idle:
                     Connector::sendOneTaskMessage();
                     break;
@@ -87,6 +88,10 @@ void loop()
                     Connector::sendBankSelectLsb();
                     Connector::sendProgChange();
                     setNextState(State::Idle);
+                    break;
+                case State::PrepareToExit:
+                    Connector::updateConfig();
+                    running = false;
                     break;
                 default:
                     break;

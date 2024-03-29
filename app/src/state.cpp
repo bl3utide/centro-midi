@@ -14,6 +14,7 @@ const char* STATE_STR[static_cast<int>(State::_COUNT_)] =
     "InitInternalData",
     "Idle",
     "SendBankProgChange",
+    "PrepareToExit",
     "None"
 };
 #endif

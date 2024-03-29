@@ -2,6 +2,7 @@
 #include "annotation.hpp"
 #include "error.hpp"
 #include "state.hpp"
+#include "config/config.hpp"
 #include "midi/callback.hpp"
 #include "midi/connector.hpp"
 #include "midi/message_handler.hpp"
@@ -90,6 +91,20 @@ void initialize()
 void finalize() noexcept
 {
     conn.finalize();
+}
+
+void updateConfig() noexcept
+{
+    if (conn.last_in_connected_port_index != -1)
+    {
+        Config::setConfigValue(Config::Key::InputDevice, conn.input_port_name);
+    }
+    if (conn.last_out_connected_port_index != -1)
+    {
+        Config::setConfigValue(Config::Key::OutputDevice, conn.output_port_name);
+    }
+    Config::setConfigValue(Config::Key::ToChannel, display_midi_channel);
+    Config::setConfigValue(Config::Key::ForceAdjustMidiCh, force_adjust_midi_channel);
 }
 
 void resetAllConnections()
