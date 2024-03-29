@@ -75,11 +75,14 @@ void loop()
             switch (getState())
             {
                 case State::InitInternalData:
-                    Config::load(CONFIG_FILE_NAME); // TODO move to next state(apply config)
                     Connector::resetAllConnections();
+                    setNextState(State::ApplyConfig);
+                    break;
+                case State::ApplyConfig:
+                    Config::load(CONFIG_FILE_NAME);
+                    Connector::applyConfig();
                     setNextState(State::Idle);
                     break;
-                // TODO State::ApplyConfig
                 case State::Idle:
                     Connector::sendOneTaskMessage();
                     break;

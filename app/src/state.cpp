@@ -12,6 +12,7 @@ namespace CentroMidi
 const char* STATE_STR[static_cast<int>(State::_COUNT_)] =
 {
     "InitInternalData",
+    "ApplyConfig",
     "Idle",
     "SendBankProgChange",
     "PrepareToExit",

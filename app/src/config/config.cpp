@@ -67,13 +67,13 @@ void save(const std::string& ini_file_name) noexcept
 const std::string GET_CONFIG_VALUE_TYPE_ERR_TEXT = "Config key '%s' is not %s";
 
 template<typename T>
-T getConfigValue(const Key key)
+const T getConfigValue(const Key key)
 {
     throw new std::runtime_error("Unexpected type of Cv");
 }
 
 template<>
-const std::string& getConfigValue(const Key key)
+const std::string getConfigValue(const Key key)
 {
     Cv& cv = _cv_by_key.at(key);
 
@@ -99,7 +99,7 @@ const bool getConfigValue(const Key key)
 {
     Cv& cv = _cv_by_key.at(key);
 
-    if (cv.type() != Cv::Type::String)
+    if (cv.type() != Cv::Type::Bool)
         throw new std::runtime_error(StringUtil::format(GET_CONFIG_VALUE_TYPE_ERR_TEXT, cv.key_name(), "bool"));
 
     return cv.cv() == "1";

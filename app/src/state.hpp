@@ -6,6 +6,7 @@ namespace CentroMidi
 enum class State : int
 {
     InitInternalData,
+    ApplyConfig,
     Idle,
     SendBankProgChange,
     PrepareToExit,

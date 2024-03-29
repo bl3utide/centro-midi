@@ -8,8 +8,8 @@ namespace Config
 
 const Cv& getCv(const Key key) noexcept;
 
-template<typename T> T getConfigValue(const Key key);
-template<> const std::string& getConfigValue(const Key key);
+template<typename T> const T getConfigValue(const Key key);
+template<> const std::string getConfigValue(const Key key);
 template<> const int getConfigValue(const Key key);
 template<> const bool getConfigValue(const Key key);
 
