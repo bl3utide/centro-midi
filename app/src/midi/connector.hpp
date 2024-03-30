@@ -93,6 +93,8 @@ extern int display_program_change;
 
 void initialize();
 void finalize() noexcept;
+void applyConfig();
+void updateConfig() noexcept;
 void resetAllConnections();
 void checkOpenInputPort();
 void checkOpenOutputPort();

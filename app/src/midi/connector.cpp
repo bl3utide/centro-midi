@@ -2,6 +2,7 @@
 #include "annotation.hpp"
 #include "error.hpp"
 #include "state.hpp"
+#include "config/config.hpp"
 #include "midi/callback.hpp"
 #include "midi/connector.hpp"
 #include "midi/message_handler.hpp"
@@ -92,6 +93,52 @@ void finalize() noexcept
     conn.finalize();
 }
 
+void applyConfig()
+{
+    // Input Device
+    const std::string cv_input_device_name = Config::getConfigValue<std::string>(Config::Key::InputDevice);
+    const auto in_res = std::find(in_name_list.cbegin(), in_name_list.cend(), cv_input_device_name);
+    if (in_res != in_name_list.cend())
+    {   // found
+        const int index = static_cast<int>(std::distance(in_name_list.cbegin(), in_res));
+        conn.input_port_index = index;
+        conn.input_port_name = in_name_list[index];
+        checkOpenInputPort();
+    }
+
+    // Output Device
+    const std::string cv_output_device_name = Config::getConfigValue<std::string>(Config::Key::OutputDevice);
+    const auto out_res = std::find(out_name_list.cbegin(), out_name_list.cend(), cv_output_device_name);
+    if (out_res != out_name_list.cend())
+    {   // found
+        const int index = static_cast<int>(std::distance(out_name_list.cbegin(), out_res));
+        conn.output_port_index = index;
+        conn.output_port_name = out_name_list[index];
+        checkOpenOutputPort();
+    }
+
+    // To Channel
+    display_midi_channel = Config::getConfigValue<int>(Config::Key::ToChannel);
+    updateTransmitMidiChannel();
+
+    // Force Adjust MIDI Channel
+    force_adjust_midi_channel = Config::getConfigValue<bool>(Config::Key::ForceAdjustMidiCh);
+}
+
+void updateConfig() noexcept
+{
+    const std::string in_device_name = conn.last_in_connected_port_index != -1
+        ? conn.input_port_name
+        : "";
+    const std::string out_device_name = conn.last_out_connected_port_index != -1
+        ? conn.output_port_name
+        : "";
+    Config::setConfigValue(Config::Key::InputDevice, in_device_name);
+    Config::setConfigValue(Config::Key::OutputDevice, out_device_name);
+    Config::setConfigValue(Config::Key::ToChannel, display_midi_channel);
+    Config::setConfigValue(Config::Key::ForceAdjustMidiCh, force_adjust_midi_channel);
+}
+
 void resetAllConnections()
 {
     conn.closePorts();
@@ -115,7 +162,7 @@ void checkOpenInputPort()
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
-        setAppError(format("MIDI error: %s", error.getMessage().c_str()));
+        setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
         setBothDevicesConnected(false);
         conn.last_in_failed_port_index = conn.input_port_index;
         conn.last_in_connected_port_index = -1;
@@ -143,7 +190,7 @@ void checkOpenOutputPort()
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
-        setAppError(format("MIDI error: %s", error.getMessage().c_str()));
+        setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
         setBothDevicesConnected(false);
         conn.last_out_failed_port_index = conn.output_port_index;
         conn.last_out_connected_port_index = -1;
