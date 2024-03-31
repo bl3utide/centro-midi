@@ -173,7 +173,7 @@ void checkOpenInputPort()
     conn.input->setCallback(receiveInputDeviceMessageCallback);
     conn.input->ignoreTypes(false, false, false);
 
-    if (conn.output_port_index != -1)
+    if (conn.last_out_connected_port_index != -1)
         setBothDevicesConnected(true);
 }
 
@@ -197,7 +197,7 @@ void checkOpenOutputPort()
         return;
     }
 
-    if (conn.input_port_index != -1)
+    if (conn.last_in_connected_port_index != -1)
         setBothDevicesConnected(true);
 }
 
