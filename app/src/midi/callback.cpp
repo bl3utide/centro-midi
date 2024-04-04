@@ -35,11 +35,11 @@ void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void
                     message->at(2)
                 };
             }
-            conn.output->sendMessage(&channel_adj_message);
+            output.sendMessage(&channel_adj_message);
         }
         else
         {
-            conn.output->sendMessage(message);
+            output.sendMessage(message);
         }
     }
 }

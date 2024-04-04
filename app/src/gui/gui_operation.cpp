@@ -32,42 +32,44 @@ void drawOperationGroupConnections()
 
         ImGui::PushFont((int)Font::Text);
 
-        if (Connector::conn.last_in_connected_port_index != -1)
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_CONNECTED);
-        else if (Connector::conn.last_in_failed_port_index != -1)
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_FAILED);
-        else
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_BASE);
-        if (ImGuiLeftLabel(ImGui::BeginCombo, 0, "Input from", false,
-            label_width, control_width, Connector::conn.input_port_name.c_str(),
-            (int)ImGuiComboFlags_NoArrowButton))
+        // Input Device Combobox
         {
-            ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
-            for (int n = 0; n < Connector::in_name_list.size(); ++n)
+            const int last_connected_port_index = Connector::input.getLastConnectedPortIndex();
+            const int last_failed_port_index = Connector::input.getLastFailedPortIndex();
+            const auto dev_color =
+                last_connected_port_index != -1 ? UI_COLOR_TEXT_DEV_CONNECTED
+                : last_failed_port_index != -1 ? UI_COLOR_TEXT_DEV_FAILED
+                : UI_COLOR_TEXT_BASE;
+
+            ImGui::PushStyleColor(ImGuiCol_Text, dev_color);
+            if (ImGuiLeftLabel(ImGui::BeginCombo, 0, "Input from", false,
+                label_width, control_width, Connector::input.getPortName().c_str(),
+                (int)ImGuiComboFlags_NoArrowButton))
             {
-                bool is_selected = n == Connector::conn.input_port_index;
-                if (Connector::conn.last_in_connected_port_index == n)
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_CONNECTED);
-                else if (Connector::conn.last_in_failed_port_index == n)
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_FAILED);
-                else
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_BASE);
-                if (ImGui::Selectable(Connector::in_name_list[n].c_str(),
-                    is_selected))
+                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
+                for (int n = 0; n < Connector::in_name_list.size(); ++n)
                 {
-                    Connector::conn.input_port_index = n;
-                    Connector::conn.input_port_name = Connector::in_name_list[n];
-                    Connector::checkOpenInputPort();
+                    const bool is_selected = n == Connector::input.getPortIndex();
+                    const auto dev_item_color =
+                        last_connected_port_index == n ? UI_COLOR_TEXT_DEV_CONNECTED
+                        : last_failed_port_index == n ? UI_COLOR_TEXT_DEV_FAILED
+                        : UI_COLOR_TEXT_BASE;
+                    ImGui::PushStyleColor(ImGuiCol_Text, dev_item_color);
+                    if (ImGui::Selectable(Connector::in_name_list[n].c_str(),
+                        is_selected))
+                    {
+                        Connector::openInputPort(n, Connector::in_name_list[n]);
+                    }
+                    ImGui::MouseCursorToHand();
+                    ImGui::PopStyleColor();
+                    if (is_selected) ImGui::SetItemDefaultFocus();
                 }
-                ImGui::MouseCursorToHand();
-                ImGui::PopStyleColor();
-                if (is_selected) ImGui::SetItemDefaultFocus();
+                ImGui::PopStyleVar();
+                ImGui::EndCombo();
             }
-            ImGui::PopStyleVar();
-            ImGui::EndCombo();
+            ImGui::MouseCursorToHand();
+            ImGui::PopStyleColor();
         }
-        ImGui::MouseCursorToHand();
-        ImGui::PopStyleColor();
 
         drawSameLine();
         if (ImGui::ImageButton((void*)(intptr_t)Image::getTextureId(Image::Texture::Reload), ImVec2(16.0f, 16.0f)))
@@ -76,42 +78,44 @@ void drawOperationGroupConnections()
         }
         ImGui::MouseCursorToHand();
 
-        if (Connector::conn.last_out_connected_port_index != -1)
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_CONNECTED);
-        else if (Connector::conn.last_out_failed_port_index != -1)
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_FAILED);
-        else
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_BASE);
-        if (ImGuiLeftLabel(ImGui::BeginCombo, 0, "Output to", false,
-            label_width, control_width, Connector::conn.output_port_name.c_str(),
-            (int)ImGuiComboFlags_NoArrowButton))
+        // Output Dev
         {
-            ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
-            for (int n = 0; n < Connector::out_name_list.size(); ++n)
+            const int last_connected_port_index = Connector::output.getLastConnectedPortIndex();
+            const int last_failed_port_index = Connector::output.getLastConnectedPortIndex();
+            const auto dev_color =
+                last_connected_port_index != -1 ? UI_COLOR_TEXT_DEV_CONNECTED
+                : last_failed_port_index != -1 ? UI_COLOR_TEXT_DEV_FAILED
+                : UI_COLOR_TEXT_BASE;
+
+            ImGui::PushStyleColor(ImGuiCol_Text, dev_color);
+            if (ImGuiLeftLabel(ImGui::BeginCombo, 0, "Output to", false,
+                label_width, control_width, Connector::output.getPortName().c_str(),
+                (int)ImGuiComboFlags_NoArrowButton))
             {
-                bool is_selected = n == Connector::conn.output_port_index;
-                if (Connector::conn.last_out_connected_port_index == n)
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_CONNECTED);
-                else if (Connector::conn.last_out_failed_port_index == n)
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_FAILED);
-                else
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_BASE);
-                if (ImGui::Selectable(Connector::out_name_list[n].c_str(),
-                    is_selected))
+                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
+                for (int n = 0; n < Connector::out_name_list.size(); ++n)
                 {
-                    Connector::conn.output_port_index = n;
-                    Connector::conn.output_port_name = Connector::out_name_list[n];
-                    Connector::checkOpenOutputPort();
+                    const bool is_selected = n == Connector::output.getPortIndex();
+                    const auto dev_item_color =
+                        last_connected_port_index == n ? UI_COLOR_TEXT_DEV_CONNECTED
+                        : last_failed_port_index == n ? UI_COLOR_TEXT_DEV_FAILED
+                        : UI_COLOR_TEXT_BASE;
+                    ImGui::PushStyleColor(ImGuiCol_Text, dev_item_color);
+                    if (ImGui::Selectable(Connector::out_name_list[n].c_str(),
+                        is_selected))
+                    {
+                        Connector::openOutputPort(n, Connector::out_name_list[n]);
+                    }
+                    ImGui::MouseCursorToHand();
+                    ImGui::PopStyleColor();
+                    if (is_selected) ImGui::SetItemDefaultFocus();
                 }
-                ImGui::MouseCursorToHand();
-                ImGui::PopStyleColor();
-                if (is_selected) ImGui::SetItemDefaultFocus();
+                ImGui::PopStyleVar();
+                ImGui::EndCombo();
             }
-            ImGui::PopStyleVar();
-            ImGui::EndCombo();
+            ImGui::MouseCursorToHand();
+            ImGui::PopStyleColor();
         }
-        ImGui::MouseCursorToHand();
-        ImGui::PopStyleColor();
 
         if (ImGuiLeftLabel(ImGui::InputInt, 0, "to Channel", false,
             label_width, 22.0f, &Connector::display_midi_channel, NULL, NULL,
@@ -277,7 +281,7 @@ void drawOperationGroupControls()
 void drawOperationPanel()
 {
     drawOperationGroupConnections();
-    bool is_output_device_connected = Connector::conn.last_out_connected_port_index != -1;
+    const bool is_output_device_connected = Connector::output.isPortOpen();
     if (!is_output_device_connected) ImGui::BeginDisabled();
     drawOperationGroupControls();
     if (!is_output_device_connected) ImGui::EndDisabled();

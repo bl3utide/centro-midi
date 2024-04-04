@@ -98,17 +98,20 @@ void drawDebugTabItemGeneral()
     if (ImGui::BeginTabItem("General"))
     {
         ImGui::Text("%-24s: %s", "is both devices connected", Connector::isBothDevicesConnected() ? "Yes" : "No");
-        ImGui::Text("%-24s: %-4s (%d)%s / %-4s (%d)%s", "synth conn in/out",
-            Connector::conn.input->isPortOpen() ? "open" : "-",
-            Connector::conn.input_port_index,
-            Connector::conn.input_port_name.c_str(),
-            Connector::conn.output->isPortOpen() ? "open" : "-",
-            Connector::conn.output_port_index,
-            Connector::conn.output_port_name.c_str());
-        ImGui::Text("%-24s: %d", "in connected port index", Connector::conn.last_in_connected_port_index);
-        ImGui::Text("%-24s: %d", "in failed port index", Connector::conn.last_in_failed_port_index);
-        ImGui::Text("%-24s: %d", "out connected port index", Connector::conn.last_out_connected_port_index);
-        ImGui::Text("%-24s: %d", "out failed port index", Connector::conn.last_out_failed_port_index);
+        ImGui::Text("%-24s: %-4s [%2d]%s", "input port",
+            Connector::input.isPortOpen() ? "open" : "-",
+            Connector::input.getPortIndex(),
+            Connector::input.getPortName().c_str());
+        ImGui::Text("%-24s: %-4s [%2d]%s", "output port",
+            Connector::output.isPortOpen() ? "open" : "-",
+            Connector::output.getPortIndex(),
+            Connector::output.getPortName().c_str());
+        ImGui::Text("%-24s", "last connected port index");
+        ImGui::Text(" %-23s: %d", "input", Connector::input.getLastConnectedPortIndex());
+        ImGui::Text(" %-23s: %d", "output", Connector::output.getLastConnectedPortIndex());
+        ImGui::Text("%-24s", "last failed port index");
+        ImGui::Text(" %-23s: %d", "input", Connector::input.getLastFailedPortIndex());
+        ImGui::Text(" %-23s: %d", "output", Connector::output.getLastFailedPortIndex());
         ImGui::Text("%-24s: %s", "force midi channel", Connector::force_adjust_midi_channel ? "Yes" : "No");
         ImGui::Text("%-24s: %d", "transmit midi channel", Connector::display_midi_channel - 1);
         ImGui::Text("%-24s: %d", "transmit bank", Connector::display_bank - 1);
@@ -180,7 +183,7 @@ void drawDebugTabItemTransReceiveLog()
             std::list<cd::ProcessedMidiMessage> ph_copy = cd::processed_history;
             for (auto iter = ph_copy.begin(); iter != ph_copy.end(); ++iter)
             {
-                bool is_selected = selected_index == cd::history_selected_index;
+                const bool is_selected = selected_index == cd::history_selected_index;
                 ImGui::PushStyleColor(ImGuiCol_Text, iter->transmitted ? DEBUG_UI_COLOR_TEXT_TRANSMIT : DEBUG_UI_COLOR_TEXT_RECEIVE);
                 if (ImGui::Selectable(iter->list_title.c_str(), is_selected))
                 {
@@ -313,7 +316,7 @@ void drawDebugTabItemLogger()
             auto debug_log = Logger::logs;
             for (auto iter = debug_log.begin(); iter != debug_log.end(); ++iter)
             {
-                bool is_selected = _selected_debug_log_index == iter->log_id;
+                const bool is_selected = _selected_debug_log_index == iter->log_id;
                 if (ImGui::Selectable(StringUtil::format("%05d %s", iter->log_id, iter->text.c_str()).c_str(), is_selected))
                 {
                     _selected_debug_log = *iter;

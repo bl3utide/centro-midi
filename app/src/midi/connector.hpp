@@ -5,85 +5,170 @@ namespace CentroMidi
 namespace Connector
 {
 
-struct MidiConnection
+class Connection
 {
-    RtMidiIn* input = nullptr;
-    RtMidiOut* output = nullptr;
-    int input_port_index = -1;
-    int output_port_index = -1;
-    std::string input_port_name;
-    std::string output_port_name;
-    int last_in_connected_port_index = -1;
-    int last_in_failed_port_index = -1;
-    int last_out_connected_port_index = -1;
-    int last_out_failed_port_index = -1;
-
-    void initialize()
+public:
+    Connection()
     {
-        input = new RtMidiIn();
-        output = new RtMidiOut();
+        resetPortInfo();
     }
 
-    void finalize()
+    virtual ~Connection()
     {
-        input->cancelCallback();
-        input->closePort();
-        if (input != nullptr)
-        {
-            delete input;
-            input = nullptr;
-        }
+    }
 
-        output->closePort();
-        if (output != nullptr)
+    virtual void initialize() = 0;
+    virtual void finalize() noexcept = 0;
+
+    void open(const int port_index, const std::string& port_name)
+    {
+        close();
+
+        try
         {
-            delete output;
-            output = nullptr;
+            _port_index = port_index;
+            _port_name = port_name;
+            _rtmidi->openPort(port_index);
+            setLastConnectedPortIndex(port_index);
+        }
+        catch (RtMidiError&)
+        {
+            setLastFailedPortIndex(port_index);
+            throw;
         }
     }
 
-    void openInPort()
+    virtual void close() noexcept
     {
-        input->cancelCallback();
-        input->closePort();
-        input->openPort(input_port_index);
+        _rtmidi->closePort();
     }
 
-    void openOutPort()
+    bool isPortOpen() const
     {
-        output->closePort();
-        output->openPort(output_port_index);
+        return _rtmidi->isPortOpen();
     }
 
-    void closePorts()
+    unsigned int getPortCount()
     {
-        input->cancelCallback();
-        input->closePort();
-        output->closePort();
+        return _rtmidi->getPortCount();
     }
 
-    void resetPortInfo()
+    std::string getPortName(unsigned int port_index)
     {
-        input_port_index = -1;
-        input_port_name = "";
-        output_port_index = -1;
-        output_port_name = "";
-        last_in_connected_port_index = -1;
-        last_in_failed_port_index = -1;
-        last_out_connected_port_index = -1;
-        last_out_failed_port_index = -1;
+        return _rtmidi->getPortName(port_index);
     }
 
-    void operator=(const MidiConnection& conn)
+    int getPortIndex() const noexcept
     {
-        input_port_index = conn.input_port_index;
-        input_port_name = conn.input_port_name;
-        output_port_index = conn.output_port_index;
-        output_port_name = conn.output_port_name;
+        return _port_index;
+    }
+
+    const std::string& getPortName() const noexcept
+    {
+        return _port_name;
+    }
+
+    void resetPortInfo() noexcept
+    {
+        _port_index = -1;
+        _port_name = "";
+        _last_connected_port_index = -1;
+        _last_failed_port_index = -1;
+    }
+
+    int getLastConnectedPortIndex() const noexcept { return _last_connected_port_index; }
+
+    int getLastFailedPortIndex() const noexcept { return _last_failed_port_index; }
+
+protected:
+    void setLastConnectedPortIndex(const int port_index) noexcept
+    {
+        _last_connected_port_index = port_index;
+        _last_failed_port_index = -1;
+    }
+
+    void setLastFailedPortIndex(const int port_index) noexcept
+    {
+        _last_failed_port_index = port_index;
+        _last_connected_port_index = -1;
+    }
+
+    RtMidi* _rtmidi;
+    int _port_index;
+    std::string _port_name;
+    int _last_connected_port_index;
+    int _last_failed_port_index;
+};
+
+class InputConnection : public Connection
+{
+public:
+    InputConnection() : Connection()
+    {
+    }
+
+    void initialize() override
+    {
+        _rtmidi = new RtMidiIn();
+    }
+
+    void finalize() noexcept override
+    {
+        if (_rtmidi != nullptr)
+        {
+            close();
+            delete dynamic_cast<RtMidiIn*>(_rtmidi);
+            _rtmidi = nullptr;
+        }
+    }
+
+    void close() noexcept override
+    {
+        dynamic_cast<RtMidiIn*>(_rtmidi)->cancelCallback();
+        Connection::close();
+    }
+
+    void setCallback(RtMidiIn::RtMidiCallback callback, void* userData = (void*)0)
+    {
+        dynamic_cast<RtMidiIn*>(_rtmidi)->setCallback(callback, userData);
+    }
+
+    void ignoreTypes(bool midiSysex, bool midiTime, bool midiSense)
+    {
+        dynamic_cast<RtMidiIn*>(_rtmidi)->ignoreTypes(midiSysex, midiTime, midiSense);
     }
 };
 
-extern MidiConnection conn;
+class OutputConnection : public Connection
+{
+public:
+    OutputConnection() : Connection()
+    {
+    }
+
+    void initialize() override
+    {
+        _rtmidi = new RtMidiOut();
+    }
+
+    void finalize() noexcept override
+    {
+        if (_rtmidi != nullptr)
+        {
+            close();
+            delete dynamic_cast<RtMidiOut*>(_rtmidi);
+            _rtmidi = nullptr;
+        }
+    }
+
+    void sendMessage(const ByteVec* message)
+    {
+        dynamic_cast<RtMidiOut*>(_rtmidi)->sendMessage(message);
+    }
+};
+
+extern InputConnection input;
+extern OutputConnection output;
 extern std::vector<std::string> in_name_list;
 extern std::vector<std::string> out_name_list;
 extern bool force_adjust_midi_channel;
@@ -96,8 +181,8 @@ void finalize() noexcept;
 void applyConfig();
 void updateConfig() noexcept;
 void resetAllConnections();
-void checkOpenInputPort();
-void checkOpenOutputPort();
+void openInputPort(const int port_index, const std::string& port_name);
+void openOutputPort(const int port_index, const std::string& port_name);
 void sendBankSelectMsb();
 void sendBankSelectLsb();
 void sendProgChange();

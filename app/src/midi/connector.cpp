@@ -18,7 +18,9 @@ namespace Connector
 {
 
 // public
-MidiConnection conn;
+//MidiConnection conn;
+InputConnection input;
+OutputConnection output;
 std::vector<std::string> in_name_list;
 std::vector<std::string> out_name_list;
 bool force_adjust_midi_channel = true;  // send note off/on messages
@@ -42,12 +44,12 @@ void fetchDeviceList()
 {
     // MIDI IN Port
     in_name_list.clear();
-    unsigned int inPortNum = conn.input->getPortCount();
+    unsigned int inPortNum = input.getPortCount();
     for (unsigned int i = 0; i < inPortNum; ++i)
     {
         try
         {
-            in_name_list.push_back(conn.input->getPortName(i));
+            in_name_list.push_back(input.getPortName(i));
             in_name_list[i] = in_name_list[i].substr(0, in_name_list[i].find_last_of(" "));
         }
         catch (RtMidiError& error)
@@ -61,12 +63,12 @@ void fetchDeviceList()
 
     // MIDI OUT Port
     out_name_list.clear();
-    unsigned int outPortNum = conn.output->getPortCount();
+    unsigned int outPortNum = output.getPortCount();
     for (unsigned int i = 0; i < outPortNum; ++i)
     {
         try
         {
-            out_name_list.push_back(conn.output->getPortName(i));
+            out_name_list.push_back(output.getPortName(i));
             out_name_list[i] = out_name_list[i].substr(0, out_name_list[i].find_last_of(" "));
         }
         catch (RtMidiError& error)
@@ -82,7 +84,8 @@ void fetchDeviceList()
 
 void initialize()
 {
-    conn.initialize();
+    input.initialize();
+    output.initialize();
     updateTransmitMidiChannel();
     updateTransmitBank();
     updateTransmitProgramChange();
@@ -90,7 +93,8 @@ void initialize()
 
 void finalize() noexcept
 {
-    conn.finalize();
+    input.finalize();
+    output.finalize();
 }
 
 void applyConfig()
@@ -101,9 +105,7 @@ void applyConfig()
     if (in_res != in_name_list.cend())
     {   // found
         const int index = static_cast<int>(std::distance(in_name_list.cbegin(), in_res));
-        conn.input_port_index = index;
-        conn.input_port_name = in_name_list[index];
-        checkOpenInputPort();
+        openInputPort(index, in_name_list[index]);
     }
 
     // Output Device
@@ -112,9 +114,7 @@ void applyConfig()
     if (out_res != out_name_list.cend())
     {   // found
         const int index = static_cast<int>(std::distance(out_name_list.cbegin(), out_res));
-        conn.output_port_index = index;
-        conn.output_port_name = out_name_list[index];
-        checkOpenOutputPort();
+        openOutputPort(index, out_name_list[index]);
     }
 
     // To Channel
@@ -127,35 +127,27 @@ void applyConfig()
 
 void updateConfig() noexcept
 {
-    const std::string in_device_name = conn.last_in_connected_port_index != -1
-        ? conn.input_port_name
-        : "";
-    const std::string out_device_name = conn.last_out_connected_port_index != -1
-        ? conn.output_port_name
-        : "";
-    Config::setConfigValue(Config::Key::InputDevice, in_device_name);
-    Config::setConfigValue(Config::Key::OutputDevice, out_device_name);
+    Config::setConfigValue(Config::Key::InputDevice, input.getPortName());
+    Config::setConfigValue(Config::Key::OutputDevice, output.getPortName());
     Config::setConfigValue(Config::Key::ToChannel, display_midi_channel);
     Config::setConfigValue(Config::Key::ForceAdjustMidiCh, force_adjust_midi_channel);
 }
 
 void resetAllConnections()
 {
-    conn.closePorts();
-    conn.resetPortInfo();
+    input.close();
+    output.close();
+    input.resetPortInfo();
+    output.resetPortInfo();
     fetchDeviceList();
     setBothDevicesConnected(false);
 }
 
-void checkOpenInputPort()
+void openInputPort(const int port_index, const std::string& port_name)
 {
-    conn.input->cancelCallback();
-
     try
     {
-        conn.openInPort();
-        conn.last_in_connected_port_index = conn.input_port_index;
-        conn.last_in_failed_port_index = -1;
+        input.open(port_index, port_name);
     }
     catch (RtMidiError& error)
     {
@@ -164,26 +156,22 @@ void checkOpenInputPort()
 #endif
         setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
         setBothDevicesConnected(false);
-        conn.last_in_failed_port_index = conn.input_port_index;
-        conn.last_in_connected_port_index = -1;
         return;
     }
 
     // receive message in callback function
-    conn.input->setCallback(receiveInputDeviceMessageCallback);
-    conn.input->ignoreTypes(false, false, false);
+    input.setCallback(receiveInputDeviceMessageCallback);
+    input.ignoreTypes(false, false, false);
 
-    if (conn.last_out_connected_port_index != -1)
+    if (output.isPortOpen())
         setBothDevicesConnected(true);
 }
 
-void checkOpenOutputPort()
+void openOutputPort(const int port_index, const std::string& port_name)
 {
     try
     {
-        conn.openOutPort();
-        conn.last_out_connected_port_index = conn.output_port_index;
-        conn.last_out_failed_port_index = -1;
+        output.open(port_index, port_name);
     }
     catch (RtMidiError& error)
     {
@@ -192,12 +180,10 @@ void checkOpenOutputPort()
 #endif
         setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
         setBothDevicesConnected(false);
-        conn.last_out_failed_port_index = conn.output_port_index;
-        conn.last_out_connected_port_index = -1;
         return;
     }
 
-    if (conn.last_in_connected_port_index != -1)
+    if (input.isPortOpen())
         setBothDevicesConnected(true);
 }
 
@@ -208,7 +194,7 @@ void sendBankSelectMsb()
 
     try
     {
-        conn.output->sendMessage(&bank_select_msb);
+        output.sendMessage(&bank_select_msb);
     }
     catch (RtMidiError& error)
     {
@@ -220,7 +206,7 @@ void sendBankSelectMsb()
         return;
     }
 #ifdef _DEBUG
-    Debug::addProcessedHistory(true, conn.output_port_name, bank_select_msb);
+    Debug::addProcessedHistory(true, output.getPortName(), bank_select_msb);
 #endif
 }
 
@@ -231,7 +217,7 @@ void sendBankSelectLsb()
 
     try
     {
-        conn.output->sendMessage(&bank_select_lsb);
+        output.sendMessage(&bank_select_lsb);
     }
     catch (RtMidiError& error)
     {
@@ -243,7 +229,7 @@ void sendBankSelectLsb()
         return;
     }
 #ifdef _DEBUG
-    Debug::addProcessedHistory(true, conn.output_port_name, bank_select_lsb);
+    Debug::addProcessedHistory(true, output.getPortName(), bank_select_lsb);
 #endif
 }
 
@@ -254,7 +240,7 @@ void sendProgChange()
 
     try
     {
-        conn.output->sendMessage(&prog_change);
+        output.sendMessage(&prog_change);
         setNextState(State::Idle);
     }
     catch (RtMidiError& error)
@@ -267,7 +253,7 @@ void sendProgChange()
         return;
     }
 #ifdef _DEBUG
-    Debug::addProcessedHistory(true, conn.output_port_name, prog_change);
+    Debug::addProcessedHistory(true, output.getPortName(), prog_change);
 #endif
 }
 
@@ -277,7 +263,7 @@ void sendAllSoundOff()
 
     try
     {
-        conn.output->sendMessage(&all_sound_off);
+        output.sendMessage(&all_sound_off);
     }
     catch (RtMidiError& error)
     {
@@ -288,7 +274,7 @@ void sendAllSoundOff()
         return;
     }
 #ifdef _DEBUG
-    Debug::addProcessedHistory(true, conn.output_port_name, all_sound_off);
+    Debug::addProcessedHistory(true, output.getPortName(), all_sound_off);
 #endif
 }
 
@@ -297,9 +283,9 @@ void sendOneTaskMessage()
     if (MessageTask::taskSize() > 0)
     {
         ByteVec message = MessageTask::lastTask();
-        conn.output->sendMessage(&message);
+        output.sendMessage(&message);
 #ifdef _DEBUG
-        Debug::addProcessedHistory(true, conn.output_port_name, message);
+        Debug::addProcessedHistory(true, output.getPortName(), message);
 #endif
     }
 }
