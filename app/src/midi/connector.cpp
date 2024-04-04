@@ -44,8 +44,7 @@ void fetchDeviceList()
 {
     // MIDI IN Port
     in_name_list.clear();
-    unsigned int inPortNum = input.getPortCount();
-    for (unsigned int i = 0; i < inPortNum; ++i)
+    for (unsigned int i = 0; i < input.getPortCount(); ++i)
     {
         try
         {
@@ -63,8 +62,7 @@ void fetchDeviceList()
 
     // MIDI OUT Port
     out_name_list.clear();
-    unsigned int outPortNum = output.getPortCount();
-    for (unsigned int i = 0; i < outPortNum; ++i)
+    for (unsigned int i = 0; i < output.getPortCount(); ++i)
     {
         try
         {
