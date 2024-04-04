@@ -28,7 +28,7 @@ public:
         {
             _port_index = port_index;
             _port_name = port_name;
-            _rtmidi->openPort(port_index);
+            rtmidi->openPort(port_index);
             setLastConnectedPortIndex(port_index);
         }
         catch (RtMidiError&)
@@ -40,22 +40,22 @@ public:
 
     virtual void close() noexcept
     {
-        _rtmidi->closePort();
+        rtmidi->closePort();
     }
 
     bool isPortOpen() const
     {
-        return _rtmidi->isPortOpen();
+        return rtmidi->isPortOpen();
     }
 
     unsigned int getPortCount()
     {
-        return _rtmidi->getPortCount();
+        return rtmidi->getPortCount();
     }
 
     std::string getPortName(unsigned int port_index)
     {
-        return _rtmidi->getPortName(port_index);
+        return rtmidi->getPortName(port_index);
     }
 
     int getPortIndex() const noexcept
@@ -93,7 +93,9 @@ protected:
         _last_connected_port_index = -1;
     }
 
-    RtMidi* _rtmidi;
+    RtMidi* rtmidi;
+
+private:
     int _port_index;
     std::string _port_name;
     int _last_connected_port_index;
@@ -109,33 +111,33 @@ public:
 
     void initialize() override
     {
-        _rtmidi = new RtMidiIn();
+        rtmidi = new RtMidiIn();
     }
 
     void finalize() noexcept override
     {
-        if (_rtmidi != nullptr)
+        if (rtmidi != nullptr)
         {
             close();
-            delete dynamic_cast<RtMidiIn*>(_rtmidi);
-            _rtmidi = nullptr;
+            delete dynamic_cast<RtMidiIn*>(rtmidi);
+            rtmidi = nullptr;
         }
     }
 
     void close() noexcept override
     {
-        dynamic_cast<RtMidiIn*>(_rtmidi)->cancelCallback();
+        dynamic_cast<RtMidiIn*>(rtmidi)->cancelCallback();
         Connection::close();
     }
 
     void setCallback(RtMidiIn::RtMidiCallback callback, void* userData = (void*)0)
     {
-        dynamic_cast<RtMidiIn*>(_rtmidi)->setCallback(callback, userData);
+        dynamic_cast<RtMidiIn*>(rtmidi)->setCallback(callback, userData);
     }
 
     void ignoreTypes(bool midiSysex, bool midiTime, bool midiSense)
     {
-        dynamic_cast<RtMidiIn*>(_rtmidi)->ignoreTypes(midiSysex, midiTime, midiSense);
+        dynamic_cast<RtMidiIn*>(rtmidi)->ignoreTypes(midiSysex, midiTime, midiSense);
     }
 };
 
@@ -148,22 +150,22 @@ public:
 
     void initialize() override
     {
-        _rtmidi = new RtMidiOut();
+        rtmidi = new RtMidiOut();
     }
 
     void finalize() noexcept override
     {
-        if (_rtmidi != nullptr)
+        if (rtmidi != nullptr)
         {
             close();
-            delete dynamic_cast<RtMidiOut*>(_rtmidi);
-            _rtmidi = nullptr;
+            delete dynamic_cast<RtMidiOut*>(rtmidi);
+            rtmidi = nullptr;
         }
     }
 
     void sendMessage(const ByteVec* message)
     {
-        dynamic_cast<RtMidiOut*>(_rtmidi)->sendMessage(message);
+        dynamic_cast<RtMidiOut*>(rtmidi)->sendMessage(message);
     }
 };
 
