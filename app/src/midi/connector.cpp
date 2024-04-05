@@ -79,7 +79,6 @@ void fetchDeviceList()
     }
 }
 
-
 void initialize()
 {
     input.initialize();
