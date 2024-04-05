@@ -135,8 +135,6 @@ void resetAllConnections()
 {
     input.close();
     output.close();
-    input.resetPortInfo();
-    output.resetPortInfo();
     fetchDeviceList();
     setBothDevicesConnected(false);
 }

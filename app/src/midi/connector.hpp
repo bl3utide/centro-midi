@@ -41,6 +41,7 @@ public:
     virtual void close() noexcept
     {
         rtmidi->closePort();
+        resetPortInfo();
     }
 
     bool isPortOpen() const
@@ -68,14 +69,6 @@ public:
         return _port_name;
     }
 
-    void resetPortInfo() noexcept
-    {
-        _port_index = -1;
-        _port_name = "";
-        _last_connected_port_index = -1;
-        _last_failed_port_index = -1;
-    }
-
     int getLastConnectedPortIndex() const noexcept { return _last_connected_port_index; }
 
     int getLastFailedPortIndex() const noexcept { return _last_failed_port_index; }
@@ -96,6 +89,14 @@ protected:
     RtMidi* rtmidi;
 
 private:
+    void resetPortInfo() noexcept
+    {
+        _port_index = -1;
+        _port_name = "";
+        _last_connected_port_index = -1;
+        _last_failed_port_index = -1;
+    }
+
     int _port_index;
     std::string _port_name;
     int _last_connected_port_index;
