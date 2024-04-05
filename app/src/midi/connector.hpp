@@ -127,13 +127,18 @@ public:
 
     void close() noexcept override
     {
-        dynamic_cast<RtMidiIn*>(rtmidi)->cancelCallback();
+        cancelCallback();
         Connection::close();
     }
 
     void setCallback(RtMidiIn::RtMidiCallback callback, void* userData = (void*)0)
     {
         dynamic_cast<RtMidiIn*>(rtmidi)->setCallback(callback, userData);
+    }
+
+    void cancelCallback()
+    {
+        dynamic_cast<RtMidiIn*>(rtmidi)->cancelCallback();
     }
 
     void ignoreTypes(bool midiSysex, bool midiTime, bool midiSense)
