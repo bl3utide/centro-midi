@@ -97,7 +97,7 @@ void finalize() noexcept
 void applyConfig()
 {
     // Input Device
-    const std::string cv_input_device_name = Config::getConfigValue<std::string>(Config::Key::InputDevice);
+    const std::string& cv_input_device_name = Config::getConfigValue<std::string>(Config::Key::InputDevice);
     const auto in_res = std::find(in_name_list.cbegin(), in_name_list.cend(), cv_input_device_name);
     if (in_res != in_name_list.cend())
     {   // found
@@ -106,7 +106,7 @@ void applyConfig()
     }
 
     // Output Device
-    const std::string cv_output_device_name = Config::getConfigValue<std::string>(Config::Key::OutputDevice);
+    const std::string& cv_output_device_name = Config::getConfigValue<std::string>(Config::Key::OutputDevice);
     const auto out_res = std::find(out_name_list.cbegin(), out_name_list.cend(), cv_output_device_name);
     if (out_res != out_name_list.cend())
     {   // found
