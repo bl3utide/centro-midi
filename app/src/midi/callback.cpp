@@ -7,11 +7,13 @@ namespace CentroMidi
 {
 namespace Connector
 {
+namespace Callback
+{
 
 /*******************************************************************************
     Received message from input device callback
 *******************************************************************************/
-void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void* user_data)
+void receiveInputDeviceMessage(double delta_time, ByteVec* message, void* user_data)
 {
     if (MessageHandler::isNoteOff(*message) || MessageHandler::isNoteOn(*message))
     {
@@ -44,5 +46,6 @@ void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void
     }
 }
 
+} // Callback
 } // Connector
 } // CentroMidi

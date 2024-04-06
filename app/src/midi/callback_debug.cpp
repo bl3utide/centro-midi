@@ -8,6 +8,9 @@ namespace Connector
 {
 namespace Debug
 {
+namespace Callback
+{
+} // Callback
 } // Debug
 } // Connector
 } // CentroMidi

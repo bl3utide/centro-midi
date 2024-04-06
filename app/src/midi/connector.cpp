@@ -155,7 +155,7 @@ void openInputPort(const int port_index, const std::string& port_name)
     }
 
     // receive message in callback function
-    input.setCallback(receiveInputDeviceMessageCallback);
+    input.setCallback(Callback::receiveInputDeviceMessage);
     input.ignoreTypes(false, false, false);
 
     if (output.isPortOpen())
