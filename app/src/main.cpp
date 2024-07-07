@@ -152,6 +152,7 @@ int main(int, char**)
     LOGD << "<beginning of application>";
 #endif
     plog::init<plog::ErrorLogFormatter, LogId::Error>(plog::error, CentroMidi::ERROR_FILE_NAME.c_str());
+#define LERROR LOGE_(1)
     try
     {
         CentroMidi::initialize();
@@ -161,6 +162,7 @@ int main(int, char**)
 #ifdef _DEBUG
         LOGD << e.what();
 #endif
+        LERROR << e.what();
         printf("%s", e.what());
         CentroMidi::finalize();
         exit(EXIT_FAILURE);
