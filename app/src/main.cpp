@@ -5,7 +5,6 @@
 */
 #include "common.hpp"
 #include "error.hpp"
-#include "main.hpp"
 #include "image.hpp"
 #include "state.hpp"
 #include "config/config.hpp"
