@@ -163,14 +163,12 @@ int main(int, char**)
         LOGD << e.what();
 #endif
         LERROR << e.what();
-        printf("%s", e.what());
+        CentroMidi::Gui::showMessageBox(SDL_MESSAGEBOX_ERROR, "Error", e.what());
         CentroMidi::finalize();
         exit(EXIT_FAILURE);
     }
 
     CentroMidi::loop();
-
-    // TODO try-catch
     CentroMidi::finalize();
 
 #ifdef _DEBUG
