@@ -141,12 +141,17 @@ void loop()
 
 int main(int, char**)
 {
-    plog::init<plog::ErrorLogFormatter>(plog::error, CentroMidi::ERROR_FILE_NAME.c_str());
+    enum LogId
+    {
+        Error = 1,
+    };
+
 #ifdef _DEBUG
     static plog::DebugLogAppender<plog::DebugLogFormatter> debugLogAppender;
     plog::init<plog::DebugLogFormatter>(plog::debug, CentroMidi::DEBUG_FILE_NAME.c_str()).addAppender(&debugLogAppender);
     LOGD << "<beginning of application>";
 #endif
+    plog::init<plog::ErrorLogFormatter, LogId::Error>(plog::error, CentroMidi::ERROR_FILE_NAME.c_str());
     try
     {
         CentroMidi::initialize();
