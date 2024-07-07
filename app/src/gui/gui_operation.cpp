@@ -3,7 +3,6 @@
 #include "gui/gui.hpp"
 #include "gui/gui_color.hpp"
 #include "gui/gui_font.hpp"
-#include "gui/gui_util.hpp"
 #include "midi/connector.hpp"
 
 namespace CentroMidi
@@ -21,16 +20,16 @@ void drawSameLine()
 
 void drawOperationGroupConnections()
 {
-    ImGui::PushFont((int)Font::TextBold);
+    GuiUtil::PushFont((int)Font::TextBold);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
 
-    ImGui::BeginGroupPanel("Connections", ImVec2(300.0f, 200.0f));
+    GuiUtil::BeginGroupPanel("Connections", ImVec2(300.0f, 200.0f));
     {
         auto label_width = CONNECTION_LABEL_WIDTH;
         auto control_width = CONNECTION_CONTROL_WIDTH;
         ImGuiIO& io = ImGui::GetIO();
 
-        ImGui::PushFont((int)Font::Text);
+        GuiUtil::PushFont((int)Font::Text);
 
         // Input Device Combobox
         {
@@ -42,7 +41,7 @@ void drawOperationGroupConnections()
                 : UI_COLOR_TEXT_BASE;
 
             ImGui::PushStyleColor(ImGuiCol_Text, dev_color);
-            if (ImGuiLeftLabel(ImGui::BeginCombo, 0, "Input from", false,
+            if (GuiUtil::ImGuiLeftLabel(ImGui::BeginCombo, 0, "Input from", false,
                 label_width, control_width, Connector::input.getPortName().c_str(),
                 (int)ImGuiComboFlags_NoArrowButton))
             {
@@ -60,14 +59,14 @@ void drawOperationGroupConnections()
                     {
                         Connector::openInputPort(n, Connector::in_name_list[n]);
                     }
-                    ImGui::MouseCursorToHand();
+                    GuiUtil::MouseCursorToHand();
                     ImGui::PopStyleColor();
                     if (is_selected) ImGui::SetItemDefaultFocus();
                 }
                 ImGui::PopStyleVar();
                 ImGui::EndCombo();
             }
-            ImGui::MouseCursorToHand();
+            GuiUtil::MouseCursorToHand();
             ImGui::PopStyleColor();
         }
 
@@ -76,7 +75,7 @@ void drawOperationGroupConnections()
         {
             Connector::resetAllConnections();
         }
-        ImGui::MouseCursorToHand();
+        GuiUtil::MouseCursorToHand();
 
         // Output Dev
         {
@@ -88,7 +87,7 @@ void drawOperationGroupConnections()
                 : UI_COLOR_TEXT_BASE;
 
             ImGui::PushStyleColor(ImGuiCol_Text, dev_color);
-            if (ImGuiLeftLabel(ImGui::BeginCombo, 0, "Output to", false,
+            if (GuiUtil::ImGuiLeftLabel(ImGui::BeginCombo, 0, "Output to", false,
                 label_width, control_width, Connector::output.getPortName().c_str(),
                 (int)ImGuiComboFlags_NoArrowButton))
             {
@@ -106,18 +105,18 @@ void drawOperationGroupConnections()
                     {
                         Connector::openOutputPort(n, Connector::out_name_list[n]);
                     }
-                    ImGui::MouseCursorToHand();
+                    GuiUtil::MouseCursorToHand();
                     ImGui::PopStyleColor();
                     if (is_selected) ImGui::SetItemDefaultFocus();
                 }
                 ImGui::PopStyleVar();
                 ImGui::EndCombo();
             }
-            ImGui::MouseCursorToHand();
+            GuiUtil::MouseCursorToHand();
             ImGui::PopStyleColor();
         }
 
-        if (ImGuiLeftLabel(ImGui::InputInt, 0, "to Channel", false,
+        if (GuiUtil::ImGuiLeftLabel(ImGui::InputInt, 0, "to Channel", false,
             label_width, 22.0f, &Connector::display_midi_channel, NULL, NULL,
             (int)ImGuiInputTextFlags_AutoSelectAll))
         {
@@ -127,25 +126,25 @@ void drawOperationGroupConnections()
                 Connector::display_midi_channel = Connector::getMaxTransmitMidiChannel() + 1;
             Connector::updateTransmitMidiChannel();
         }
-        ImGui::MouseCursorToHand();
+        GuiUtil::MouseCursorToHand();
         if (ImGui::IsItemHovered())
         {
-            if ((io.MouseWheel > 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Up, true)) &&        // ++
+            if ((io.MouseWheel > 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Up, true)) &&        // ++
                 Connector::display_midi_channel < Connector::getMaxTransmitMidiChannel() + 1)
                 ++Connector::display_midi_channel;
-            else if ((io.MouseWheel < 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Down, true)) &&   // --
+            else if ((io.MouseWheel < 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Down, true)) &&   // --
                 Connector::display_midi_channel > Connector::getMinTransmitMidiChannel() + 1)
                 --Connector::display_midi_channel;
             Connector::updateTransmitMidiChannel();
         }
 
-        ImGuiLeftLabel(ImGui::Checkbox, 0, "Force Adjust MIDI Ch", false,
+        GuiUtil::ImGuiLeftLabel(ImGui::Checkbox, 0, "Force Adjust MIDI Ch", false,
             120.0f, 80.0f, &Connector::force_adjust_midi_channel);
-        ImGui::MouseCursorToHand();
+        GuiUtil::MouseCursorToHand();
 
         ImGui::PopFont();
     }
-    ImGui::EndGroupPanel();
+    GuiUtil::EndGroupPanel();
 
     ImGui::PopStyleVar();
     ImGui::PopFont();
@@ -155,7 +154,7 @@ void drawBankSelect()
 {
     ImGuiIO& io = ImGui::GetIO();
 
-    if (ImGuiLeftLabel(ImGui::InputInt, 0, "Bank Select", false,
+    if (GuiUtil::ImGuiLeftLabel(ImGui::InputInt, 0, "Bank Select", false,
         80.0f, 42.0f, &Connector::display_bank, NULL, NULL,
         (int)ImGuiInputTextFlags_AutoSelectAll))
     {
@@ -166,17 +165,17 @@ void drawBankSelect()
         Connector::updateTransmitBank();
         setNextState(State::SendBankProgChange);
     }
-    ImGui::MouseCursorToHand();
+    GuiUtil::MouseCursorToHand();
     if (ImGui::IsItemHovered())
     {
-        if ((io.MouseWheel > 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Up, true)) &&        // ++
+        if ((io.MouseWheel > 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Up, true)) &&        // ++
             Connector::display_bank < Connector::getMaxTransmitBank() + 1)
         {
             ++Connector::display_bank;
             Connector::updateTransmitBank();
             setNextState(State::SendBankProgChange);
         }
-        else if ((io.MouseWheel < 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Down, true)) && // --
+        else if ((io.MouseWheel < 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Down, true)) && // --
             Connector::display_bank > Connector::getMinTransmitBank() + 1)
         {
             --Connector::display_bank;
@@ -214,31 +213,31 @@ void drawProgramChangePanel()
             ImVec2 p0 = ImGui::GetItemRectMin();
             ImVec2 p1 = ImGui::GetItemRectMax();
 
-            ImGui::MouseCursorToHand();
+            GuiUtil::MouseCursorToHand();
             if (ImGui::IsItemHovered())
             {
-                if ((io.MouseWheel > 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Right, true)) &&         // ++
+                if ((io.MouseWheel > 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Right, true)) &&         // ++
                     Connector::display_program_change < Connector::getMaxTransmitProgramChange() + 1)
                 {
                     ++Connector::display_program_change;
                     Connector::updateTransmitProgramChange();
                     setNextState(State::SendBankProgChange);
                 }
-                else if ((io.MouseWheel < 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Left, true)) &&     // --
+                else if ((io.MouseWheel < 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Left, true)) &&     // --
                     Connector::display_program_change > Connector::getMinTransmitProgramChange() + 1)
                 {
                     --Connector::display_program_change;
                     Connector::updateTransmitProgramChange();
                     setNextState(State::SendBankProgChange);
                 }
-                else if (ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Down, true) &&        // +16
+                else if (GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Down, true) &&        // +16
                     Connector::display_program_change < Connector::getMaxTransmitProgramChange() - 14)
                 {
                     Connector::display_program_change += 16;
                     Connector::updateTransmitProgramChange();
                     setNextState(State::SendBankProgChange);
                 }
-                else if (ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Up, true) &&          // -16
+                else if (GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Up, true) &&          // -16
                     Connector::display_program_change > Connector::getMinTransmitProgramChange() + 16)
                 {
                     Connector::display_program_change -= 16;
@@ -260,19 +259,19 @@ void drawProgramChangePanel()
 
 void drawOperationGroupControls()
 {
-    ImGui::PushFont((int)Font::TextBold);
+    GuiUtil::PushFont((int)Font::TextBold);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
 
-    ImGui::BeginGroupPanel("Controls", ImVec2(532.0f, 300.0f));
+    GuiUtil::BeginGroupPanel("Controls", ImVec2(532.0f, 300.0f));
     {
-        ImGui::PushFont((int)Font::Text);
+        GuiUtil::PushFont((int)Font::Text);
 
         drawBankSelect();
         drawProgramChangePanel();
 
         ImGui::PopFont();
     }
-    ImGui::EndGroupPanel();
+    GuiUtil::EndGroupPanel();
 
     ImGui::PopStyleVar();
     ImGui::PopFont();

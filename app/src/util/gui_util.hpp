@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+namespace GuiUtil
+{
+
 template<class... Args>
 bool ImGuiHiddenLabel(bool func(const char*, Args...), int repeat_idx,
     const char* label, float width, Args... args)
@@ -32,9 +35,6 @@ bool ImGuiLeftLabel(bool func(const char*, Args...), int repeat_idx,
     return ImGuiHiddenLabel(func, repeat_idx, label, width, args...);
 }
 
-namespace ImGui
-{
-
 enum class ImGuiCustomKey : int
 {
     Up,
@@ -51,4 +51,4 @@ void EndGroupPanel();
 void PushFont(int font_id) noexcept;
 bool IsCustomKeyPressed(ImGuiCustomKey key, bool repeat = true) noexcept;
 
-} // ImGui
+} // GuiUtil
