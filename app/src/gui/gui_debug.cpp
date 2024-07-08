@@ -415,7 +415,7 @@ void drawDebugWindow(bool* open, const int window_w, const int window_h,
             && static_cast<int>(current_state) <= static_cast<int>(State::None))
         {
             ImGui::Text("%-24s: [%d]%s", "state",
-                current_state, STATE_STR[static_cast<int>(current_state)]);
+                current_state, STATE_STR.at(current_state));
         }
 
         State next_state = getNextState();
@@ -423,7 +423,7 @@ void drawDebugWindow(bool* open, const int window_w, const int window_h,
             && static_cast<int>(next_state) <= static_cast<int>(State::None))
         {
             ImGui::Text("%-24s: [%d]%s", "next state",
-                next_state, STATE_STR[static_cast<int>(next_state)]);
+                next_state, STATE_STR.at(next_state));
         }
 
         if (ImGui::BeginTabBar("DebugTab", ImGuiTabBarFlags_None))

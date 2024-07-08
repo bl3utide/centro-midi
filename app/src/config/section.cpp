@@ -6,18 +6,18 @@ namespace CentroMidi
 namespace Config
 {
 
-const char* SECTION_NAMES[static_cast<int>(Section::_COUNT_)]
+const std::unordered_map<Section, const char*> SECTION_NAMES
 {
-    "device"
+    { Section::Device,  "device" },
 };
 
-const char* KEY_NAMES[static_cast<int>(Key::_COUNT_)]
+const std::unordered_map<Key, const char*> KEY_NAMES
 {
     // [device]
-    "input_device",
-    "output_device",
-    "to_channel",
-    "force_adjust_midi_ch",
+    { Key::InputDevice,         "input_device" },
+    { Key::OutputDevice,        "output_device" },
+    { Key::ToChannel,           "to_channel" },
+    { Key::ForceAdjustMidiCh,   "force_adjust_midi_ch" },
 };
 
 } // Config
