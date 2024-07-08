@@ -25,18 +25,18 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE
 BEGIN
     "#include ""winres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE
 BEGIN
     "\r\n"
     "\0"
@@ -65,7 +65,7 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "041104b0"
+        BLOCK "040004b0"
         BEGIN
             VALUE "CompanyName", "bl3utide"
             VALUE "FileDescription", "MIDI connection provider"
@@ -79,7 +79,7 @@ BEGIN
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x411, 1200
+        VALUE "Translation", 0x400, 1200
     END
 END
 
