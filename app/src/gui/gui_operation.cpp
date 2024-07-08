@@ -57,7 +57,7 @@ void drawOperationGroupConnections()
                     if (ImGui::Selectable(Connector::in_name_list[n].c_str(),
                         is_selected))
                     {
-                        Connector::openInputPort(n, Connector::in_name_list[n]);
+                        reserved_funcs.push_back(std::bind(Connector::openInputPort, n, Connector::in_name_list[n]));
                     }
                     GuiUtil::MouseCursorToHand();
                     ImGui::PopStyleColor();
@@ -73,7 +73,7 @@ void drawOperationGroupConnections()
         drawSameLine();
         if (ImGui::ImageButton((void*)(intptr_t)Image::getTextureId(Image::Texture::Reload), ImVec2(16.0f, 16.0f)))
         {
-            Connector::resetAllConnections();
+            reserved_funcs.push_back(std::bind(Connector::resetAllConnections));
         }
         GuiUtil::MouseCursorToHand();
 
@@ -103,7 +103,7 @@ void drawOperationGroupConnections()
                     if (ImGui::Selectable(Connector::out_name_list[n].c_str(),
                         is_selected))
                     {
-                        Connector::openOutputPort(n, Connector::out_name_list[n]);
+                        reserved_funcs.push_back(std::bind(Connector::openOutputPort, n, Connector::out_name_list[n]));
                     }
                     GuiUtil::MouseCursorToHand();
                     ImGui::PopStyleColor();

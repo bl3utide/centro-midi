@@ -110,38 +110,18 @@ void loop()
 
 int main(int, char**)
 {
-//    enum LogId
-//    {
-//        Error = 1,
-//    };
-//
-//#ifdef _DEBUG
-//    static plog::DebugLogAppender<plog::DebugLogFormatter> debugLogAppender;
-//    plog::init<plog::DebugLogFormatter>(plog::debug, CentroMidi::DEBUG_FILE_NAME.c_str()).addAppender(&debugLogAppender);
-//    LOGD << "<beginning of application>";
-//#endif
-//    plog::init<plog::ErrorLogFormatter, LogId::Error>(plog::error, CentroMidi::ERROR_FILE_NAME.c_str());
-//#define LERROR LOGE_(1)
     try
     {
         CentroMidi::initialize();
+        CentroMidi::loop();
     }
-    catch (std::exception& e)
+    catch (std::runtime_error&)
     {
-#ifdef _DEBUG
-        LOGD << e.what();
-#endif
-        LERROR << e.what();
-        CentroMidi::Gui::showMessageBox(SDL_MESSAGEBOX_ERROR, "Error", e.what());
         CentroMidi::finalize();
         exit(EXIT_FAILURE);
     }
 
-    CentroMidi::loop();
     CentroMidi::finalize();
 
-#ifdef _DEBUG
-    LOGD << "<end of application>";
-#endif
     return 0;
 }

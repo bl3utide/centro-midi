@@ -7,10 +7,14 @@ namespace CentroMidi
 namespace Gui
 {
 
+extern std::vector<std::function<void()>> reserved_funcs;
+
 void initialize();
 void finalize() noexcept;
 void drawGui();
 void showMessageBox(Uint32 flags, const char* title, const char* message) noexcept;
+void doReservedFuncs();
+void clearReservedFuncs() noexcept;
 
 // sub modules
 void drawOperationPanel();
