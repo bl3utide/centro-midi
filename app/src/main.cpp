@@ -15,6 +15,20 @@
 namespace CentroMidi
 {
 
+enum class InitSection : int
+{
+    Sdl,
+    Gui,
+    Image,
+    Connector,
+    Config,
+
+    _COUNT_,
+};
+
+// private
+std::bitset<static_cast<int>(InitSection::_COUNT_)> _init_flag;
+
 void initialize()
 {
     Logger::initialize();
@@ -28,11 +42,13 @@ void initialize()
         {
             throw UncontinuableException("SDL_Init error", ERROR_WHEN_INIT, ERROR_CAUSE_INIT_SDL);
         }
+        _init_flag.set(static_cast<int>(InitSection::Sdl));
 
         try
         {
             Logger::debug("start init GUI");
             Gui::initialize();
+            _init_flag.set(static_cast<int>(InitSection::Gui));
         }
         catch (std::exception& e)
         {
@@ -43,6 +59,7 @@ void initialize()
         {
             Logger::debug("start init Image");
             Image::initialize();
+            _init_flag.set(static_cast<int>(InitSection::Image));
         }
         catch (std::exception& e)
         {
@@ -53,6 +70,7 @@ void initialize()
         {
             Logger::debug("start init Connector");
             Connector::initialize();
+            _init_flag.set(static_cast<int>(InitSection::Connector));
         }
         catch (RtMidiError& e)
         {
@@ -63,6 +81,7 @@ void initialize()
         {
             Logger::debug("start init Config");
             Config::initialize();
+            _init_flag.set(static_cast<int>(InitSection::Config));
         }
         catch (std::exception& e)
         {
@@ -79,12 +98,30 @@ void initialize()
 
 void finalize() noexcept
 {
-    Config::save();
-    Connector::finalize();
-    Image::finalize();
-    Gui::finalize();
+    if (_init_flag[static_cast<int>(InitSection::Config)])
+    {
+        Config::save();
+    }
 
-    SDL_Quit();
+    if (_init_flag[static_cast<int>(InitSection::Connector)])
+    {
+        Connector::finalize();
+    }
+
+    if (_init_flag[static_cast<int>(InitSection::Image)])
+    {
+        Image::finalize();
+    }
+
+    if (_init_flag[static_cast<int>(InitSection::Gui)])
+    {
+        Gui::finalize();
+    }
+
+    if (_init_flag[static_cast<int>(InitSection::Sdl)])
+    {
+        SDL_Quit();
+    }
 
     Logger::debug("<end of application>");
 }
