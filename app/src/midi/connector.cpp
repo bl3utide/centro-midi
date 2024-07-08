@@ -1,6 +1,7 @@
 ﻿#include "common.hpp"
 #include "annotation.hpp"
 #include "error.hpp"
+#include "logger.hpp"
 #include "state.hpp"
 #include "config/config.hpp"
 #include "midi/callback.hpp"
@@ -8,7 +9,6 @@
 #include "midi/message_handler.hpp"
 #include "midi/message_task.hpp"
 #ifdef _DEBUG
-#include "logger.hpp"
 #include "midi/connector_debug.hpp"
 #endif
 
@@ -53,10 +53,17 @@ void fetchDeviceList()
         }
         catch (RtMidiError& error)
         {
+            throw ContinuableException(
+                StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+                ERROR_WHEN_FETCH_DEV_LIST,
+                ERROR_CAUSE_GET_INDEV_NAME
+            );
+            /*
 #ifdef _DEBUG
             LOGD << error.getMessage();
 #endif
             throw;
+            */
         }
     }
 
@@ -71,10 +78,17 @@ void fetchDeviceList()
         }
         catch (RtMidiError& error)
         {
+            throw ContinuableException(
+                StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+                ERROR_WHEN_FETCH_DEV_LIST,
+                ERROR_CAUSE_GET_OUTDEV_NAME
+            );
+            /*
 #ifdef _DEBUG
             LOGD << error.getMessage();
 #endif
             throw;
+            */
         }
     }
 }
@@ -102,7 +116,14 @@ void applyConfig()
     if (in_res != in_name_list.cend())
     {   // found
         const int index = static_cast<int>(std::distance(in_name_list.cbegin(), in_res));
-        openInputPort(index, in_name_list[index]);
+        try
+        {
+            openInputPort(index, in_name_list[index]);
+        }
+        catch (ContinuableException& ce)
+        {
+            Logger::debug(ce);
+        }
     }
 
     // Output Device
@@ -111,7 +132,14 @@ void applyConfig()
     if (out_res != out_name_list.cend())
     {   // found
         const int index = static_cast<int>(std::distance(out_name_list.cbegin(), out_res));
-        openOutputPort(index, out_name_list[index]);
+        try
+        {
+            openOutputPort(index, out_name_list[index]);
+        }
+        catch (ContinuableException& ce)
+        {
+            Logger::debug(ce);
+        }
     }
 
     // To Channel
@@ -146,12 +174,19 @@ void openInputPort(const int port_index, const std::string& port_name)
     }
     catch (RtMidiError& error)
     {
+        setBothDevicesConnected(false);
+        throw ContinuableException(
+            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            ERROR_WHEN_OPEN_DEV, ERROR_CAUSE_OPEN_DEV_IN);
+        /*
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
+
         setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
         setBothDevicesConnected(false);
         return;
+        */
     }
 
     // receive message in callback function
@@ -170,12 +205,18 @@ void openOutputPort(const int port_index, const std::string& port_name)
     }
     catch (RtMidiError& error)
     {
+        setBothDevicesConnected(false);
+        throw ContinuableException(
+            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            ERROR_WHEN_OPEN_DEV, ERROR_CAUSE_OPEN_DEV_OUT);
+        /*
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
         setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
         setBothDevicesConnected(false);
         return;
+        */
     }
 
     if (input.isPortOpen())
@@ -193,12 +234,21 @@ void sendBankSelectMsb()
     }
     catch (RtMidiError& error)
     {
+        setBothDevicesConnected(false);
+        throw ContinuableException(
+            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            ERROR_WHEN_SEND_MESSAGE,
+            ERROR_CAUSE_MSB,
+            State::Idle
+        );
+        /*
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
         setAppError(error.getMessage().c_str());
         setNextState(State::Idle);
         return;
+        */
     }
 #ifdef _DEBUG
     Debug::addProcessedHistory(true, output.getPortName(), bank_select_msb);
@@ -216,12 +266,21 @@ void sendBankSelectLsb()
     }
     catch (RtMidiError& error)
     {
+        setBothDevicesConnected(false);
+        throw ContinuableException(
+            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            ERROR_WHEN_SEND_MESSAGE,
+            ERROR_CAUSE_LSB,
+            State::Idle
+        );
+        /*
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
         setAppError(error.getMessage().c_str());
         setNextState(State::Idle);
         return;
+        */
     }
 #ifdef _DEBUG
     Debug::addProcessedHistory(true, output.getPortName(), bank_select_lsb);
@@ -240,12 +299,21 @@ void sendProgChange()
     }
     catch (RtMidiError& error)
     {
+        setBothDevicesConnected(false);
+        throw ContinuableException(
+            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            ERROR_WHEN_SEND_MESSAGE,
+            ERROR_CAUSE_PROG_CHANGE,
+            State::Idle
+        );
+        /*
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
         setAppError(error.getMessage().c_str());
         setNextState(State::Idle);
         return;
+        */
     }
 #ifdef _DEBUG
     Debug::addProcessedHistory(true, output.getPortName(), prog_change);
@@ -262,11 +330,18 @@ void sendAllSoundOff()
     }
     catch (RtMidiError& error)
     {
+        throw ContinuableException(
+            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            ERROR_WHEN_SEND_MESSAGE,
+            ERROR_CAUSE_ALL_SND_OFF
+        );
+        /*
 #ifdef _DEBUG
         LOGD << error.getMessage();
 #endif
         setAppError(error.getMessage().c_str());
         return;
+        */
     }
 #ifdef _DEBUG
     Debug::addProcessedHistory(true, output.getPortName(), all_sound_off);
@@ -278,7 +353,20 @@ void sendOneTaskMessage()
     if (MessageTask::taskSize() > 0)
     {
         ByteVec message = MessageTask::lastTask();
-        output.sendMessage(&message);
+
+        try
+        {
+            output.sendMessage(&message);
+        }
+        catch (RtMidiError& error)
+        {
+            throw ContinuableException(
+                StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+                ERROR_WHEN_SEND_MESSAGE,
+                ERROR_CAUSE_ONE_TASK
+            );
+        }
+
 #ifdef _DEBUG
         Debug::addProcessedHistory(true, output.getPortName(), message);
 #endif
