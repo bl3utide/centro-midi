@@ -70,7 +70,7 @@ BEGIN
             VALUE "CompanyName", "bl3utide"
             VALUE "FileDescription", "MIDI connection provider"
             VALUE "FileVersion", "1.2.0.0"
-            VALUE "InternalName", "CentroMidi.exe"
+            VALUE "InternalName", "CentroMidi"
             VALUE "LegalCopyright", "Copyright (C) 2024 bl3utide"
             VALUE "OriginalFilename", "CentroMidi.exe"
             VALUE "ProductName", "Centro MIDI"
