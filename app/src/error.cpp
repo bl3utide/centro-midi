@@ -1,8 +1,5 @@
 ﻿#include "common.hpp"
 #include "error.hpp"
-#ifdef _DEBUG
-#include "logger.hpp"
-#endif
 
 namespace CentroMidi
 {
