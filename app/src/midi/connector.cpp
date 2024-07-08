@@ -18,7 +18,6 @@ namespace Connector
 {
 
 // public
-//MidiConnection conn;
 InputConnection input;
 OutputConnection output;
 std::vector<std::string> in_name_list;
@@ -58,12 +57,6 @@ void fetchDeviceList()
                 ERROR_WHEN_FETCH_DEV_LIST,
                 ERROR_CAUSE_GET_INDEV_NAME
             );
-            /*
-#ifdef _DEBUG
-            LOGD << error.getMessage();
-#endif
-            throw;
-            */
         }
     }
 
@@ -83,12 +76,6 @@ void fetchDeviceList()
                 ERROR_WHEN_FETCH_DEV_LIST,
                 ERROR_CAUSE_GET_OUTDEV_NAME
             );
-            /*
-#ifdef _DEBUG
-            LOGD << error.getMessage();
-#endif
-            throw;
-            */
         }
     }
 }
@@ -178,15 +165,6 @@ void openInputPort(const int port_index, const std::string& port_name)
         throw ContinuableException(
             StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
             ERROR_WHEN_OPEN_DEV, ERROR_CAUSE_OPEN_DEV_IN);
-        /*
-#ifdef _DEBUG
-        LOGD << error.getMessage();
-#endif
-
-        setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
-        setBothDevicesConnected(false);
-        return;
-        */
     }
 
     // receive message in callback function
@@ -209,14 +187,6 @@ void openOutputPort(const int port_index, const std::string& port_name)
         throw ContinuableException(
             StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
             ERROR_WHEN_OPEN_DEV, ERROR_CAUSE_OPEN_DEV_OUT);
-        /*
-#ifdef _DEBUG
-        LOGD << error.getMessage();
-#endif
-        setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
-        setBothDevicesConnected(false);
-        return;
-        */
     }
 
     if (input.isPortOpen())
@@ -241,14 +211,6 @@ void sendBankSelectMsb()
             ERROR_CAUSE_MSB,
             State::Idle
         );
-        /*
-#ifdef _DEBUG
-        LOGD << error.getMessage();
-#endif
-        setAppError(error.getMessage().c_str());
-        setNextState(State::Idle);
-        return;
-        */
     }
 #ifdef _DEBUG
     Debug::addProcessedHistory(true, output.getPortName(), bank_select_msb);
@@ -273,14 +235,6 @@ void sendBankSelectLsb()
             ERROR_CAUSE_LSB,
             State::Idle
         );
-        /*
-#ifdef _DEBUG
-        LOGD << error.getMessage();
-#endif
-        setAppError(error.getMessage().c_str());
-        setNextState(State::Idle);
-        return;
-        */
     }
 #ifdef _DEBUG
     Debug::addProcessedHistory(true, output.getPortName(), bank_select_lsb);
@@ -306,14 +260,6 @@ void sendProgChange()
             ERROR_CAUSE_PROG_CHANGE,
             State::Idle
         );
-        /*
-#ifdef _DEBUG
-        LOGD << error.getMessage();
-#endif
-        setAppError(error.getMessage().c_str());
-        setNextState(State::Idle);
-        return;
-        */
     }
 #ifdef _DEBUG
     Debug::addProcessedHistory(true, output.getPortName(), prog_change);
@@ -335,13 +281,6 @@ void sendAllSoundOff()
             ERROR_WHEN_SEND_MESSAGE,
             ERROR_CAUSE_ALL_SND_OFF
         );
-        /*
-#ifdef _DEBUG
-        LOGD << error.getMessage();
-#endif
-        setAppError(error.getMessage().c_str());
-        return;
-        */
     }
 #ifdef _DEBUG
     Debug::addProcessedHistory(true, output.getPortName(), all_sound_off);
