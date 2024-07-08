@@ -56,7 +56,7 @@ void fetchDeviceList()
 #ifdef _DEBUG
             LOGD << error.getMessage();
 #endif
-            throw error;
+            throw;
         }
     }
 
@@ -74,7 +74,7 @@ void fetchDeviceList()
 #ifdef _DEBUG
             LOGD << error.getMessage();
 #endif
-            throw error;
+            throw;
         }
     }
 }
