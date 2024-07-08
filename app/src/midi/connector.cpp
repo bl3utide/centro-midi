@@ -28,16 +28,16 @@ int display_bank = 1;                   // transmit_bank + 1
 int display_program_change = 1;         // transmit_program_change + 1
 
 // private
-int _transmit_midi_channel;     // 0 to 15;         midi ch actually sent
-int _transmit_bank;             // 0 to 16 ^ 2 - 1; bank actually sent
-int _transmit_program_change;   // 0 to 127;        pc actually sent
+bool is_both_devices_connected_;
+int transmit_midi_channel_;     // 0 to 15;         midi ch actually sent
+int transmit_bank_;             // 0 to 16 ^ 2 - 1; bank actually sent
+int transmit_program_change_;   // 0 to 127;        pc actually sent
 const int MIN_TRANSMIT_MIDI_CHANNEL = 0;
 const int MAX_TRANSMIT_MIDI_CHANNEL = 15;
 const int MIN_TRANSMIT_BANK = 0;
 const int MAX_TRANSMIT_BANK = 128 * 128 - 1;
 const int MIN_TRANSMIT_PROGRAM_CHANGE = 0;
 const int MAX_TRANSMIT_PROGRAM_CHANGE = 127;
-bool _is_both_devices_connected;
 
 void fetchDeviceList()
 {
@@ -196,7 +196,7 @@ void openOutputPort(const int port_index, const std::string& port_name)
 void sendBankSelectMsb()
 {
     ByteVec bank_select_msb =
-        MessageHandler::getBankSelectMsbMessage(_transmit_midi_channel, _transmit_bank);
+        MessageHandler::getBankSelectMsbMessage(transmit_midi_channel_, transmit_bank_);
 
     try
     {
@@ -220,7 +220,7 @@ void sendBankSelectMsb()
 void sendBankSelectLsb()
 {
     ByteVec bank_select_lsb =
-        MessageHandler::getBankSelectLsbMessage(_transmit_midi_channel, _transmit_bank);
+        MessageHandler::getBankSelectLsbMessage(transmit_midi_channel_, transmit_bank_);
 
     try
     {
@@ -244,7 +244,7 @@ void sendBankSelectLsb()
 void sendProgChange()
 {
     ByteVec prog_change =
-        MessageHandler::getProgChangeMessage(_transmit_midi_channel, _transmit_program_change);
+        MessageHandler::getProgChangeMessage(transmit_midi_channel_, transmit_program_change_);
 
     try
     {
@@ -268,7 +268,7 @@ void sendProgChange()
 
 void sendAllSoundOff()
 {
-    ByteVec all_sound_off = MessageHandler::getAllSoundOffMessage(_transmit_midi_channel);
+    ByteVec all_sound_off = MessageHandler::getAllSoundOffMessage(transmit_midi_channel_);
 
     try
     {
@@ -314,20 +314,20 @@ void sendOneTaskMessage()
 
 void updateTransmitMidiChannel() noexcept
 {
-    _transmit_midi_channel = display_midi_channel - 1;
+    transmit_midi_channel_ = display_midi_channel - 1;
 }
 
 void updateTransmitBank() noexcept
 {
-    _transmit_bank = display_bank - 1;
+    transmit_bank_ = display_bank - 1;
 }
 
 void updateTransmitProgramChange() noexcept
 {
-    _transmit_program_change = display_program_change - 1;
+    transmit_program_change_ = display_program_change - 1;
 }
 
-int getTransmitMidiChannel() noexcept { return _transmit_midi_channel; }
+int getTransmitMidiChannel() noexcept { return transmit_midi_channel_; }
 
 int getMinTransmitMidiChannel() noexcept { return MIN_TRANSMIT_MIDI_CHANNEL; }
 int getMaxTransmitMidiChannel() noexcept { return MAX_TRANSMIT_MIDI_CHANNEL; }
@@ -338,19 +338,19 @@ int getMaxTransmitProgramChange() noexcept { return MAX_TRANSMIT_PROGRAM_CHANGE;
 
 bool isBothDevicesConnected() noexcept
 {
-    return _is_both_devices_connected;
+    return is_both_devices_connected_;
 }
 
 void setBothDevicesConnected(const bool connected)
 {
     if (connected)
     {
-        _is_both_devices_connected = true;
+        is_both_devices_connected_ = true;
         Annotation::clearText();
     }
     else
     {
-        _is_both_devices_connected = false;
+        is_both_devices_connected_ = false;
         Annotation::setText(Annotation::Message::DisconnectedAlert, Annotation::Type::Alert);
     }
 }
