@@ -66,33 +66,7 @@ void loop()
 
         try
         {
-            switch (getState())
-            {
-                case State::InitInternalData:
-                    Connector::resetAllConnections();
-                    setNextState(State::ApplyConfig);
-                    break;
-                case State::ApplyConfig:
-                    Config::load();
-                    Connector::applyConfig();
-                    setNextState(State::Idle);
-                    break;
-                case State::Idle:
-                    Connector::sendOneTaskMessage();
-                    break;
-                case State::SendBankProgChange:
-                    Connector::sendBankSelectMsb();
-                    Connector::sendBankSelectLsb();
-                    Connector::sendProgChange();
-                    setNextState(State::Idle);
-                    break;
-                case State::PrepareToExit:
-                    Connector::updateConfig();
-                    running = false;
-                    break;
-                default:
-                    break;
-            }
+            running = processForCurrentState();
         }
         catch (RtMidiError& error)
         {
