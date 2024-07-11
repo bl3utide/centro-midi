@@ -21,7 +21,7 @@ std::mutex history_mutex;
 // private
 const size_t MAX_SIZE_DISPLAY_HISTORY = 200;
 
-void addProcessedHistory(const bool transmitted, const std::string& device_name, const ByteVec& data)
+void addProcessedHistory(bool transmitted, const std::string& device_name, const ByteVec& data)
 {
     auto now = std::chrono::system_clock::now();
     auto now_as_time_t = std::chrono::system_clock::to_time_t(now);

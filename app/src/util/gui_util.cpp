@@ -10,7 +10,7 @@ void MouseCursorToHand() noexcept
         ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
 }
 
-void TextColoredU32(const ImU32& col, const char* fmt, ...) noexcept
+void TextColoredU32(ImU32 col, const char* fmt, ...) noexcept
 {
     va_list args;
     va_start(args, fmt);

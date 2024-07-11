@@ -15,7 +15,7 @@ std::list<ByteVec> task_list_;
 size_t largest_task_size_ever_ = 0;
 #endif
 
-void addTask(ByteVec& m)
+void addTask(const ByteVec& m)
 {
     task_list_.push_front(m);
 #ifdef _DEBUG
@@ -23,7 +23,7 @@ void addTask(ByteVec& m)
 #endif
 }
 
-ByteVec lastTask()
+const ByteVec lastTask()
 {
     ByteVec lastTask = task_list_.back();
     task_list_.pop_back();

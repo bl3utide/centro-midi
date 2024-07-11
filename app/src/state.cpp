@@ -69,7 +69,7 @@ State getNextState() noexcept
     return next_state_;
 }
 
-void setNextState(State state, const bool force_mod) noexcept
+void setNextState(State state, bool force_mod) noexcept
 {
     if (state == State::None)
         return;

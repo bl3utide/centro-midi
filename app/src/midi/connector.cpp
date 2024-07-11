@@ -153,7 +153,7 @@ void resetAllConnections()
     setBothDevicesConnected(false);
 }
 
-void openInputPort(const int port_index, const std::string& port_name)
+void openInputPort(int port_index, const std::string& port_name)
 {
     try
     {
@@ -175,7 +175,7 @@ void openInputPort(const int port_index, const std::string& port_name)
         setBothDevicesConnected(true);
 }
 
-void openOutputPort(const int port_index, const std::string& port_name)
+void openOutputPort(int port_index, const std::string& port_name)
 {
     try
     {
@@ -341,7 +341,7 @@ bool isBothDevicesConnected() noexcept
     return is_both_devices_connected_;
 }
 
-void setBothDevicesConnected(const bool connected)
+void setBothDevicesConnected(bool connected)
 {
     if (connected)
     {

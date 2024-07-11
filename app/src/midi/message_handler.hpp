@@ -5,10 +5,10 @@ namespace CentroMidi
 namespace MessageHandler
 {
 
-ByteVec getBankSelectMsbMessage(const int ch, const int value);
-ByteVec getBankSelectLsbMessage(const int ch, const int value);
-ByteVec getProgChangeMessage(const int ch, const int value);
-ByteVec getAllSoundOffMessage(const int ch);
+const ByteVec getBankSelectMsbMessage(int ch, int value);
+const ByteVec getBankSelectLsbMessage(int ch, int value);
+const ByteVec getProgChangeMessage(int ch, int value);
+const ByteVec getAllSoundOffMessage(int ch);
 bool isNoteOff(const ByteVec& mb) noexcept;
 bool isNoteOn(const ByteVec& mb) noexcept;
 #ifdef _DEBUG

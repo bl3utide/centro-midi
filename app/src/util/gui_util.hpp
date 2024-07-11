@@ -45,7 +45,7 @@ enum class ImGuiCustomKey : int
 };
 
 void MouseCursorToHand() noexcept;
-void TextColoredU32(const ImU32& col, const char* fmt, ...) noexcept;
+void TextColoredU32(ImU32 col, const char* fmt, ...) noexcept;
 void BeginGroupPanel(const char* name, const ImVec2& size);
 void EndGroupPanel();
 void PushFont(int font_id) noexcept;

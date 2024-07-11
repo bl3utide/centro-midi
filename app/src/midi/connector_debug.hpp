@@ -52,7 +52,7 @@ extern int history_selected_index;
 extern ProcessedMidiMessage history_selected;
 extern std::mutex history_mutex;
 
-void addProcessedHistory(const bool transmitted, const std::string& device_name, const ByteVec& data);
+void addProcessedHistory(bool transmitted, const std::string& device_name, const ByteVec& data);
 
 } // Debug
 } // Connector

@@ -27,7 +27,7 @@ bool show_processed_message_window_ = false;
 //int _selected_debug_log_index = -1;
 //Logger::DisplayFormattedDebugLog _selected_debug_log;
 
-void drawDebugMenuBar(const ImVec2 viewport_pos)
+void drawDebugMenuBar(const ImVec2& viewport_pos)
 {
     GuiUtil::PushFont((int)FontDebug::Text);
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.35f, 0.35f, 0.35f, 0.65f));
@@ -393,8 +393,8 @@ void drawDebugTabItemLogger()
     }
 }
 
-void drawDebugWindow(bool* open, const int window_w, const int window_h,
-    const State current_state)
+void drawDebugWindow(bool* open, int window_w, int window_h,
+    State current_state)
 {
     pushDebugStyles();
 
@@ -445,7 +445,7 @@ void drawDebugWindow(bool* open, const int window_w, const int window_h,
     popDebugStyles();
 }
 
-void drawDebugWindows(const int window_w, const int window_h, const State current_state)
+void drawDebugWindows(int window_w, int window_h, State current_state)
 {
     GuiUtil::PushFont((int)FontDebug::Text);
 

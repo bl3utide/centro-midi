@@ -20,8 +20,8 @@ void finalize() noexcept;
 void applyConfig();
 void updateConfig() noexcept;
 void resetAllConnections();
-void openInputPort(const int port_index, const std::string& port_name);
-void openOutputPort(const int port_index, const std::string& port_name);
+void openInputPort(int port_index, const std::string& port_name);
+void openOutputPort(int port_index, const std::string& port_name);
 void sendBankSelectMsb();
 void sendBankSelectLsb();
 void sendProgChange();
@@ -38,7 +38,7 @@ int getMaxTransmitBank() noexcept;
 int getMinTransmitProgramChange() noexcept;
 int getMaxTransmitProgramChange() noexcept;
 bool isBothDevicesConnected() noexcept;
-void setBothDevicesConnected(const bool connected);
+void setBothDevicesConnected(bool connected);
 
 } // Connector
 } // CentroMidi

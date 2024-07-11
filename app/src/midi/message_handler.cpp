@@ -9,7 +9,7 @@ namespace CentroMidi
 namespace MessageHandler
 {
 
-ByteVec getBankSelectMsbMessage(const int ch, const int value)
+const ByteVec getBankSelectMsbMessage(int ch, int value)
 {
     Byte order_byte = 0xB0 + static_cast<Byte>(ch);
 
@@ -21,7 +21,7 @@ ByteVec getBankSelectMsbMessage(const int ch, const int value)
     return bs;
 }
 
-ByteVec getBankSelectLsbMessage(const int ch, const int value)
+const ByteVec getBankSelectLsbMessage(int ch, int value)
 {
     Byte order_byte = 0xB0 + static_cast<Byte>(ch);
 
@@ -33,7 +33,7 @@ ByteVec getBankSelectLsbMessage(const int ch, const int value)
     return bs;
 }
 
-ByteVec getProgChangeMessage(const int ch, const int value)
+const ByteVec getProgChangeMessage(int ch, int value)
 {
     Byte order_byte = 0xC0 + static_cast<Byte>(ch);
 
@@ -44,7 +44,7 @@ ByteVec getProgChangeMessage(const int ch, const int value)
     return pc;
 }
 
-ByteVec getAllSoundOffMessage(const int ch)
+const ByteVec getAllSoundOffMessage(int ch)
 {
     Byte order_byte = 0xB0 + static_cast<Byte>(ch);
 
