@@ -129,7 +129,7 @@ void finalize() noexcept
 void loop()
 {
     SDL_Event event;
-    bool running = true;
+    auto running = true;
 
     while (running)
     {

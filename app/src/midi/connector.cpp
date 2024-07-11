@@ -98,7 +98,7 @@ void finalize() noexcept
 void applyConfig()
 {
     // Input Device
-    const std::string& cv_input_device_name = Config::getConfigValue<std::string>(Config::Key::InputDevice);
+    const auto cv_input_device_name = Config::getConfigValue<std::string>(Config::Key::InputDevice);
     const auto in_res = std::find(in_name_list.cbegin(), in_name_list.cend(), cv_input_device_name);
     if (in_res != in_name_list.cend())
     {   // found
@@ -114,11 +114,11 @@ void applyConfig()
     }
 
     // Output Device
-    const std::string& cv_output_device_name = Config::getConfigValue<std::string>(Config::Key::OutputDevice);
+    const auto cv_output_device_name = Config::getConfigValue<std::string>(Config::Key::OutputDevice);
     const auto out_res = std::find(out_name_list.cbegin(), out_name_list.cend(), cv_output_device_name);
     if (out_res != out_name_list.cend())
     {   // found
-        const int index = static_cast<int>(std::distance(out_name_list.cbegin(), out_res));
+        const auto index = static_cast<int>(std::distance(out_name_list.cbegin(), out_res));
         try
         {
             openOutputPort(index, out_name_list[index]);
@@ -219,7 +219,7 @@ void sendBankSelectMsb()
 
 void sendBankSelectLsb()
 {
-    ByteVec bank_select_lsb =
+    const auto bank_select_lsb =
         MessageHandler::getBankSelectLsbMessage(transmit_midi_channel_, transmit_bank_);
 
     try
@@ -243,7 +243,7 @@ void sendBankSelectLsb()
 
 void sendProgChange()
 {
-    ByteVec prog_change =
+    const auto prog_change =
         MessageHandler::getProgChangeMessage(transmit_midi_channel_, transmit_program_change_);
 
     try
@@ -268,7 +268,7 @@ void sendProgChange()
 
 void sendAllSoundOff()
 {
-    ByteVec all_sound_off = MessageHandler::getAllSoundOffMessage(transmit_midi_channel_);
+    const auto all_sound_off = MessageHandler::getAllSoundOffMessage(transmit_midi_channel_);
 
     try
     {
@@ -291,7 +291,7 @@ void sendOneTaskMessage()
 {
     if (MessageTask::taskSize() > 0)
     {
-        ByteVec message = MessageTask::lastTask();
+        const auto message = MessageTask::lastTask();
 
         try
         {

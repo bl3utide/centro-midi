@@ -29,7 +29,7 @@ const float UI_MAIN_CONTENT_WIDTH = WINDOW_WIDTH - 64.0f;
 
 void setUiStyle() noexcept
 {
-    ImGuiStyle* style = &ImGui::GetStyle();
+    auto style = &ImGui::GetStyle();
     style->WindowPadding = ImVec2(6.0f, 6.0f);
     style->WindowRounding = 0.0f;
     style->WindowBorderSize = 0.0f;
@@ -98,7 +98,7 @@ void drawErrorModal()
             showing_error_message = true;
         }
 
-        ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+        const auto center = ImGui::GetMainViewport()->GetCenter();
         ImGui::SetNextWindowPos(center, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
 
         if (ImGui::BeginPopupModal("app_error", &showing_error_message,
@@ -136,7 +136,7 @@ void drawErrorModal()
 
 void drawAboutModal()
 {
-    ImGuiIO& io = ImGui::GetIO();
+    auto& io = ImGui::GetIO();
     auto modal_window_size = ImVec2(400.0f, 180.0f);
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
@@ -306,7 +306,7 @@ void finalize() noexcept
 
 void drawGui()
 {
-    State current_state = getState();
+    const auto current_state = getState();
 
     preDraw();
 
@@ -332,7 +332,7 @@ void drawGui()
 
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 32.0f);
 
-        float y = ImGui::GetCursorPosY();
+        auto y = ImGui::GetCursorPosY();
         ImGui::SetNextWindowPos(ImVec2(vp_pos.x + (window_width - UI_MAIN_CONTENT_WIDTH) * 0.5f, vp_pos.y + y));
         ImGui::BeginChild("main", ImVec2(UI_MAIN_CONTENT_WIDTH, -32.0f), true, 0);
         {

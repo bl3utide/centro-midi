@@ -25,7 +25,7 @@ void addTask(const ByteVec& m)
 
 const ByteVec lastTask()
 {
-    ByteVec lastTask = task_list_.back();
+    auto& lastTask = task_list_.back();
     task_list_.pop_back();
     return lastTask;
 }

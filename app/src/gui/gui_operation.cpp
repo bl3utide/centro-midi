@@ -27,14 +27,14 @@ void drawOperationGroupConnections()
     {
         auto label_width = CONNECTION_LABEL_WIDTH;
         auto control_width = CONNECTION_CONTROL_WIDTH;
-        ImGuiIO& io = ImGui::GetIO();
+        auto& io = ImGui::GetIO();
 
         GuiUtil::PushFont((int)Font::Text);
 
         // Input Device Combobox
         {
-            const int last_connected_port_index = Connector::input.getLastConnectedPortIndex();
-            const int last_failed_port_index = Connector::input.getLastFailedPortIndex();
+            const auto last_connected_port_index = Connector::input.getLastConnectedPortIndex();
+            const auto last_failed_port_index = Connector::input.getLastFailedPortIndex();
             const auto dev_color =
                 last_connected_port_index != -1 ? UI_COLOR_TEXT_DEV_CONNECTED
                 : last_failed_port_index != -1 ? UI_COLOR_TEXT_DEV_FAILED
@@ -48,7 +48,7 @@ void drawOperationGroupConnections()
                 ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
                 for (int n = 0; n < Connector::in_name_list.size(); ++n)
                 {
-                    const bool is_selected = n == Connector::input.getPortIndex();
+                    const auto is_selected = n == Connector::input.getPortIndex();
                     const auto dev_item_color =
                         last_connected_port_index == n ? UI_COLOR_TEXT_DEV_CONNECTED
                         : last_failed_port_index == n ? UI_COLOR_TEXT_DEV_FAILED
@@ -79,8 +79,8 @@ void drawOperationGroupConnections()
 
         // Output Dev
         {
-            const int last_connected_port_index = Connector::output.getLastConnectedPortIndex();
-            const int last_failed_port_index = Connector::output.getLastConnectedPortIndex();
+            const auto last_connected_port_index = Connector::output.getLastConnectedPortIndex();
+            const auto last_failed_port_index = Connector::output.getLastConnectedPortIndex();
             const auto dev_color =
                 last_connected_port_index != -1 ? UI_COLOR_TEXT_DEV_CONNECTED
                 : last_failed_port_index != -1 ? UI_COLOR_TEXT_DEV_FAILED
@@ -94,7 +94,7 @@ void drawOperationGroupConnections()
                 ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
                 for (int n = 0; n < Connector::out_name_list.size(); ++n)
                 {
-                    const bool is_selected = n == Connector::output.getPortIndex();
+                    const auto is_selected = n == Connector::output.getPortIndex();
                     const auto dev_item_color =
                         last_connected_port_index == n ? UI_COLOR_TEXT_DEV_CONNECTED
                         : last_failed_port_index == n ? UI_COLOR_TEXT_DEV_FAILED
@@ -152,7 +152,7 @@ void drawOperationGroupConnections()
 
 void drawBankSelect()
 {
-    ImGuiIO& io = ImGui::GetIO();
+    auto& io = ImGui::GetIO();
 
     if (GuiUtil::ImGuiLeftLabel(ImGui::InputInt, 0, "Bank Select", false,
         80.0f, 42.0f, &Connector::display_bank, NULL, NULL,
@@ -187,19 +187,19 @@ void drawBankSelect()
 
 void drawProgramChangePanel()
 {
-    ImGuiIO& io = ImGui::GetIO();
+    auto& io = ImGui::GetIO();
 
     ImGui::Text("Program Change");
     ImGui::Indent(8.0f);
 
-    const int PC_PER_ROW = 16;
+    const auto PC_PER_ROW = 16;
     char buf[4];
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     for (int pc_row_i = 0; pc_row_i < Connector::getMaxTransmitProgramChange() / PC_PER_ROW + 1; ++pc_row_i)
     {
-        for (int pc_i = 1; pc_i <= PC_PER_ROW; ++pc_i)
+        for (auto pc_i = 1; pc_i <= PC_PER_ROW; ++pc_i)
         {
-            int target_pc = pc_row_i * PC_PER_ROW + pc_i;
+            const auto target_pc = pc_row_i * PC_PER_ROW + pc_i;
             sprintf(buf, "%d", target_pc);
             ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.5f, 0.5f));
             if (ImGui::Selectable(buf, target_pc == Connector::display_program_change, 0, ImVec2(20.0f, 16.0f)))
@@ -210,8 +210,8 @@ void drawProgramChangePanel()
             }
             ImGui::PopStyleVar();
 
-            ImVec2 p0 = ImGui::GetItemRectMin();
-            ImVec2 p1 = ImGui::GetItemRectMax();
+            const auto p0 = ImGui::GetItemRectMin();
+            const auto p1 = ImGui::GetItemRectMax();
 
             GuiUtil::MouseCursorToHand();
             if (ImGui::IsItemHovered())
@@ -280,7 +280,7 @@ void drawOperationGroupControls()
 void drawOperationPanel()
 {
     drawOperationGroupConnections();
-    const bool is_output_device_connected = Connector::output.isPortOpen();
+    const auto is_output_device_connected = Connector::output.isPortOpen();
     if (!is_output_device_connected) ImGui::BeginDisabled();
     drawOperationGroupControls();
     if (!is_output_device_connected) ImGui::EndDisabled();
