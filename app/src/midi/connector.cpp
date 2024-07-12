@@ -210,7 +210,7 @@ void sendBankSelectMsb()
 
     try
     {
-        output.sendMessage(&bank_select_msb);
+        output.sendMessage(bank_select_msb);
     }
     catch (RtMidiError& error)
     {
@@ -234,7 +234,7 @@ void sendBankSelectLsb()
 
     try
     {
-        output.sendMessage(&bank_select_lsb);
+        output.sendMessage(bank_select_lsb);
     }
     catch (RtMidiError& error)
     {
@@ -258,7 +258,7 @@ void sendProgChange()
 
     try
     {
-        output.sendMessage(&prog_change);
+        output.sendMessage(prog_change);
         setNextState(State::Idle);
     }
     catch (RtMidiError& error)
@@ -282,7 +282,7 @@ void sendAllSoundOff()
 
     try
     {
-        output.sendMessage(&all_sound_off);
+        output.sendMessage(all_sound_off);
     }
     catch (RtMidiError& error)
     {
@@ -305,7 +305,7 @@ void sendOneTaskMessage()
 
         try
         {
-            output.sendMessage(&message);
+            output.sendMessage(message);
         }
         catch (RtMidiError& error)
         {

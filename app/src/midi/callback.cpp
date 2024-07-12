@@ -19,13 +19,13 @@ void receiveInputDeviceMessage(double delta_time, ByteVec* message, void* user_d
 {
     if (MessageHandler::isNoteOff(*message) || MessageHandler::isNoteOn(*message))
     {
+        ByteVec send_message;
         if (Connector::force_adjust_midi_channel)
         {
             const auto ch = getTransmitMidiChannel();
-            ByteVec channel_adj_message;
             if (MessageHandler::isNoteOff(*message))
             {
-                channel_adj_message = {
+                send_message = {
                     static_cast<Byte>(0x80 + ch),
                     message->at(1),
                     message->at(2)
@@ -33,26 +33,26 @@ void receiveInputDeviceMessage(double delta_time, ByteVec* message, void* user_d
             }
             else
             {
-                channel_adj_message = {
+                send_message = {
                     static_cast<Byte>(0x90 + ch),
                     message->at(1),
                     message->at(2)
                 };
             }
-
-            try
-            {
-                output.sendMessage(&channel_adj_message);
-            }
-            catch (RtMidiError& error)
-            {
-                Logger::debug(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
-                setAppError("MIDI error when sending message from input to output");
-            }
         }
         else
         {
-            output.sendMessage(message);
+            send_message = *message;
+        }
+
+        try
+        {
+            output.sendMessage(send_message);
+        }
+        catch (RtMidiError& error)
+        {
+            Logger::debug(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
+            setAppError("MIDI error when sending message from input to output");
         }
     }
 }
