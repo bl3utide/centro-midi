@@ -138,7 +138,9 @@ void loop()
         {
             ImGui_ImplSDL2_ProcessEvent(&event);
             if (event.type == SDL_QUIT)
+            {
                 setNextState(State::PrepareToExit);
+            }
         }
 
         // processing branches depending on current state

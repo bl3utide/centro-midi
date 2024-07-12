@@ -121,9 +121,13 @@ void drawOperationGroupConnections()
             (int)ImGuiInputTextFlags_AutoSelectAll))
         {
             if (Connector::display_midi_channel < Connector::getMinTransmitMidiChannel() + 1)
+            {
                 Connector::display_midi_channel = Connector::getMinTransmitMidiChannel() + 1;
+            }
             else if (Connector::display_midi_channel > Connector::getMaxTransmitMidiChannel() + 1)
+            {
                 Connector::display_midi_channel = Connector::getMaxTransmitMidiChannel() + 1;
+            }
             Connector::updateTransmitMidiChannel();
         }
         GuiUtil::MouseCursorToHand();
@@ -131,10 +135,14 @@ void drawOperationGroupConnections()
         {
             if ((io.MouseWheel > 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Up, true)) &&        // ++
                 Connector::display_midi_channel < Connector::getMaxTransmitMidiChannel() + 1)
+            {
                 ++Connector::display_midi_channel;
+            }
             else if ((io.MouseWheel < 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Down, true)) &&   // --
                 Connector::display_midi_channel > Connector::getMinTransmitMidiChannel() + 1)
+            {
                 --Connector::display_midi_channel;
+            }
             Connector::updateTransmitMidiChannel();
         }
 
@@ -159,9 +167,13 @@ void drawBankSelect()
         (int)ImGuiInputTextFlags_AutoSelectAll))
     {
         if (Connector::display_bank < Connector::getMinTransmitBank() + 1)
+        {
             Connector::display_bank = Connector::getMinTransmitBank() + 1;
+        }
         else if (Connector::display_bank > Connector::getMaxTransmitBank() + 1)
+        {
             Connector::display_bank = Connector::getMaxTransmitBank() + 1;
+        }
         Connector::updateTransmitBank();
         setNextState(State::SendBankProgChange);
     }
@@ -247,10 +259,14 @@ void drawProgramChangePanel()
             }
 
             if (target_pc == Connector::display_program_change)
+            {
                 draw_list->AddRect(p0, p1, IM_COL32(200, 200, 200, 255));
+            }
 
             if (pc_i != PC_PER_ROW)
+            {
                 ImGui::SameLine();
+            }
         }
     }
 
