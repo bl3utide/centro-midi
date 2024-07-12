@@ -156,13 +156,6 @@ void loop()
             setAppError(ce.getErrorMessage().c_str());
             setNextState(ce.getNextState());
         }
-//        catch (RtMidiError& error)
-//        {
-//#ifdef _DEBUG
-//            LOGD << error.getMessage();
-//#endif
-//            setAppError(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
-//        }
         catch (UncontinuableException& uce)
         {
             Logger::error(uce);
@@ -171,10 +164,6 @@ void loop()
         }
         catch (std::exception& error)
         {
-//#ifdef _DEBUG
-//            LOGD << error.what();
-//#endif
-//            setAppError(StringUtil::format("General error: %s", error.what()));
             UncontinuableException uce(error.what(), ERROR_WHEN_STATE_PROCESS);
             Logger::error(uce);
             Gui::showMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Error by unexpected cause");

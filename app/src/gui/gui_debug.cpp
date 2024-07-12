@@ -24,8 +24,6 @@ bool show_debug_menu_bar_ = true;
 bool show_demo_window_ = false;
 bool show_debug_window_ = true;
 bool show_processed_message_window_ = false;
-//int _selected_debug_log_index = -1;
-//Logger::DisplayFormattedDebugLog _selected_debug_log;
 
 void drawDebugMenuBar(const ImVec2& viewport_pos)
 {
