@@ -22,10 +22,10 @@ InputConnection input;
 OutputConnection output;
 std::vector<std::string> in_name_list;
 std::vector<std::string> out_name_list;
-bool force_adjust_midi_channel = true;  // send note off/on messages
-int display_midi_channel = 1;           // transmit_midi_channel + 1
-int display_bank = 1;                   // transmit_bank + 1
-int display_program_change = 1;         // transmit_program_change + 1
+bool force_adjust_midi_channel;         // send note off/on messages
+int display_midi_channel;               // transmit_midi_channel + 1
+int display_bank;                       // transmit_bank + 1
+int display_program_change;             // transmit_program_change + 1
 
 // private
 bool is_both_devices_connected_;
@@ -87,6 +87,16 @@ void initialize()
     updateTransmitMidiChannel();
     updateTransmitBank();
     updateTransmitProgramChange();
+
+    force_adjust_midi_channel = true;
+    display_midi_channel = 1;
+    display_bank = 1;
+    display_program_change = 1;
+    is_both_devices_connected_ = false;
+
+#ifdef _DEBUG
+    Debug::history_selected_index = -1;
+#endif
 }
 
 void finalize() noexcept

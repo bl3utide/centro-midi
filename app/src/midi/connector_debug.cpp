@@ -14,7 +14,7 @@ namespace Debug
 
 // public
 std::vector<ProcessedMidiMessage> history;
-int history_selected_index = -1;
+int history_selected_index;
 ProcessedMidiMessage history_selected;
 std::mutex history_mutex;
 
