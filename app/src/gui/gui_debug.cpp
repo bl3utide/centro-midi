@@ -230,7 +230,7 @@ void drawDebugTabItemTransReceiveLog()
 void drawProcessedWindow()
 {
     std::unique_lock lock(Connector::Debug::history_mutex);
-    const auto& message = Connector::Debug::history_selected;
+    const auto message = Connector::Debug::history_selected;
     lock.unlock();
 
     ImGui::Begin("processed_detail", &show_processed_message_window_,
