@@ -132,6 +132,7 @@ public:
     UncontinuableException& operator=(const UncontinuableException&) = delete;
 };
 
+void initError() noexcept;
 void setAppError(const std::string& message) noexcept;
 
 } // CentroMidi
