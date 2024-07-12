@@ -46,7 +46,8 @@ void drawOperationGroupConnections()
                 (int)ImGuiComboFlags_NoArrowButton))
             {
                 ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
-                for (int n = 0; n < Connector::in_name_list.size(); ++n)
+                const auto in_name_list_size = Connector::in_name_list.size();
+                for (int n = 0; n < in_name_list_size; ++n)
                 {
                     const auto is_selected = n == Connector::input.getPortIndex();
                     const auto dev_item_color =
@@ -92,7 +93,8 @@ void drawOperationGroupConnections()
                 (int)ImGuiComboFlags_NoArrowButton))
             {
                 ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
-                for (int n = 0; n < Connector::out_name_list.size(); ++n)
+                const auto out_name_list_size = Connector::out_name_list.size();
+                for (int n = 0; n < out_name_list_size; ++n)
                 {
                     const auto is_selected = n == Connector::output.getPortIndex();
                     const auto dev_item_color =

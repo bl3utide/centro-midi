@@ -43,7 +43,8 @@ void fetchDeviceList()
 {
     // MIDI IN Port
     in_name_list.clear();
-    for (unsigned int i = 0; i < input.getPortCount(); ++i)
+    const auto in_port_count = input.getPortCount();
+    for (unsigned int i = 0; i < in_port_count; ++i)
     {
         try
         {
@@ -62,7 +63,8 @@ void fetchDeviceList()
 
     // MIDI OUT Port
     out_name_list.clear();
-    for (unsigned int i = 0; i < output.getPortCount(); ++i)
+    const auto out_port_count = output.getPortCount();
+    for (unsigned int i = 0; i < out_port_count; ++i)
     {
         try
         {
