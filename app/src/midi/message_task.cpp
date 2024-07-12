@@ -25,7 +25,9 @@ void addTask(const ByteVec& m)
 
 const ByteVec lastTask()
 {
-    auto& lastTask = task_list_.back();
+    // NOTE: Since you will call pop_back() immediately after this,
+    //       you need getting a copy of the element from the list.
+    ByteVec lastTask = task_list_.back();
     task_list_.pop_back();
     return lastTask;
 }
