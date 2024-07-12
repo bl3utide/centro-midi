@@ -17,7 +17,8 @@ namespace Callback
 *******************************************************************************/
 void receiveInputDeviceMessage(double delta_time, ByteVec* message, void* user_data)
 {
-    if (MessageHandler::isNoteOff(*message) || MessageHandler::isNoteOn(*message))
+    if (isBothDevicesConnected() &&
+        MessageHandler::isNoteOff(*message) || MessageHandler::isNoteOn(*message))
     {
         ByteVec send_message;
         if (Connector::force_adjust_midi_channel)
