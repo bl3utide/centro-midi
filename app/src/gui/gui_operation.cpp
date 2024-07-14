@@ -47,7 +47,7 @@ void drawOperationGroupConnections()
             {
                 ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
                 const auto in_name_list_size = Connector::in_name_list.size();
-                for (int n = 0; n < in_name_list_size; ++n)
+                for (auto n = 0; n < in_name_list_size; ++n)
                 {
                     const auto is_selected = n == Connector::input.getPortIndex();
                     const auto dev_item_color =
@@ -94,7 +94,7 @@ void drawOperationGroupConnections()
             {
                 ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
                 const auto out_name_list_size = Connector::out_name_list.size();
-                for (int n = 0; n < out_name_list_size; ++n)
+                for (auto n = 0; n < out_name_list_size; ++n)
                 {
                     const auto is_selected = n == Connector::output.getPortIndex();
                     const auto dev_item_color =
@@ -209,7 +209,7 @@ void drawProgramChangePanel()
     const auto PC_PER_ROW = 16;
     char buf[4];
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
-    for (int pc_row_i = 0; pc_row_i < Connector::getMaxTransmitProgramChange() / PC_PER_ROW + 1; ++pc_row_i)
+    for (auto pc_row_i = 0; pc_row_i < Connector::getMaxTransmitProgramChange() / PC_PER_ROW + 1; ++pc_row_i)
     {
         for (auto pc_i = 1; pc_i <= PC_PER_ROW; ++pc_i)
         {
