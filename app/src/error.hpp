@@ -113,7 +113,7 @@ private:
     State next_state_;
 };
 
-class UncontinuableException : public BaseException
+class UncontinuableException final : public BaseException
 {
 public:
     explicit UncontinuableException(

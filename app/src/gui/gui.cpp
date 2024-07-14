@@ -1,5 +1,4 @@
 ﻿#include "common.hpp"
-#include "annotation.hpp"
 #include "error.hpp"
 #include "compressed/arrayed_font.hpp"
 #include "gui/gui.hpp"

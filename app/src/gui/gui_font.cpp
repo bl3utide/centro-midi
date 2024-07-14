@@ -41,9 +41,9 @@ const std::unordered_map<Font, TextFont> FONTS
 #ifdef _DEBUG
 const std::unordered_map<FontDebug, TextFont> FONTS_DEBUG
 {
-    { FontDebug::Text,      TextFont(ArrayedFont::DEBUG_DATA, ArrayedFont::DEBUG_SIZE, 14.0f)},
-    { FontDebug::ProcHead,  TextFont(ArrayedFont::DEBUG_DATA, ArrayedFont::DEBUG_SIZE, 20.0f)},
-    { FontDebug::ProcHex,   TextFont(ArrayedFont::DEBUG_DATA, ArrayedFont::DEBUG_SIZE, 18.0f)},
+    { FontDebug::Text,      TextFont(ArrayedFont::DEBUG_DATA, ArrayedFont::DEBUG_SIZE, 14.0f) },
+    { FontDebug::ProcHead,  TextFont(ArrayedFont::DEBUG_DATA, ArrayedFont::DEBUG_SIZE, 20.0f) },
+    { FontDebug::ProcHex,   TextFont(ArrayedFont::DEBUG_DATA, ArrayedFont::DEBUG_SIZE, 18.0f) },
 };
 #endif
 

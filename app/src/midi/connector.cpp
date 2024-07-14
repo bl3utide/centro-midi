@@ -44,7 +44,7 @@ void fetchDeviceList()
     // MIDI IN Port
     in_name_list.clear();
     const auto in_port_count = input.getPortCount();
-    for (unsigned int i = 0; i < in_port_count; ++i)
+    for (std::uint32_t i = 0; i < in_port_count; ++i)
     {
         try
         {
@@ -64,7 +64,7 @@ void fetchDeviceList()
     // MIDI OUT Port
     out_name_list.clear();
     const auto out_port_count = output.getPortCount();
-    for (unsigned int i = 0; i < out_port_count; ++i)
+    for (std::uint32_t i = 0; i < out_port_count; ++i)
     {
         try
         {
@@ -353,7 +353,7 @@ bool isBothDevicesConnected() noexcept
     return is_both_devices_connected_;
 }
 
-void setBothDevicesConnected(bool connected)
+void setBothDevicesConnected(bool connected) noexcept
 {
     if (connected)
     {

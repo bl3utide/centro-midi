@@ -12,7 +12,7 @@ const ByteVec getAllSoundOffMessage(int ch);
 bool isNoteOff(const ByteVec& mb) noexcept;
 bool isNoteOn(const ByteVec& mb) noexcept;
 #ifdef _DEBUG
-std::string getMessageDesc(const ByteVec& data);
+const std::string getMessageDesc(const ByteVec& data);
 #endif
 
 } // MessageHandler

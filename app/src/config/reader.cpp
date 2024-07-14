@@ -28,14 +28,8 @@ void iniValueToCv(const mINI::INIStructure& is, Cv& cv) noexcept
         }
         else if (cv.type() == Cv::Type::Bool)
         {
-            if (src_val == "1")
-            {
-                cv.set("1");
-            }
-            else
-            {
-                cv.set("0");
-            }
+            if (src_val == "1") cv.set("1");
+            else cv.set("0");
         }
         else
         {   // Cv::Type::String

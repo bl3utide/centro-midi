@@ -66,7 +66,7 @@ bool isNoteOn(const ByteVec& mb) noexcept
 }
 
 #ifdef _DEBUG
-std::string getMessageDesc(const ByteVec& data)
+const std::string getMessageDesc(const ByteVec& data)
 {
     std::stringstream ss;
 
@@ -76,44 +76,23 @@ std::string getMessageDesc(const ByteVec& data)
     }
     else if (0x80 <= data[0] && data[0] <= 0x9F)
     {
-        if (data[0] < 0x90)
-        {
-            ss << "Note Off";
-        }
-        else
-        {
-            ss << "Note On";
-        }
+        if (data[0] < 0x90) ss << "Note Off";
+        else ss << "Note On";
 
         ss << " <" << static_cast<int>(data[1]) << "> Vel(" << static_cast<int>(data[2]) << ")";
     }
     else if (0xB0 <= data[0] && data[0] <= 0xBF)
     {
-        if (data[1] == 0x00)
-        {
-            ss << "Bank Select MSB: " << static_cast<int>(data[2]);
-        }
-        else if (data[1] == 0x20)
-        {
-            ss << "Bank Select LSB: " << static_cast<int>(data[2]);
-        }
-        else if (data[1] == 0x78)
-        {
-            ss << "All Sound Off";
-        }
-        else if (data[1] == 0x79)
-        {
-            ss << "Reset All Controllers";
-        }
+        if (data[1] == 0x00)      ss << "Bank Select MSB: " << static_cast<int>(data[2]);
+        else if (data[1] == 0x20) ss << "Bank Select LSB: " << static_cast<int>(data[2]);
+        else if (data[1] == 0x78) ss << "All Sound Off";
+        else if (data[1] == 0x79) ss << "Reset All Controllers";
         else if (data[1] == 0x7A)
         {
             ss << "Local Control";
-            if (data[2] == 0)
-                ss << " Off";
-            else if (data[2] == 127)
-                ss << " On";
-            else
-                ss << " (unknown 3rd byte)";
+            if (data[2] == 0)        ss << " Off";
+            else if (data[2] == 127) ss << " On";
+            else                     ss << " (unknown 3rd byte)";
         }
         else if (data[1] == 0x7B)
         {

@@ -75,13 +75,13 @@ State getNextState() noexcept
     return next_state_;
 }
 
-void setNextState(State state, bool force_mod) noexcept
+void setNextState(State target_state, bool force_mod) noexcept
 {
-    if (state == State::None) return;
+    if (target_state == State::None) return;
 
     if (next_state_ == State::None || force_mod)
     {
-        next_state_ = state;
+        next_state_ = target_state;
 #ifdef _DEBUG
         LDEBUG << "setNextState: [" << static_cast<int>(next_state_) << "]"
             << STATE_STR.at(next_state_)
@@ -94,7 +94,7 @@ void setNextState(State state, bool force_mod) noexcept
         LDEBUG << "*** called multiple times in one loop ***";
         LDEBUG << " -> current_state: " << STATE_STR.at(state_);
         LDEBUG << " -> next_state:    " << STATE_STR.at(next_state_);
-        LDEBUG << " -> arg:           " << STATE_STR.at(state);
+        LDEBUG << " -> arg:           " << STATE_STR.at(target_state);
 #endif
     }
 }

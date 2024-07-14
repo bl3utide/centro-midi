@@ -38,7 +38,7 @@ int getMaxTransmitBank() noexcept;
 int getMinTransmitProgramChange() noexcept;
 int getMaxTransmitProgramChange() noexcept;
 bool isBothDevicesConnected() noexcept;
-void setBothDevicesConnected(bool connected);
+void setBothDevicesConnected(bool connected) noexcept;
 
 } // Connector
 } // CentroMidi
