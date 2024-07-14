@@ -238,9 +238,13 @@ void drawProcessedWindow()
     {
         GuiUtil::PushFont((int)FontDebug::ProcHead);
         if (message.transmitted)
+        {
             GuiUtil::TextColoredU32(DEBUG_UI_COLOR_TEXT_TRANSMIT, "%s", "Transmitted");
+        }
         else
+        {
             GuiUtil::TextColoredU32(DEBUG_UI_COLOR_TEXT_RECEIVE, "%s", "Received");
+        }
         ImGui::PopFont();
 
         ImGui::SameLine(300.0f);
@@ -254,7 +258,9 @@ void drawProcessedWindow()
                     << static_cast<int>(message.data[i]);
 
                 if (i != message.data.size() - 1)
+                {
                     cb << " ";
+                }
             }
             ImGui::LogToClipboard();
             ImGui::LogText(cb.str().c_str());
@@ -313,7 +319,9 @@ void drawProcessedWindow()
                         if (col_i != 9) ImGui::SameLine(hex_space * (col_i + 1) + hex_indent);
                     }
                     else
+                    {
                         break;
+                    }
                 }
             }
         }
@@ -356,7 +364,9 @@ void drawDebugTabItemLogger()
             }
 
             if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+            {
                 ImGui::SetScrollHereY(1.0f);
+            }
         }
         ImGui::EndChild();
         if (ImGui::IsItemHovered())
@@ -461,7 +471,9 @@ void drawDebugWindows(int window_w, int window_h, State current_state)
     }
 
     if (show_debug_window_)
+    {
         drawDebugWindow(&show_debug_window_, window_w, window_h, current_state);
+    }
 
     ImGui::PopFont();
 }

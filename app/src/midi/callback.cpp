@@ -26,7 +26,8 @@ void receiveInputDeviceMessage(double delta_time, ByteVec* message, void* user_d
             const auto ch = getTransmitMidiChannel();
             if (MessageHandler::isNoteOff(*message))
             {
-                send_message = {
+                send_message =
+                {
                     static_cast<Byte>(0x80 + ch),
                     message->at(1),
                     message->at(2)
@@ -34,7 +35,8 @@ void receiveInputDeviceMessage(double delta_time, ByteVec* message, void* user_d
             }
             else
             {
-                send_message = {
+                send_message =
+                {
                     static_cast<Byte>(0x90 + ch),
                     message->at(1),
                     message->at(2)
