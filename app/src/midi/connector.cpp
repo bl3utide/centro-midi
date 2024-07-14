@@ -114,7 +114,7 @@ void applyConfig()
     const auto in_res = std::find(in_name_list.cbegin(), in_name_list.cend(), cv_input_device_name);
     if (in_res != in_name_list.cend())
     {   // found
-        const int index = static_cast<int>(std::distance(in_name_list.cbegin(), in_res));
+        const auto index = static_cast<int>(std::distance(in_name_list.cbegin(), in_res));
         try
         {
             openInputPort(index, in_name_list[index]);

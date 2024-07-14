@@ -11,7 +11,7 @@ namespace MessageHandler
 
 const ByteVec getBankSelectMsbMessage(int ch, int value)
 {
-    const auto order_byte = 0xB0 + static_cast<Byte>(ch);
+    const Byte order_byte = 0xB0 + static_cast<Byte>(ch);
 
     ByteVec bs;
     bs.clear();
@@ -23,7 +23,7 @@ const ByteVec getBankSelectMsbMessage(int ch, int value)
 
 const ByteVec getBankSelectLsbMessage(int ch, int value)
 {
-    const auto order_byte = 0xB0 + static_cast<Byte>(ch);
+    const Byte order_byte = 0xB0 + static_cast<Byte>(ch);
 
     ByteVec bs;
     bs.clear();
@@ -35,7 +35,7 @@ const ByteVec getBankSelectLsbMessage(int ch, int value)
 
 const ByteVec getProgChangeMessage(int ch, int value)
 {
-    const auto order_byte = 0xC0 + static_cast<Byte>(ch);
+    const Byte order_byte = 0xC0 + static_cast<Byte>(ch);
 
     ByteVec pc;
     pc.clear();
@@ -46,7 +46,7 @@ const ByteVec getProgChangeMessage(int ch, int value)
 
 const ByteVec getAllSoundOffMessage(int ch)
 {
-    const auto order_byte = 0xB0 + static_cast<Byte>(ch);
+    const Byte order_byte = 0xB0 + static_cast<Byte>(ch);
 
     ByteVec aso;
     aso.clear();
