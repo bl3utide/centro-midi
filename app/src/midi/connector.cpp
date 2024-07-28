@@ -54,7 +54,7 @@ void fetchDeviceList()
         catch (RtMidiError& error)
         {
             throw ContinuableException(
-                StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+                std::format("MIDI error: {}", error.getMessage()).c_str(),
                 ERROR_WHEN_FETCH_DEV_LIST,
                 ERROR_CAUSE_GET_INDEV_NAME
             );
@@ -74,7 +74,7 @@ void fetchDeviceList()
         catch (RtMidiError& error)
         {
             throw ContinuableException(
-                StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+                std::format("MIDI error: {}", error.getMessage()).c_str(),
                 ERROR_WHEN_FETCH_DEV_LIST,
                 ERROR_CAUSE_GET_OUTDEV_NAME
             );
@@ -175,7 +175,7 @@ void openInputPort(int port_index, const std::string& port_name)
     {
         setBothDevicesConnected(false);
         throw ContinuableException(
-            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            std::format("MIDI error: {}", error.getMessage()).c_str(),
             ERROR_WHEN_OPEN_DEV, ERROR_CAUSE_OPEN_DEV_IN);
     }
 
@@ -197,7 +197,7 @@ void openOutputPort(int port_index, const std::string& port_name)
     {
         setBothDevicesConnected(false);
         throw ContinuableException(
-            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            std::format("MIDI error: {}", error.getMessage()).c_str(),
             ERROR_WHEN_OPEN_DEV, ERROR_CAUSE_OPEN_DEV_OUT);
     }
 
@@ -218,7 +218,7 @@ void sendBankSelectMsb()
     {
         setBothDevicesConnected(false);
         throw ContinuableException(
-            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            std::format("MIDI error: {}", error.getMessage()).c_str(),
             ERROR_WHEN_SEND_MESSAGE,
             ERROR_CAUSE_MSB,
             State::Idle
@@ -242,7 +242,7 @@ void sendBankSelectLsb()
     {
         setBothDevicesConnected(false);
         throw ContinuableException(
-            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            std::format("MIDI error: {}", error.getMessage()).c_str(),
             ERROR_WHEN_SEND_MESSAGE,
             ERROR_CAUSE_LSB,
             State::Idle
@@ -267,7 +267,7 @@ void sendProgChange()
     {
         setBothDevicesConnected(false);
         throw ContinuableException(
-            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            std::format("MIDI error: {}", error.getMessage()).c_str(),
             ERROR_WHEN_SEND_MESSAGE,
             ERROR_CAUSE_PROG_CHANGE,
             State::Idle
@@ -289,7 +289,7 @@ void sendAllSoundOff()
     catch (RtMidiError& error)
     {
         throw ContinuableException(
-            StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+            std::format("MIDI error: {}", error.getMessage()).c_str(),
             ERROR_WHEN_SEND_MESSAGE,
             ERROR_CAUSE_ALL_SND_OFF
         );
@@ -312,7 +312,7 @@ void sendOneTaskMessage()
         catch (RtMidiError& error)
         {
             throw ContinuableException(
-                StringUtil::format("MIDI error: %s", error.getMessage().c_str()).c_str(),
+                std::format("MIDI error: {}", error.getMessage()).c_str(),
                 ERROR_WHEN_SEND_MESSAGE,
                 ERROR_CAUSE_ONE_TASK
             );

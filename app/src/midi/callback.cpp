@@ -54,7 +54,7 @@ void receiveInputDeviceMessage(double delta_time, ByteVec* message, void* user_d
         }
         catch (RtMidiError& error)
         {
-            Logger::debug(StringUtil::format("MIDI error: %s", error.getMessage().c_str()));
+            Logger::debug(std::format("MIDI error: {}", error.getMessage()));
             setAppError("MIDI error when sending message from input to output");
         }
     }
