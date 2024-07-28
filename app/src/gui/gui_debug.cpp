@@ -4,7 +4,6 @@
 #include "config/config.hpp"
 #include "config/cv.hpp"
 #include "config/section.hpp"
-#include "gui/gui.hpp"
 #include "gui/gui_color.hpp"
 #include "gui/gui_font.hpp"
 #include "midi/connector.hpp"

@@ -1,12 +1,8 @@
 ﻿#include "common.hpp"
 #include "error.hpp"
-#include "compressed/arrayed_font.hpp"
 #include "gui/gui.hpp"
 #include "gui/gui_color.hpp"
 #include "gui/gui_font.hpp"
-#ifdef _DEBUG
-#include "logger.hpp"
-#endif
 
 namespace CentroMidi
 {

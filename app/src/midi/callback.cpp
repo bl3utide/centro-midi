@@ -1,7 +1,6 @@
 ﻿#include "common.hpp"
 #include "error.hpp"
 #include "logger.hpp"
-#include "midi/callback.hpp"
 #include "midi/connector.hpp"
 #include "midi/message_handler.hpp"
 
