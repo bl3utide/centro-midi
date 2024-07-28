@@ -39,7 +39,7 @@ const int MAX_TRANSMIT_BANK = 128 * 128 - 1;
 const int MIN_TRANSMIT_PROGRAM_CHANGE = 0;
 const int MAX_TRANSMIT_PROGRAM_CHANGE = 127;
 
-void fetchDeviceList()
+static void fetchDeviceList()
 {
     // MIDI IN Port
     in_name_list.clear();

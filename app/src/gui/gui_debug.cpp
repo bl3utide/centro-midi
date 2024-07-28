@@ -61,7 +61,7 @@ void drawDebugMenuBar(const ImVec2& viewport_pos)
     ImGui::PopFont();
 }
 
-void pushDebugStyles() noexcept
+static void pushDebugStyles() noexcept
 {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 1.0f);
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.08f, 0.08f, 0.08f, 1.0f));
@@ -83,13 +83,13 @@ void pushDebugStyles() noexcept
     ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.965f, 0.965f, 0.965f, 1.0f));
 }
 
-void popDebugStyles() noexcept
+static void popDebugStyles() noexcept
 {
     ImGui::PopStyleColor(17);
     ImGui::PopStyleVar();
 }
 
-void drawDebugTabItemGeneral()
+static void drawDebugTabItemGeneral()
 {
     if (ImGui::BeginTabItem("General"))
     {
@@ -121,7 +121,7 @@ void drawDebugTabItemGeneral()
     }
 }
 
-void drawDebugTabItemConfig()
+static void drawDebugTabItemConfig()
 {
     if (ImGui::BeginTabItem("Config"))
     {
@@ -167,7 +167,7 @@ void drawDebugTabItemConfig()
     }
 }
 
-void drawDebugTabItemTransReceiveLog()
+static void drawDebugTabItemTransReceiveLog()
 {
     namespace cd = Connector::Debug;
 
@@ -225,7 +225,7 @@ void drawDebugTabItemTransReceiveLog()
     }
 }
 
-void drawProcessedWindow()
+static void drawProcessedWindow()
 {
     std::unique_lock lock(Connector::Debug::history_mutex);
     const auto message = Connector::Debug::history_selected;
@@ -330,7 +330,7 @@ void drawProcessedWindow()
     ImGui::End();
 }
 
-void drawDebugTabItemLogger()
+static void drawDebugTabItemLogger()
 {
     if (ImGui::BeginTabItem("Logger"))
     {
@@ -406,7 +406,7 @@ void drawDebugTabItemLogger()
     }
 }
 
-void drawDebugWindow(bool* open, int window_w, int window_h, State current_state)
+static void drawDebugWindow(bool* open, int window_w, int window_h, State current_state)
 {
     pushDebugStyles();
 

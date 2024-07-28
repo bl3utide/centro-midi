@@ -13,12 +13,12 @@ namespace Gui
 const float CONNECTION_LABEL_WIDTH = 80.0f;
 const float CONNECTION_CONTROL_WIDTH = 240.0f;
 
-void drawSameLine()
+static void drawSameLine()
 {
     ImGui::SameLine(0.0f, 2.0f);
 }
 
-void drawOperationGroupConnections()
+static void drawOperationGroupConnections()
 {
     GuiUtil::PushFont((int)Font::TextBold);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
@@ -160,7 +160,7 @@ void drawOperationGroupConnections()
     ImGui::PopFont();
 }
 
-void drawBankSelect()
+static void drawBankSelect()
 {
     auto& io = ImGui::GetIO();
 
@@ -199,7 +199,7 @@ void drawBankSelect()
     }
 }
 
-void drawProgramChangePanel()
+static void drawProgramChangePanel()
 {
     auto& io = ImGui::GetIO();
 
@@ -275,7 +275,7 @@ void drawProgramChangePanel()
     ImGui::Unindent(8.0f);
 }
 
-void drawOperationGroupControls()
+static void drawOperationGroupControls()
 {
     GuiUtil::PushFont((int)Font::TextBold);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
