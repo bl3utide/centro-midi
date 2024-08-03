@@ -1,8 +1,4 @@
 ﻿#include "common.hpp"
-#include "midi/message_handler.hpp"
-#ifdef _DEBUG
-#include "logger.hpp"
-#endif
 
 namespace CentroMidi
 {
