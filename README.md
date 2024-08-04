@@ -18,6 +18,9 @@ MIDI single-path connection provider
 
 ## Changelog
 
+### v1.3
+- Improve the base system
+
 ### v1.2
 - Add feature to save application settings
 

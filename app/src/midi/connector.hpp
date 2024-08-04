@@ -1,89 +1,13 @@
 ﻿#pragma once
+#include "midi/connection.hpp"
 
 namespace CentroMidi
 {
 namespace Connector
 {
 
-struct MidiConnection
-{
-    RtMidiIn* input = nullptr;
-    RtMidiOut* output = nullptr;
-    int input_port_index = -1;
-    int output_port_index = -1;
-    std::string input_port_name;
-    std::string output_port_name;
-    int last_in_connected_port_index = -1;
-    int last_in_failed_port_index = -1;
-    int last_out_connected_port_index = -1;
-    int last_out_failed_port_index = -1;
-
-    void initialize()
-    {
-        input = new RtMidiIn();
-        output = new RtMidiOut();
-    }
-
-    void finalize()
-    {
-        input->cancelCallback();
-        input->closePort();
-        if (input != nullptr)
-        {
-            delete input;
-            input = nullptr;
-        }
-
-        output->closePort();
-        if (output != nullptr)
-        {
-            delete output;
-            output = nullptr;
-        }
-    }
-
-    void openInPort()
-    {
-        input->cancelCallback();
-        input->closePort();
-        input->openPort(input_port_index);
-    }
-
-    void openOutPort()
-    {
-        output->closePort();
-        output->openPort(output_port_index);
-    }
-
-    void closePorts()
-    {
-        input->cancelCallback();
-        input->closePort();
-        output->closePort();
-    }
-
-    void resetPortInfo()
-    {
-        input_port_index = -1;
-        input_port_name = "";
-        output_port_index = -1;
-        output_port_name = "";
-        last_in_connected_port_index = -1;
-        last_in_failed_port_index = -1;
-        last_out_connected_port_index = -1;
-        last_out_failed_port_index = -1;
-    }
-
-    void operator=(const MidiConnection& conn)
-    {
-        input_port_index = conn.input_port_index;
-        input_port_name = conn.input_port_name;
-        output_port_index = conn.output_port_index;
-        output_port_name = conn.output_port_name;
-    }
-};
-
-extern MidiConnection conn;
+extern InputConnection input;
+extern OutputConnection output;
 extern std::vector<std::string> in_name_list;
 extern std::vector<std::string> out_name_list;
 extern bool force_adjust_midi_channel;
@@ -96,8 +20,8 @@ void finalize() noexcept;
 void applyConfig();
 void updateConfig() noexcept;
 void resetAllConnections();
-void checkOpenInputPort();
-void checkOpenOutputPort();
+void openInputPort(int port_index, const std::string& port_name);
+void openOutputPort(int port_index, const std::string& port_name);
 void sendBankSelectMsb();
 void sendBankSelectLsb();
 void sendProgChange();
@@ -114,7 +38,7 @@ int getMaxTransmitBank() noexcept;
 int getMinTransmitProgramChange() noexcept;
 int getMaxTransmitProgramChange() noexcept;
 bool isBothDevicesConnected() noexcept;
-void setBothDevicesConnected(const bool connected);
+void setBothDevicesConnected(bool connected) noexcept;
 
 } // Connector
 } // CentroMidi

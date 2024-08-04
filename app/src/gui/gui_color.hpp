@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include "annotation.hpp"
 
 namespace CentroMidi

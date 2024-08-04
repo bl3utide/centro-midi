@@ -3,7 +3,6 @@
 #include "gui/gui.hpp"
 #include "gui/gui_color.hpp"
 #include "gui/gui_font.hpp"
-#include "gui/gui_util.hpp"
 #include "midi/connector.hpp"
 
 namespace CentroMidi
@@ -14,165 +13,183 @@ namespace Gui
 const float CONNECTION_LABEL_WIDTH = 80.0f;
 const float CONNECTION_CONTROL_WIDTH = 240.0f;
 
-void drawSameLine()
+static void drawSameLine()
 {
     ImGui::SameLine(0.0f, 2.0f);
 }
 
-void drawOperationGroupConnections()
+static void drawOperationGroupConnections()
 {
-    ImGui::PushFont((int)Font::TextBold);
+    GuiUtil::PushFont((int)Font::TextBold);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
 
-    ImGui::BeginGroupPanel("Connections", ImVec2(300.0f, 200.0f));
+    GuiUtil::BeginGroupPanel("Connections", ImVec2(300.0f, 200.0f));
     {
         auto label_width = CONNECTION_LABEL_WIDTH;
         auto control_width = CONNECTION_CONTROL_WIDTH;
-        ImGuiIO& io = ImGui::GetIO();
+        auto& io = ImGui::GetIO();
 
-        ImGui::PushFont((int)Font::Text);
+        GuiUtil::PushFont((int)Font::Text);
 
-        if (Connector::conn.last_in_connected_port_index != -1)
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_CONNECTED);
-        else if (Connector::conn.last_in_failed_port_index != -1)
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_FAILED);
-        else
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_BASE);
-        if (ImGuiLeftLabel(ImGui::BeginCombo, 0, "Input from", false,
-            label_width, control_width, Connector::conn.input_port_name.c_str(),
-            (int)ImGuiComboFlags_NoArrowButton))
+        // Input Device Combobox
         {
-            ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
-            for (int n = 0; n < Connector::in_name_list.size(); ++n)
+            const auto last_connected_port_index = Connector::input.getLastConnectedPortIndex();
+            const auto last_failed_port_index = Connector::input.getLastFailedPortIndex();
+            const auto dev_color =
+                last_connected_port_index != -1 ? UI_COLOR_TEXT_DEV_CONNECTED
+                : last_failed_port_index != -1 ? UI_COLOR_TEXT_DEV_FAILED
+                : UI_COLOR_TEXT_BASE;
+
+            ImGui::PushStyleColor(ImGuiCol_Text, dev_color);
+            if (GuiUtil::ImGuiLeftLabel(ImGui::BeginCombo, 0, "Input from", false,
+                label_width, control_width, Connector::input.getPortName().c_str(),
+                (int)ImGuiComboFlags_NoArrowButton))
             {
-                bool is_selected = n == Connector::conn.input_port_index;
-                if (Connector::conn.last_in_connected_port_index == n)
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_CONNECTED);
-                else if (Connector::conn.last_in_failed_port_index == n)
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_FAILED);
-                else
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_BASE);
-                if (ImGui::Selectable(Connector::in_name_list[n].c_str(),
-                    is_selected))
+                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
+                const auto in_name_list_size = Connector::in_name_list.size();
+                for (auto n = 0; n < in_name_list_size; ++n)
                 {
-                    Connector::conn.input_port_index = n;
-                    Connector::conn.input_port_name = Connector::in_name_list[n];
-                    Connector::checkOpenInputPort();
+                    const auto is_selected = n == Connector::input.getPortIndex();
+                    const auto dev_item_color =
+                        last_connected_port_index == n ? UI_COLOR_TEXT_DEV_CONNECTED
+                        : last_failed_port_index == n ? UI_COLOR_TEXT_DEV_FAILED
+                        : UI_COLOR_TEXT_BASE;
+                    ImGui::PushStyleColor(ImGuiCol_Text, dev_item_color);
+                    if (ImGui::Selectable(Connector::in_name_list[n].c_str(),
+                        is_selected))
+                    {
+                        reserved_funcs.push_back(std::bind(Connector::openInputPort, n, Connector::in_name_list[n]));
+                    }
+                    GuiUtil::MouseCursorToHand();
+                    ImGui::PopStyleColor();
+                    if (is_selected) ImGui::SetItemDefaultFocus();
                 }
-                ImGui::MouseCursorToHand();
-                ImGui::PopStyleColor();
-                if (is_selected) ImGui::SetItemDefaultFocus();
+                ImGui::PopStyleVar();
+                ImGui::EndCombo();
             }
-            ImGui::PopStyleVar();
-            ImGui::EndCombo();
+            GuiUtil::MouseCursorToHand();
+            ImGui::PopStyleColor();
         }
-        ImGui::MouseCursorToHand();
-        ImGui::PopStyleColor();
 
         drawSameLine();
         if (ImGui::ImageButton((void*)(intptr_t)Image::getTextureId(Image::Texture::Reload), ImVec2(16.0f, 16.0f)))
         {
-            Connector::resetAllConnections();
+            reserved_funcs.push_back(std::bind(Connector::resetAllConnections));
         }
-        ImGui::MouseCursorToHand();
+        GuiUtil::MouseCursorToHand();
 
-        if (Connector::conn.last_out_connected_port_index != -1)
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_CONNECTED);
-        else if (Connector::conn.last_out_failed_port_index != -1)
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_FAILED);
-        else
-            ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_BASE);
-        if (ImGuiLeftLabel(ImGui::BeginCombo, 0, "Output to", false,
-            label_width, control_width, Connector::conn.output_port_name.c_str(),
-            (int)ImGuiComboFlags_NoArrowButton))
+        // Output Dev
         {
-            ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
-            for (int n = 0; n < Connector::out_name_list.size(); ++n)
-            {
-                bool is_selected = n == Connector::conn.output_port_index;
-                if (Connector::conn.last_out_connected_port_index == n)
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_CONNECTED);
-                else if (Connector::conn.last_out_failed_port_index == n)
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_DEV_FAILED);
-                else
-                    ImGui::PushStyleColor(ImGuiCol_Text, UI_COLOR_TEXT_BASE);
-                if (ImGui::Selectable(Connector::out_name_list[n].c_str(),
-                    is_selected))
-                {
-                    Connector::conn.output_port_index = n;
-                    Connector::conn.output_port_name = Connector::out_name_list[n];
-                    Connector::checkOpenOutputPort();
-                }
-                ImGui::MouseCursorToHand();
-                ImGui::PopStyleColor();
-                if (is_selected) ImGui::SetItemDefaultFocus();
-            }
-            ImGui::PopStyleVar();
-            ImGui::EndCombo();
-        }
-        ImGui::MouseCursorToHand();
-        ImGui::PopStyleColor();
+            const auto last_connected_port_index = Connector::output.getLastConnectedPortIndex();
+            const auto last_failed_port_index = Connector::output.getLastConnectedPortIndex();
+            const auto dev_color =
+                last_connected_port_index != -1 ? UI_COLOR_TEXT_DEV_CONNECTED
+                : last_failed_port_index != -1 ? UI_COLOR_TEXT_DEV_FAILED
+                : UI_COLOR_TEXT_BASE;
 
-        if (ImGuiLeftLabel(ImGui::InputInt, 0, "to Channel", false,
+            ImGui::PushStyleColor(ImGuiCol_Text, dev_color);
+            if (GuiUtil::ImGuiLeftLabel(ImGui::BeginCombo, 0, "Output to", false,
+                label_width, control_width, Connector::output.getPortName().c_str(),
+                (int)ImGuiComboFlags_NoArrowButton))
+            {
+                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(12.0f, 8.0f));
+                const auto out_name_list_size = Connector::out_name_list.size();
+                for (auto n = 0; n < out_name_list_size; ++n)
+                {
+                    const auto is_selected = n == Connector::output.getPortIndex();
+                    const auto dev_item_color =
+                        last_connected_port_index == n ? UI_COLOR_TEXT_DEV_CONNECTED
+                        : last_failed_port_index == n ? UI_COLOR_TEXT_DEV_FAILED
+                        : UI_COLOR_TEXT_BASE;
+                    ImGui::PushStyleColor(ImGuiCol_Text, dev_item_color);
+                    if (ImGui::Selectable(Connector::out_name_list[n].c_str(),
+                        is_selected))
+                    {
+                        reserved_funcs.push_back(std::bind(Connector::openOutputPort, n, Connector::out_name_list[n]));
+                    }
+                    GuiUtil::MouseCursorToHand();
+                    ImGui::PopStyleColor();
+                    if (is_selected) ImGui::SetItemDefaultFocus();
+                }
+                ImGui::PopStyleVar();
+                ImGui::EndCombo();
+            }
+            GuiUtil::MouseCursorToHand();
+            ImGui::PopStyleColor();
+        }
+
+        if (GuiUtil::ImGuiLeftLabel(ImGui::InputInt, 0, "to Channel", false,
             label_width, 22.0f, &Connector::display_midi_channel, NULL, NULL,
             (int)ImGuiInputTextFlags_AutoSelectAll))
         {
             if (Connector::display_midi_channel < Connector::getMinTransmitMidiChannel() + 1)
+            {
                 Connector::display_midi_channel = Connector::getMinTransmitMidiChannel() + 1;
+            }
             else if (Connector::display_midi_channel > Connector::getMaxTransmitMidiChannel() + 1)
+            {
                 Connector::display_midi_channel = Connector::getMaxTransmitMidiChannel() + 1;
+            }
             Connector::updateTransmitMidiChannel();
         }
-        ImGui::MouseCursorToHand();
+        GuiUtil::MouseCursorToHand();
         if (ImGui::IsItemHovered())
         {
-            if ((io.MouseWheel > 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Up, true)) &&        // ++
+            if ((io.MouseWheel > 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Up, true)) &&        // ++
                 Connector::display_midi_channel < Connector::getMaxTransmitMidiChannel() + 1)
+            {
                 ++Connector::display_midi_channel;
-            else if ((io.MouseWheel < 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Down, true)) &&   // --
+            }
+            else if ((io.MouseWheel < 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Down, true)) &&   // --
                 Connector::display_midi_channel > Connector::getMinTransmitMidiChannel() + 1)
+            {
                 --Connector::display_midi_channel;
+            }
             Connector::updateTransmitMidiChannel();
         }
 
-        ImGuiLeftLabel(ImGui::Checkbox, 0, "Force Adjust MIDI Ch", false,
+        GuiUtil::ImGuiLeftLabel(ImGui::Checkbox, 0, "Force Adjust MIDI Ch", false,
             120.0f, 80.0f, &Connector::force_adjust_midi_channel);
-        ImGui::MouseCursorToHand();
+        GuiUtil::MouseCursorToHand();
 
         ImGui::PopFont();
     }
-    ImGui::EndGroupPanel();
+    GuiUtil::EndGroupPanel();
 
     ImGui::PopStyleVar();
     ImGui::PopFont();
 }
 
-void drawBankSelect()
+static void drawBankSelect()
 {
-    ImGuiIO& io = ImGui::GetIO();
+    auto& io = ImGui::GetIO();
 
-    if (ImGuiLeftLabel(ImGui::InputInt, 0, "Bank Select", false,
+    if (GuiUtil::ImGuiLeftLabel(ImGui::InputInt, 0, "Bank Select", false,
         80.0f, 42.0f, &Connector::display_bank, NULL, NULL,
         (int)ImGuiInputTextFlags_AutoSelectAll))
     {
         if (Connector::display_bank < Connector::getMinTransmitBank() + 1)
+        {
             Connector::display_bank = Connector::getMinTransmitBank() + 1;
+        }
         else if (Connector::display_bank > Connector::getMaxTransmitBank() + 1)
+        {
             Connector::display_bank = Connector::getMaxTransmitBank() + 1;
+        }
         Connector::updateTransmitBank();
         setNextState(State::SendBankProgChange);
     }
-    ImGui::MouseCursorToHand();
+    GuiUtil::MouseCursorToHand();
     if (ImGui::IsItemHovered())
     {
-        if ((io.MouseWheel > 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Up, true)) &&        // ++
+        if ((io.MouseWheel > 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Up, true)) &&        // ++
             Connector::display_bank < Connector::getMaxTransmitBank() + 1)
         {
             ++Connector::display_bank;
             Connector::updateTransmitBank();
             setNextState(State::SendBankProgChange);
         }
-        else if ((io.MouseWheel < 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Down, true)) && // --
+        else if ((io.MouseWheel < 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Down, true)) && // --
             Connector::display_bank > Connector::getMinTransmitBank() + 1)
         {
             --Connector::display_bank;
@@ -182,21 +199,21 @@ void drawBankSelect()
     }
 }
 
-void drawProgramChangePanel()
+static void drawProgramChangePanel()
 {
-    ImGuiIO& io = ImGui::GetIO();
+    auto& io = ImGui::GetIO();
 
     ImGui::Text("Program Change");
     ImGui::Indent(8.0f);
 
-    const int PC_PER_ROW = 16;
+    const auto PC_PER_ROW = 16;
     char buf[4];
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
-    for (int pc_row_i = 0; pc_row_i < Connector::getMaxTransmitProgramChange() / PC_PER_ROW + 1; ++pc_row_i)
+    for (auto pc_row_i = 0; pc_row_i < Connector::getMaxTransmitProgramChange() / PC_PER_ROW + 1; ++pc_row_i)
     {
-        for (int pc_i = 1; pc_i <= PC_PER_ROW; ++pc_i)
+        for (auto pc_i = 1; pc_i <= PC_PER_ROW; ++pc_i)
         {
-            int target_pc = pc_row_i * PC_PER_ROW + pc_i;
+            const auto target_pc = pc_row_i * PC_PER_ROW + pc_i;
             sprintf(buf, "%d", target_pc);
             ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.5f, 0.5f));
             if (ImGui::Selectable(buf, target_pc == Connector::display_program_change, 0, ImVec2(20.0f, 16.0f)))
@@ -207,34 +224,34 @@ void drawProgramChangePanel()
             }
             ImGui::PopStyleVar();
 
-            ImVec2 p0 = ImGui::GetItemRectMin();
-            ImVec2 p1 = ImGui::GetItemRectMax();
+            const auto p0 = ImGui::GetItemRectMin();
+            const auto p1 = ImGui::GetItemRectMax();
 
-            ImGui::MouseCursorToHand();
+            GuiUtil::MouseCursorToHand();
             if (ImGui::IsItemHovered())
             {
-                if ((io.MouseWheel > 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Right, true)) &&         // ++
+                if ((io.MouseWheel > 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Right, true)) &&         // ++
                     Connector::display_program_change < Connector::getMaxTransmitProgramChange() + 1)
                 {
                     ++Connector::display_program_change;
                     Connector::updateTransmitProgramChange();
                     setNextState(State::SendBankProgChange);
                 }
-                else if ((io.MouseWheel < 0 || ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Left, true)) &&     // --
+                else if ((io.MouseWheel < 0 || GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Left, true)) &&     // --
                     Connector::display_program_change > Connector::getMinTransmitProgramChange() + 1)
                 {
                     --Connector::display_program_change;
                     Connector::updateTransmitProgramChange();
                     setNextState(State::SendBankProgChange);
                 }
-                else if (ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Down, true) &&        // +16
+                else if (GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Down, true) &&        // +16
                     Connector::display_program_change < Connector::getMaxTransmitProgramChange() - 14)
                 {
                     Connector::display_program_change += 16;
                     Connector::updateTransmitProgramChange();
                     setNextState(State::SendBankProgChange);
                 }
-                else if (ImGui::IsCustomKeyPressed(ImGui::ImGuiCustomKey::Up, true) &&          // -16
+                else if (GuiUtil::IsCustomKeyPressed(GuiUtil::ImGuiCustomKey::Up, true) &&          // -16
                     Connector::display_program_change > Connector::getMinTransmitProgramChange() + 16)
                 {
                     Connector::display_program_change -= 16;
@@ -244,31 +261,35 @@ void drawProgramChangePanel()
             }
 
             if (target_pc == Connector::display_program_change)
+            {
                 draw_list->AddRect(p0, p1, IM_COL32(200, 200, 200, 255));
+            }
 
             if (pc_i != PC_PER_ROW)
+            {
                 ImGui::SameLine();
+            }
         }
     }
 
     ImGui::Unindent(8.0f);
 }
 
-void drawOperationGroupControls()
+static void drawOperationGroupControls()
 {
-    ImGui::PushFont((int)Font::TextBold);
+    GuiUtil::PushFont((int)Font::TextBold);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 4.0f));
 
-    ImGui::BeginGroupPanel("Controls", ImVec2(532.0f, 300.0f));
+    GuiUtil::BeginGroupPanel("Controls", ImVec2(532.0f, 300.0f));
     {
-        ImGui::PushFont((int)Font::Text);
+        GuiUtil::PushFont((int)Font::Text);
 
         drawBankSelect();
         drawProgramChangePanel();
 
         ImGui::PopFont();
     }
-    ImGui::EndGroupPanel();
+    GuiUtil::EndGroupPanel();
 
     ImGui::PopStyleVar();
     ImGui::PopFont();
@@ -277,7 +298,7 @@ void drawOperationGroupControls()
 void drawOperationPanel()
 {
     drawOperationGroupConnections();
-    bool is_output_device_connected = Connector::conn.last_out_connected_port_index != -1;
+    const auto is_output_device_connected = Connector::output.isPortOpen();
     if (!is_output_device_connected) ImGui::BeginDisabled();
     drawOperationGroupControls();
     if (!is_output_device_connected) ImGui::EndDisabled();

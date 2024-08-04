@@ -1,5 +1,6 @@
 ﻿#include "common.hpp"
-#include "midi/callback.hpp"
+#include "error.hpp"
+#include "logger.hpp"
 #include "midi/connector.hpp"
 #include "midi/message_handler.hpp"
 
@@ -7,21 +8,25 @@ namespace CentroMidi
 {
 namespace Connector
 {
+namespace Callback
+{
 
 /*******************************************************************************
     Received message from input device callback
 *******************************************************************************/
-void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void* user_data)
+void receiveInputDeviceMessage(double delta_time, ByteVec* message, void* user_data)
 {
-    if (MessageHandler::isNoteOff(*message) || MessageHandler::isNoteOn(*message))
+    if (isBothDevicesConnected() &&
+        MessageHandler::isNoteOff(*message) || MessageHandler::isNoteOn(*message))
     {
+        ByteVec send_message;
         if (Connector::force_adjust_midi_channel)
         {
-            const int ch = getTransmitMidiChannel();
-            ByteVec channel_adj_message;
+            const auto ch = getTransmitMidiChannel();
             if (MessageHandler::isNoteOff(*message))
             {
-                channel_adj_message = {
+                send_message =
+                {
                     static_cast<Byte>(0x80 + ch),
                     message->at(1),
                     message->at(2)
@@ -29,20 +34,31 @@ void receiveInputDeviceMessageCallback(double delta_time, ByteVec* message, void
             }
             else
             {
-                channel_adj_message = {
+                send_message =
+                {
                     static_cast<Byte>(0x90 + ch),
                     message->at(1),
                     message->at(2)
                 };
             }
-            conn.output->sendMessage(&channel_adj_message);
         }
         else
         {
-            conn.output->sendMessage(message);
+            send_message = *message;
+        }
+
+        try
+        {
+            output.sendMessage(send_message);
+        }
+        catch (RtMidiError& error)
+        {
+            Logger::debug(std::format("MIDI error: {}", error.getMessage()));
+            setAppError("MIDI error when sending message from input to output");
         }
     }
 }
 
+} // Callback
 } // Connector
 } // CentroMidi

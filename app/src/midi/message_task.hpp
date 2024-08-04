@@ -5,7 +5,7 @@ namespace CentroMidi
 namespace MessageTask
 {
 
-ByteVec lastTask();
+const ByteVec lastTask();
 size_t taskSize() noexcept;
 #ifdef _DEBUG
 size_t largestTaskSizeEver() noexcept;

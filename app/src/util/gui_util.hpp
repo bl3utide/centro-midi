@@ -1,11 +1,14 @@
 ﻿#pragma once
 
-template<class... Args>
+namespace GuiUtil
+{
+
+template<typename... Args>
 bool ImGuiHiddenLabel(bool func(const char*, Args...), int repeat_idx,
     const char* label, float width, Args... args)
 {
     ImGui::SetNextItemWidth(width);
-    return func(StringUtil::format("##%s_%d", label, repeat_idx).c_str(), args...);
+    return func(std::format("##{0}_{1}", label, repeat_idx).c_str(), args...);
 }
 
 /*
@@ -15,7 +18,7 @@ bool ImGuiHiddenLabel(bool func(const char*, Args...), int repeat_idx,
     offset: label text width
     width: control width
 */
-template<class... Args>
+template<typename... Args>
 bool ImGuiLeftLabel(bool func(const char*, Args...), int repeat_idx,
     const char* label, bool hide_label, float offset, float width,
     Args... args)
@@ -32,9 +35,6 @@ bool ImGuiLeftLabel(bool func(const char*, Args...), int repeat_idx,
     return ImGuiHiddenLabel(func, repeat_idx, label, width, args...);
 }
 
-namespace ImGui
-{
-
 enum class ImGuiCustomKey : int
 {
     Up,
@@ -45,10 +45,10 @@ enum class ImGuiCustomKey : int
 };
 
 void MouseCursorToHand() noexcept;
-void TextColoredU32(const ImU32& col, const char* fmt, ...) noexcept;
+void TextColoredU32(ImU32 col, const char* fmt, ...) noexcept;
 void BeginGroupPanel(const char* name, const ImVec2& size);
 void EndGroupPanel();
 void PushFont(int font_id) noexcept;
 bool IsCustomKeyPressed(ImGuiCustomKey key, bool repeat = true) noexcept;
 
-} // ImGui
+} // GuiUtil
