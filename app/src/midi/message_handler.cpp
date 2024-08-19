@@ -5,9 +5,20 @@ namespace CentroMidi
 namespace MessageHandler
 {
 
+// private
+// ------------ common ------------
+const Byte SYSEX_FIRST          = 0xF0;
+const Byte SYSEX_LAST           = 0xF7;
+const Byte SYSEX_SECOND_UNRT    = 0x7E;
+const Byte MIDI_NOTE_OFF        = 0x80;
+const Byte MIDI_NOTE_ON         = 0x90;
+const Byte MIDI_CC              = 0xB0;
+const Byte MIDI_PC              = 0xC0;
+const Byte MAX_CH_OFFSET        = 0x0F;
+
 const ByteVec getBankSelectMsbMessage(int ch, int value)
 {
-    const Byte order_byte = 0xB0 + static_cast<Byte>(ch);
+    const Byte order_byte = MIDI_CC + static_cast<Byte>(ch);
 
     ByteVec bs;
     bs.clear();
@@ -19,7 +30,7 @@ const ByteVec getBankSelectMsbMessage(int ch, int value)
 
 const ByteVec getBankSelectLsbMessage(int ch, int value)
 {
-    const Byte order_byte = 0xB0 + static_cast<Byte>(ch);
+    const Byte order_byte = MIDI_CC + static_cast<Byte>(ch);
 
     ByteVec bs;
     bs.clear();
@@ -31,7 +42,7 @@ const ByteVec getBankSelectLsbMessage(int ch, int value)
 
 const ByteVec getProgChangeMessage(int ch, int value)
 {
-    const Byte order_byte = 0xC0 + static_cast<Byte>(ch);
+    const Byte order_byte = MIDI_PC + static_cast<Byte>(ch);
 
     ByteVec pc;
     pc.clear();
@@ -42,7 +53,7 @@ const ByteVec getProgChangeMessage(int ch, int value)
 
 const ByteVec getAllSoundOffMessage(int ch)
 {
-    const Byte order_byte = 0xB0 + static_cast<Byte>(ch);
+    const Byte order_byte = MIDI_CC + static_cast<Byte>(ch);
 
     ByteVec aso;
     aso.clear();
@@ -53,12 +64,12 @@ const ByteVec getAllSoundOffMessage(int ch)
 
 bool isNoteOff(const ByteVec& mb) noexcept
 {
-    return 0x80 <= mb[0] && mb[0] <= 0x8F;
+    return MIDI_NOTE_OFF <= mb[0] && mb[0] <= MIDI_NOTE_OFF + MAX_CH_OFFSET;
 }
 
 bool isNoteOn(const ByteVec& mb) noexcept
 {
-    return 0x90 <= mb[0] && mb[0] <= 0x9F;
+    return MIDI_NOTE_ON <= mb[0] && mb[0] <= MIDI_NOTE_ON + MAX_CH_OFFSET;
 }
 
 #ifdef _DEBUG
@@ -70,17 +81,19 @@ const std::string getMessageDesc(const ByteVec& data)
     {
         ss << "Empty Message";
     }
-    else if (0x80 <= data[0] && data[0] <= 0x9F)
+    else if (MIDI_NOTE_OFF <= data[0] && data[0] <= MIDI_NOTE_ON + MAX_CH_OFFSET)
     {
-        if (data[0] < 0x90) ss << "Note Off";
+        if (data[0] < MIDI_NOTE_ON) ss << "Note Off";
         else ss << "Note On";
 
         ss << " <" << static_cast<int>(data[1]) << "> Vel(" << static_cast<int>(data[2]) << ")";
     }
-    else if (0xB0 <= data[0] && data[0] <= 0xBF)
+    else if (MIDI_CC <= data[0] && data[0] <= 0xBF)
     {
         if (data[1] == 0x00)      ss << "Bank Select MSB: " << static_cast<int>(data[2]);
+        else if (data[1] == 0x01) ss << "Modulation: " << static_cast<int>(data[2]);
         else if (data[1] == 0x20) ss << "Bank Select LSB: " << static_cast<int>(data[2]);
+        else if (data[1] == 0x40) ss << "Damper Pedal: " << static_cast<int>(data[2]);
         else if (data[1] == 0x78) ss << "All Sound Off";
         else if (data[1] == 0x79) ss << "Reset All Controllers";
         else if (data[1] == 0x7A)
@@ -100,7 +113,7 @@ const std::string getMessageDesc(const ByteVec& data)
                 << static_cast<int>(data[2]);
         }
     }
-    else if (0xC0 <= data[0] && data[0] <= 0xCF)
+    else if (MIDI_PC <= data[0] && data[0] <= MIDI_PC + MAX_CH_OFFSET)
     {
         ss << "Program Change (" << static_cast<int>(data[1]) << ")";
     }
