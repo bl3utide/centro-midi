@@ -125,7 +125,7 @@ static void drawDebugTabItemConfig()
 {
     if (ImGui::BeginTabItem("Config"))
     {
-        ImGui::BeginChild("config_value_list", ImVec2(600, 300));
+        ImGui::BeginChild("config_value_list", ImVec2(0, 300));
         {
             auto drawParamsRow = [](Config::Key key)
             {
